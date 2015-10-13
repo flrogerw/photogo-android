@@ -13,13 +13,8 @@ FotoSelect.prototype.getImages = function(fotoselect, max_selections) {
 			if (results.length == 0) {
 				self.reject();
 			}
-
-			for (var i = 0; i < results.length; i++) {
-
-				var imageURIs = JSON.parse(results[i]);
-				fotoselect.images.push(imageURIs);
-			}
 			
+			fotoselect.images = results;
 			self.resolve();
 
 		}, function(error) {

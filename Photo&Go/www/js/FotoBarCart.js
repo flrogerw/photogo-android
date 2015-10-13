@@ -512,7 +512,7 @@ FotobarCart.prototype.validateCart = function() {
 			var product = fotobarCart.getProduct(item.sku);
 			var itemCount = fotobarCart.getItemCount(item.sku);
 			var totalItemCount = fotobarCart.getTotalItemCount();
-			var text = product.name + " requires a minimun of " + product.minQty;
+			var text = product.name + " requires a minimum of "+product.minQty+" total to checkout. ";
 
 			if (product.minQty > 0 && product.minOverride
 					&& itemCount < product.minQty
