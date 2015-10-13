@@ -484,17 +484,13 @@ img.cart_items_img {
 	 color: #A39D9D;
 }
 
-
-
 input {
 	outline: none;
 }
 
 select option { color: black; }
 
-
-#thankyou_social_media{
-	
+#thankyou_social_media{	
 	margin: auto;
 	text_align:center;
 	margin-top:40px;
@@ -508,7 +504,6 @@ select option { color: black; }
 }
 
 .social_icons{
-	
 	padding-right: 5px;
 	padding-left: 5px;
 }
