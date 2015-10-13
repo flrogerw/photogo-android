@@ -119,7 +119,7 @@ content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; st
 
 <div id="image_display_buttons">
 
-<div id="image_display_cancel" class="image_display_button"><img src="assets/img/ic_action_discard_light.png"/>CANCEL</div><div id="image_display_done" class="image_display_button"><img src="assets/img/ic_action_done_light.png">DONE</div>
+<div id="image_display_cancel" class="image_display_button"><img src="assets/img/ic_action_discard_light.png"/>CANCEL</div><div id="image_display_done" class="image_display_button"><img src="assets/img/ic_action_done_light.png">SAVE</div>
 
 </div>
 
@@ -190,7 +190,7 @@ content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; st
 
 <div class="title">Albums</div>
 
-<div class="btn_cart btn_header"><img src="assets/img/cart.png"> ${{ getCart}}</div>
+<div class="btn_cart btn_header"><!-- img src="assets/img/cart.png" --> BUY ${{ getCart}}</div>
 
 <div class="clear"></div>
 
@@ -229,7 +229,7 @@ content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; st
 
 <div class="title">Photos</div>
 
-<div id="image_source_cart_btn" class="btn_cart btn_header"><img src="assets/img/cart.png"> ${{ getCart}}</div>
+<div id="image_source_cart_btn" class="btn_cart btn_header"><!-- img src="assets/img/cart.png" --> BUY ${{ getCart}}</div>
 
 <div class="clear"></div>
 
@@ -252,12 +252,17 @@ content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; st
 
 <img id="fb_src_btn" class="facebook" src="assets/img/photos-facebook.png">
 
+<div class="gallery">Phone</div>
+
+<div class="instagram">Instagram</div>
+
+<div class="facebook">Facebook</div>
+
 </div>	
 
-<div class="clear"></div>
-<div style="position:absolute;bottom:60px;">
-<button  style="display:none" id="fb_logout">Logout of Facebook</button>
-<button style="display:none" id="ig_logout">Logout of Instagram</button>
+<div class="logout">
+<button style="display:none" id="ig_logout" class="instagram">Logout of Instagram</button>
+<button style="display:none" id="fb_logout" class="facebook">Logout of Facebook</button>		
 </div>
 </div>
 </script>
@@ -275,7 +280,7 @@ content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; st
 
 <div id="title" class="title">EDIT</div>
 
-<div class="btn_cart btn_header"><img src="assets/img/cart.png"> $<span id="cart_total">{{ getCart}}</span></div>
+<div class="btn_cart btn_header"><!-- img src="assets/img/cart.png" --> BUY $<span id="cart_total">{{ getCart}}</span></div>
 
 <div class="clear"></div>
 
@@ -287,22 +292,6 @@ content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; st
 
 <div class="clear"></div>
 
-<div class="header-message-container">
-
-<!-- div class="degree1" style="display:none">
-
-<div class="header-message">Please add X more photos or upgrade your size to Medium or Large</div>
-
-</div>
-
-<div class="degree0">
-
-<div class="header-message">Pinch to zoom. Hold & Drag to position.</div>
-
-</div -->
-
-</div>
-
 <div id="obj"></div>
 
 <div class="polaroids">
@@ -312,11 +301,11 @@ content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; st
 </div>
 
 <div class="clear"></div>
-
-<button id="zoom-in">zoom in</button>
-<button id="zoom-out">zoom out</button>
-<br>
-hold to drag
+<div class="zoom">
+	<button id="zoom-in">zoom in</button>
+	<button id="zoom-out">zoom out</button>
+</div>
+<div class="directions">hold to drag & position</div>
 <div class="clear"></div>
 
 <div class="controls-container polaroid-edit">
@@ -463,7 +452,7 @@ hold to drag
 
 <div id="title" class="title">PREVIEW</div>
 
-<div class="btn_cart btn_header"><img src="assets/img/cart.png"> $<span id="cart_total">{{ getCart}}</span></div>
+<div class="btn_cart btn_header"><!-- img src="assets/img/cart.png" --> BUY $<span id="cart_total">{{ getCart}}</span></div>
 
 <div class="clear"></div>
 
@@ -538,21 +527,11 @@ hold to drag
 
 <div class="spectrum-top"></div>
 
-<!-- div id="tabs" class="controls-buttons">
-
-<div id="size-tab" class="btn_normal selected">Size</div>
-
-<div id="style-tab" class="btn_normal">Style</div>
-
-</div -->
-
 <div class="clear"></div>
 
 <div id="menu-size" class="controls-menu menu-size">
 
 <div class="size selected small">
-
-<!-- div sku="703040" class="qty-indicator">{{ getQuantity '703040'}}</div -->
 
 <img class="polaroidicon" src="assets/img/Formats-SX70.png"><br/><strong>Original</strong><br/>{{ getSize '703040'}} - ${{ getPrice '703040'}}
 
@@ -562,8 +541,6 @@ hold to drag
 
 <div class="size medium">
 
-<!-- div sku="703047" class="qty-indicator">{{ getQuantity '703047'}}</div -->
-
 <img class="polaroidicon" src="assets/img/Formats-SX70.png"><br/><strong>Medium</strong><br/>{{ getSize '703047'}} - ${{ getPrice '703047'}}
 
 <div sku="703047" class="qty"><img class="minus_count" src="assets/img/qty-minus.png" ><span>0</span><img class="plus_count" src="assets/img/qty-plus.png" ></div>
@@ -571,8 +548,6 @@ hold to drag
 </div>
 
 <div class="size large">
-
-<!-- div sku="703041" class="qty-indicator">{{ getQuantity '703041'}}</div -->
 
 <img class="polaroidicon" src="assets/img/Formats-SX70.png"><br/><strong>Large</strong><br/>{{ getSize '703041'}} - ${{ getPrice '703041'}}
 
