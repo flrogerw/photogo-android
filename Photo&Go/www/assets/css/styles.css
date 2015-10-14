@@ -491,18 +491,22 @@ strong {
 	font-size: 6vw;
 }
 
-.pictures img {
+.pictures img, .social img {
 	border-radius: 50%;
 	margin: 0 4vw;
 	width: 23vw;
 }
 
-.pictures img.facebook, .logout button.facebook{
+.pictures img.facebook, .logout button.facebook, .social img.facebook,{
 	background-color: #3B5999;
 }
 
-.pictures img.instagram, .logout button.instagram{
+.pictures img.instagram, .logout button.instagram, .social img.instagram{
 	background-color: #9D7144;
+}
+
+.social img.twitter{
+	background-color: #5EA9DD;
 }
 
 .pictures img.gallery{
