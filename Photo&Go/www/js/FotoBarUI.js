@@ -42,12 +42,12 @@ var FotobarUI = function() {
 	Handlebars.registerHelper("getCart", function() {
 		return fotobarCart.getGrandTotal();
 	});
-	// alert(document.location.pathname);
+	
 	$.get("js/partials/states_select.hbs", function(data) {
 		Handlebars.registerPartial("states_select", data);
 	});
 
-	this.faceBook.getStatus();
+	//this.faceBook.getStatus();
 	// this.faceBook.logout();
 };
 
@@ -1725,10 +1725,10 @@ FotobarUI.prototype.keyboardDisplay = function(event) {
 
 	if (event.type == 'native.keyboardhide') {
 
-		$("#controls-container, #image_legend").show();
+		$("#controls-container, #image_legend_wrapper").show();
 	} else {
 
-		$("#controls-container, #image_legend").hide();
+		$("#controls-container, #image_legend_wrapper").hide();
 	}
 };
 

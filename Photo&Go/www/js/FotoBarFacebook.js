@@ -2,6 +2,7 @@ var FotobarFacebook = function() {
 
 	this.loginStatus;
 	this.paginationUrl;
+	this.getStatus();
 };
 
 FotobarFacebook.prototype.pagination = function() {
@@ -149,7 +150,7 @@ FotobarFacebook.prototype.getStatus = function() {
 
 		fotobarUI.FbLoginStatus = response.status;
 	}, function(response) {
-		fotobarUI.alertUser({type:'error', message: JSON.stringify(response)});
+		fotobarUI.alertUser({type:'error', text: JSON.stringify(response)});
 	});
 };
 
