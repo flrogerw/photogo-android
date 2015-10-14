@@ -131,11 +131,8 @@ FotobarConfig.prototype.initialize = function() {
 
 					fotobarConfig.errors.archive = JSON.stringify(e);
 					fotobarConfig.updateArchive();
-					fotobarConfig.errors.display.push({
-						type : 'error',
-						text : 'Could not read Settings file'
+					//fotobarConfig.errors.display.push({type : 'error',text : 'Could not read Settings file'});
 					});
-				});
 
 				initReader.always(function() {
 

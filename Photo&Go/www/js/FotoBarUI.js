@@ -191,7 +191,6 @@ FotobarUI.prototype.addGestures = function(current_canvas) {
 		velocity : .3
 	});
 
-	// gestures.add([ pinch, swipe ]);
 	gestures.add([ swipe ]);
 
 	gestures.on("swipeleft swiperight", function(ev) {
@@ -199,29 +198,6 @@ FotobarUI.prototype.addGestures = function(current_canvas) {
 		fotobarUI.showNextImage(ev.type);
 		// ev.gesture.stopDetect();
 	});
-
-	/*
-	 * gestures .on( "pinch", function(ev) { // Zoom if (((parseInt(ev.scale) *
-	 * fotobarUI.scaleFactor) % fotobarUI.zoomModulus) == 0) {
-	 * 
-	 * var zoomFactor = (fotobarUI.lastScale > ev.scale) ? -fotobarUI.zoomFactor :
-	 * fotobarUI.zoomFactor; fotobarUI.current_image.zoom =
-	 * ((fotobarUI.current_image.zoom + zoomFactor) >= 1 &&
-	 * (fotobarUI.current_image.zoom + zoomFactor) <= fotobarUI.max_zoom) ?
-	 * (fotobarUI.current_image.zoom + zoomFactor) :
-	 * (fotobarUI.current_image.zoom);
-	 * fotobar.setImageCords(fotobarUI.current_image); }
-	 * 
-	 * fotobarUI.lastScale = ev.scale; });
-	 * 
-	 * gestures.on("pinchstart", function(ev) {
-	 * 
-	 * //fotobarUI.startRedrawInterval(); });
-	 * 
-	 * gestures.on("pinchend", function(ev) {
-	 * 
-	 * //clearInterval(fotobarUI.intervalTimer); });
-	 */
 };
 
 FotobarUI.prototype.renderImages = function(imageArray) {
@@ -398,7 +374,7 @@ FotobarUI.prototype.initialize = function(image, is_new_order) {
 		break;
 
 	}
-	maxlength = "10"
+
 	$(input_text).attr('maxlength', fotobarUI.max_text_length);
 	$(input_text).val(fotobar.images[image.id].text);
 	// $(input_text).prop('disabled', true);
