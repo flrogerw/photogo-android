@@ -47,8 +47,6 @@ var FotobarUI = function() {
 		Handlebars.registerPartial("states_select", data);
 	});
 
-	//this.faceBook.getStatus();
-	// this.faceBook.logout();
 };
 
 /*******************************************************************************

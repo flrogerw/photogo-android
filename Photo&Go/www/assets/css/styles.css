@@ -497,7 +497,7 @@ strong {
 	width: 23vw;
 }
 
-.pictures img.facebook, .logout button.facebook, .social img.facebook,{
+.pictures img.facebook, .logout button.facebook, .social img.facebook {
 	background-color: #3B5999;
 }
 
