@@ -267,7 +267,7 @@ content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; st
 </script>
 
 
-	<script id="image-edit" type="text/template">
+<script id="image-edit" type="text/template">
 
 <div class="wrapper">
 
@@ -295,7 +295,9 @@ content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; st
 
 <div class="polaroids">
 
-<div id="edit_panel"><img src="" id="edit_image"></div>
+<div id="edit_panel"><img src="" id="edit_image">
+<input id="input_text" class="none" placeholder="Tap To Add Text"/>
+</div>
 
 </div>
 
@@ -309,29 +311,11 @@ content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; st
 
 <div class="controls-container polaroid-edit">
 
-
-
 <div class="controls">
 
 <div class="spectrum-top"></div>
 
 <div class="qty-container">
-
-<div class="clear"></div>
-
-<div class="controls-menu menu-format">
-
-<div class="format selected"><img src="assets/img/Formats-SX70.png"><br/><strong>Classic</strong></div>
-
-<div class="format"><strong><img src="assets/img/Formats-Series80-Portrait.png"><br/>Vintage</strong><br/>Portait</div>
-
-<div class="format"><strong><img src="assets/img/Formats-Series80-Landscape.png" class="landscape"><br/>Vintage</strong><br/>Landscape</div>
-
-<div class="format"><strong><img src="assets/img/Formats-Spectra.png"><br/>Retro</strong></div>
-
-<div class="clear"></div>
-
-</div>
 
 <div class="clear"></div>
 
@@ -347,6 +331,14 @@ content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; st
 
 <div class="spectrum-top"></div>
 
+<div style="height:50px; padding-top: 10px">
+
+<input type="radio" value="no_text" name="caption_text" id="" checked />No Text&nbsp;
+<input type="radio" value="#FFFFFF" name="caption_text" id="" />White Text&nbsp;
+<input type="radio" value="#000000" name="caption_text" id="" />Black Text
+</div> 
+
+
 <!-- div id="tabs" class="controls-buttons">
 
 <div id="size-tab" class="btn_normal selected">Size</div>
@@ -356,60 +348,6 @@ content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; st
 </div -->
 
 <div class="clear"></div>
-
-<div id="menu-size" class="controls-menu menu-size" style="display:none">
-
-<div class="size selected small">
-
-<!-- div sku="703040" class="qty-indicator">{{ getQuantity '703040'}}</div -->
-
-<img class="polaroidicon" src="assets/img/Formats-SX70.png" width="20px"><br/><strong>Original</strong><br/>{{ getSize '703040'}} - ${{ getPrice '703040'}}
-
-<div sku="703040" class="qty"><img class="minus_count" src="assets/img/qty-minus.png" ><span>0</span><img class="plus_count" src="assets/img/qty-plus.png" ></div>
-
-</div>
-
-<div class="size medium">
-
-<!-- div sku="703047" class="qty-indicator">{{ getQuantity '703047'}}</div -->
-
-<img class="polaroidicon" src="assets/img/Formats-SX70.png" width="30px"><br/><strong>Medium</strong><br/>{{ getSize '703047'}} - ${{ getPrice '703047'}}
-
-<div sku="703047" class="qty"><img class="minus_count" src="assets/img/qty-minus.png" ><span>0</span><img class="plus_count" src="assets/img/qty-plus.png" ></div>
-
-</div>
-
-<div class="size large">
-
-<!-- div sku="703041" class="qty-indicator">{{ getQuantity '703041'}}</div -->
-
-<img class="polaroidicon" src="assets/img/Formats-SX70.png" width="40px"><br/><strong>Large</strong><br/>{{ getSize '703041'}} - ${{ getPrice '703041'}}
-
-<div sku="703041" class="qty"><img class="minus_count" src="assets/img/qty-minus.png" ><span>0</span><img class="plus_count" src="assets/img/qty-plus.png" ></div>
-
-</div>
-
-<div class="clear"></div>
-
-</div>
-
-
-
-<div id="menu-style" class="controls-menu menu-style">
-
-<div id="menu-format" class="menu-format">
-
-<div id="polaroid_button" class="format selected"><img src="assets/img/Formats-SX70.png"><br/><strong>Classic</strong></div>
-
-<div id="full_frame_button_p" class="format"><strong><img src="assets/img/Formats-Series80-Portrait.png"><br/>Vintage</strong><br/>Portait</div>
-
-<div id="full_frame_button_l" class="format"><strong><img src="assets/img/Formats-Series80-Landscape.png" class="landscape"><br/>Vintage</strong><br/>Landscape</div>
-
-<div id="spectra_frame_button" class="format"><strong><img src="assets/img/Formats-Spectra.png"><br/>Retro</strong></div>
-
-<div class="clear"></div>
-
-</div>
 
 <div id="menu-fx" class="menu-fx">
 

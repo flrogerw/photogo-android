@@ -17,10 +17,11 @@ var Polaroid = function(image) {
 	this.is_polaroid = true;
 	this.zoom = 1;
 	this.scale = 0.001;
-	this.format = 1;
+	this.format = 2;
 	this.effect = null;
 	this.text = '';
 	this.location_url;
 	this.is_remote = true;
 	this.timestamp;
+	this.text_color = 'no_text';
 };

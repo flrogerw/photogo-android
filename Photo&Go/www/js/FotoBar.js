@@ -6,6 +6,7 @@ var Fotobar = function() {
 	this.current_id;
 	this.canvasSetHeight = Math.floor($(window).width() * .8);// 295
 	this.canvasSetWidth = Math.floor(this.canvasSetHeight * .8474);// 250
+	//this.canvasSetWidth = this.canvasSetHeight = Math.floor(Math.floor($(window).width() * .8) * .8474);
 	
 	
 	
@@ -13,8 +14,8 @@ var Fotobar = function() {
 	this.polaroidHeight = this.polaroidWidth; // 222
 	this.fullFrameWidth = this.polaroidWidth; // 222
 	this.fullFrameHeight = Math.ceil(this.fullFrameWidth * 1.2027); // 267
-	this.spectraWidth = this.fullFrameHeight;// 267
-	this.spectraHeight = Math.ceil(this.spectraWidth * .6367);// 170
+	//this.spectraWidth = this.fullFrameHeight;// 267
+	//this.spectraHeight = Math.ceil(this.spectraWidth * .6367);// 170
 	this.frame_margin = {
 		x : Math.floor(this.canvasSetWidth * .056),
 		y : Math.floor(this.canvasSetWidth * .056)
@@ -157,7 +158,7 @@ Fotobar.prototype.factory = function(imageArray) {
 						+ this.tmpImage.name + '.' + fotobar.ouput_file_type;
 				fotobar.images[this.id] = new Polaroid(this.tmpImage);
 				fotobar.setCanvasRotation(this);
-				fotobarUI.initialize(this, true);
+				//fotobarUI.initialize(this, true);
 				fotobar.setImageParams(fotobar.images[this.id]);
 
 				var imageURIs = imageArray.shift();
@@ -191,7 +192,7 @@ Fotobar.prototype.setImageParams = function(current_image) {
 	var image_container = document.getElementById('container_'
 			+ current_image.id);
 	var current_canvas = document.getElementById(current_image.id);
-
+	
 	switch (current_image.format) {
 
 	case (1):
@@ -205,14 +206,15 @@ Fotobar.prototype.setImageParams = function(current_image) {
 		});
 		current_image.width = this.polaroidWidth;
 		$(image_container).width(this.canvasSetWidth);
-		$(image_container).height(this.canvasSetHeight);
+		$(image_container).height(this.canvasSetWidth);
 		
 		current_image.canvas_width = current_image.width;
-		current_image.canvas_height = current_image.width * current_image.aspect_ratio;
+		//current_image.canvas_height = current_image.width * current_image.aspect_ratio;
+		current_image.canvas_height = current_image.canvas_width;
 		
-		if(current_image.is_landscape){
-			current_image.canvas_width = [current_image.canvas_height, current_image.canvas_height = current_image.canvas_width][0];
-		}
+		//if(current_image.is_landscape){
+			//current_image.canvas_width = [current_image.canvas_height, current_image.canvas_height = current_image.canvas_width][0];
+		//}
 		break;
 
 	case (2):
@@ -227,12 +229,13 @@ Fotobar.prototype.setImageParams = function(current_image) {
 		current_image.width = this.fullFrameWidth;
 		$(image_container).width(this.canvasSetWidth);
 		$(image_container).height(this.canvasSetHeight);
+		
 		current_image.canvas_width = current_image.width;
 		current_image.canvas_height = current_image.width * current_image.aspect_ratio;
 		break;
 
 	case (3):
-		
+
 		$(current_canvas).height(this.fullFrameWidth);
 		$(current_canvas).width(this.fullFrameHeight);
 		$(current_canvas).css({
@@ -241,10 +244,11 @@ Fotobar.prototype.setImageParams = function(current_image) {
 		});
 		current_image.width = this.fullFrameHeight;
 		current_image.height = this.fullFrameWidth;
+		
 		$(image_container).width(this.canvasSetHeight);
 		$(image_container).height(this.canvasSetWidth);
-		current_image.canvas_width = current_image.width * current_image.aspect_ratio;
-		current_image.canvas_height = current_image.width;
+		current_image.canvas_width = 263;
+		current_image.canvas_height = 218;
 		break;
 
 	case (4):
@@ -299,6 +303,7 @@ Fotobar.prototype.setCanvasRotation = function(current_image) {
 	case (current_image.height < current_image.width):
 
 		fotobar.images[current_image.id].is_landscape = true;
+		fotobar.images[current_image.id].format = 3;
 		fotobar.images[current_image.id].aspect_ratio = current_image.width / current_image.height;
 	
 		break;
@@ -307,6 +312,7 @@ Fotobar.prototype.setCanvasRotation = function(current_image) {
 
 		fotobar.images[current_image.id].is_square = true;
 		fotobar.images[current_image.id].aspect_ratio = 1;
+		fotobar.images[current_image.id].format = 1;
 		break;
 	}
 	

@@ -239,9 +239,9 @@ FotobarUI.prototype.getImages = function() {
 };
 
 FotobarUI.prototype.redrawCurrent = function() {
-
+	
 	for (currentImage in fotobar.images) {
-
+		
 		fotobarUI.initialize(fotobar.images[currentImage].image, false);
 		fotobar.setImageParams(fotobar.images[currentImage]);
 
@@ -265,17 +265,18 @@ FotobarUI.prototype.setPolaroidCords = function(canvas_image, imageId) {
 
 	case (current_image.is_landscape || current_image.is_spectra):
 
+		
 		canvas_image.height = fotobar.polaroidHeight;
 		canvas_image.width = fotobar.polaroidHeight
 				* current_image.aspect_ratio;
-
+		
 		left = (current_image.is_polaroid) ? (Math
 				.floor((canvas_image.width - fotobar.polaroidWidth) / 2) * -1)
 				: 0;
 
 		current_image.ty = 0;
-		current_image.tx = left * -1;
-
+		//current_image.tx = left * -1;
+		current_image.tx = 0;
 		break;
 
 	default: // portrait
@@ -289,19 +290,20 @@ FotobarUI.prototype.setPolaroidCords = function(canvas_image, imageId) {
 				: 0;
 
 		current_image.tx = 0;
-		current_image.ty = top * -1;
+		current_image.ty = 0;
 		// this.bx = canvas_image.width;
 		// this.by = canvas_image.height;
 
 		break;
 	}
-
+/*
 	$(canvas_image).animate({
 		top : top,
 		left : left
 	}, this.formatShrink, function() {
 
 	});
+	*/
 };
 
 FotobarUI.prototype.initialize = function(image, is_new_order) {
@@ -316,9 +318,6 @@ FotobarUI.prototype.initialize = function(image, is_new_order) {
 	canvas_image.className = image.effect;
 	canvas_image.setAttribute('src', image.src);
 
-	if (is_new_order) {
-		this.setPolaroidCords(canvas_image, image.id);
-	} else {
 		canvas_image.width = fotobar.images[image.id].canvas_width
 				* fotobar.images[image.id].zoom;
 		canvas_image.height = fotobar.images[image.id].canvas_height
@@ -327,7 +326,7 @@ FotobarUI.prototype.initialize = function(image, is_new_order) {
 				+ 'px';
 		canvas_image.style.marginLeft = (fotobar.images[image.id].tx * -1)
 				+ 'px';
-	}
+	
 	current_canvas.appendChild(canvas_image);
 
 	var fotodiv = document.createElement('div');
@@ -340,41 +339,53 @@ FotobarUI.prototype.initialize = function(image, is_new_order) {
 
 	fotobarUI.addGestures(fotodiv);
 
-	var input_text = document.createElement('input');
-	input_text.addEventListener('blur', function() {
-		fotobar.images[image.id].text = $(this).val();
-	}, false);
-	input_text.className = "none";
+	var input_text = document.createElement('div');
+	//input_text.addEventListener('blur', function() {
+		//fotobar.images[image.id].text = $(this).val();
+	//}, false);
+	input_text.className = "input_text";
 	input_text.setAttribute("id", "text_" + image.id);
-	input_text.setAttribute("placeholder", "Add Caption");
-	input_text.setAttribute("type", "text");
+	//input_text.setAttribute("placeholder", "Add Caption");
+	//input_text.setAttribute("type", "text");
+	
+	input_text.innerHTML = fotobar.images[image.id].text;
 
 	fotodiv.appendChild(input_text);
 
 	$('#swipe_panels').prepend(fotodiv);
 
 	switch (true) {
-
-	case (fotobar.contains([ 2, 3 ], fotobar.images[image.id].format)):
-		$(input_text).hide();
-		break;
-
-	case (fotobar.contains([ 4 ], fotobar.images[image.id].format)):
+	
+	case (fotobar.contains([ 1], fotobar.images[image.id].format)):
 		$(input_text).css("top", "78%");
 		$(input_text).css("width", "70%");
 		$(input_text).css("margin-left", "15%");
 		break;
 
-	default:
-		$(input_text).css("top", "82%");
-		$(input_text).css("width", "60%");
-		$(input_text).css("margin-left", "18%");
+	case (fotobar.contains([ 2], fotobar.images[image.id].format)):
+		$(input_text).css("top", "78%");
+		$(input_text).css("width", "70%");
+		$(input_text).css("margin-left", "15%");
+		break;
+
+	case (fotobar.contains([ 3 ], fotobar.images[image.id].format)):
+		$(input_text).css("top", "74%");
+		$(input_text).css("width", "70%");
+		$(input_text).css("margin-left", "15%");
 		break;
 
 	}
 
 	$(input_text).attr('maxlength', fotobarUI.max_text_length);
 	$(input_text).val(fotobar.images[image.id].text);
+	
+if(fotobar.images[image.id].text_color != 'no_text'){
+		
+		$(input_text).css("color", fotobar.images[image.id].text_color);
+		
+	}else{
+		$(input_text).css("display", 'none');
+	}
 	// $(input_text).prop('disabled', true);
 
 };
@@ -386,6 +397,39 @@ FotobarUI.prototype.renderEditView = function() {
 	$('body').html(fotobarUI.imageEditTpl());
 	var canvas_image = $(fotobarUI.current_canvas).children('img');
 	var current_image = fotobarUI.current_image;
+	
+	$("input[value='" + current_image.text_color + "']").prop('checked', true);
+	$("#input_text").prop( 'maxlength', fotobarUI.max_text_length);
+	
+	if(current_image.text_color != 'no_text'){
+		
+		$("#input_text").show();
+		$("#input_text").css("color", current_image.text_color);
+		$("#input_text").val( current_image.text);
+		
+		switch (true) {
+		
+		case (fotobar.contains([ 1], current_image.format)):
+			$(input_text).css("top", "72%");
+			$(input_text).css("width", "91%");
+			break;
+
+		case (fotobar.contains([ 2], current_image.format)):
+			$(input_text).css("top", "78%");
+			$(input_text).css("width", "91%");
+			break;
+
+		case (fotobar.contains([ 3 ], current_image.format)):
+			$(input_text).css("top", "74%");
+			$(input_text).css("width", "91%");
+			break;
+
+		}
+		
+		
+	}else{
+		$("#input_text").hide();
+	}
 
 	fotobarUI.setFormatButtons();
 
@@ -393,11 +437,54 @@ FotobarUI.prototype.renderEditView = function() {
 	$('#edit_panel').width(current_image.width);
 	$('#edit_panel').height(current_image.height);
 	$('#edit_image').addClass(current_image.image.effect);
-	// $('#edit_image').width(current_image.canvas_width);
-	// $('#edit_image').height(current_image.canvas_height);
+	
+	$('#input_text').on('blur', function(){
+		current_image.text = $('#input_text').val();
+		
+	});
+	
+	$("input[name=caption_text]:radio").on('change', function() {
+	
+				current_image.text_color = $(this).val();
+				
+				switch($(this).val()){
+				
+				case('no_text'):
+					$("#input_text").hide();
+					break;
+					
+				default:
+					$("#input_text").show();
+				$("#input_text").css("color", current_image.text_color);
+				$("#input_text").val( current_image.text);
+				
+				switch (true) {
+				
+				case (fotobar.contains([ 1], current_image.format)):
+					$(input_text).css("top", "72%");
+					$(input_text).css("width", "91%");
+					break;
 
-	// alert(fotobar.margin.x);
+				case (fotobar.contains([ 2], current_image.format)):
+					$(input_text).css("top", "78%");
+					$(input_text).css("width", "91%");
+					break;
 
+				case (fotobar.contains([ 3 ], current_image.format)):
+					$(input_text).css("top", "74%");
+					$(input_text).css("width", "91%");
+					break;
+
+				}
+					break;
+				
+				}
+				
+			});
+	
+
+	
+	
 	$('#edit_panel').css(
 			{
 				'padding' : fotobar.frame_margin.x + 'px',

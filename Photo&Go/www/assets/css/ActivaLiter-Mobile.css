@@ -94,6 +94,19 @@ body {
 	padding-top: 8vh;
 }
 
+input.none {
+	font-size: 28px;
+	border-style: none;
+	font-family: 'Marydale' !important;
+	position: absolute;
+	text-align: center;
+	margin: auto;
+	display: block;
+	z-index: 5000;
+	display:none;
+	background-color: transparent;
+}
+
 .text {
 	font-size: 28px;
 	color: white;
@@ -204,7 +217,7 @@ li.photo_albums_list {
 	font-size: 4vh;
 }
 
-input.none {
+div.input_text {
 	font-size: 28px;
 	border-style: none;
 	font-family: 'Marydale' !important;
@@ -212,7 +225,7 @@ input.none {
 	text-align: center;
 	margin: auto;
 	display: block;
-	z-index: 5000;
+	z-index: 20000;
 }
 
 .image_container {
