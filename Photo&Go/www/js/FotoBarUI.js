@@ -249,6 +249,7 @@ FotobarUI.prototype.redrawCurrent = function() {
 
 };
 
+
 FotobarUI.prototype.setPolaroidCords = function(canvas_image, imageId) {
 
 	var current_image = fotobar.images[imageId];
