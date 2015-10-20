@@ -1328,13 +1328,13 @@ FotobarUI.prototype.appendRemotePhotos = function(photos) {
 	$("div.photo_list").off('click');
 
 	for (photo in photos) {
-		var currentPhoto = photos[photo];		
+		//var currentPhoto = photos[photo];		
 		var newImage = new Image();
 		newImage.onload = function() {
 			
 			var div = document.createElement("div");
 			div.className = 'photo_list';
-			div.setAttribute('id', currentPhoto.id);
+			//div.setAttribute('id', currentPhoto.id);
 			div.setAttribute('image_url', this.src);
 			
 			var img = document.createElement("img");
@@ -1346,9 +1346,7 @@ FotobarUI.prototype.appendRemotePhotos = function(photos) {
 			imgSelected.setAttribute('src', 'assets/img/CheckMark.png');
 			imgSelected.className = 'image_check';
 			div.appendChild(imgSelected);
-			
-			
-			
+						
 			$(div).on(
 					'click',
 					function() {
@@ -1372,7 +1370,7 @@ FotobarUI.prototype.appendRemotePhotos = function(photos) {
 
 			$('#photo_list').append(div);
 		}
-		newImage.src = currentPhoto.url;		
+		newImage.src = photos[photo].url;		
 	}
 };
 

@@ -120,7 +120,7 @@ FotobarCart.prototype.getCartTotal = function() {
 	}
 	return (currentTotal);
 };
-
+/*
 FotobarCart.prototype.bundleImage = function(imageUploadForm, imageId) {
 
 	return $.Deferred(function() {
@@ -155,7 +155,7 @@ FotobarCart.prototype.bundleImage = function(imageUploadForm, imageId) {
 
 	});
 };
-
+*/
 FotobarCart.prototype.getItemSize = function(sku) {
 
 	var current_item = this.filter(sku, this.products);
@@ -280,7 +280,7 @@ FotobarCart.prototype.uploadImages = function(customer_form, itemIterator) {
 
 		fotobarUI.alertUser({
 			type : 'error',
-			text : 'Could not post to S3'
+			text : 'Could not post to the Server'
 		});
 	});
 };
@@ -291,9 +291,7 @@ FotobarCart.prototype.processOrder = function(customer_form, cc_form) {
 	$('#dialog').center();
 	$(window).scroll(function() { $('#dialog').center(); });
 
-	var pickup_option = $("input[name=delivery_options]:checked").val(); // ship
-																			// -
-																			// pick_up
+	var pickup_option = $("input[name=delivery_options]:checked").val();
 	pickup_option = (pickup_option == 'ship') ? 'shipped' : $(
 			"#location_select option:selected").text();
 
@@ -376,9 +374,6 @@ FotobarCart.prototype.getCartDetailsDisplay = function() {
 
 			var imageCart = this.items[imageId];
 			var cart_display = [];
-			//var lineItemTotal = 0;
-
-			//imageDetail.image = fotobar.images[imageId].image.src;
 
 			for (item in imageCart) {
 
