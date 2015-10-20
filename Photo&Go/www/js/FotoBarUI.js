@@ -249,7 +249,6 @@ FotobarUI.prototype.redrawCurrent = function() {
 
 };
 
-
 FotobarUI.prototype.setPolaroidCords = function(canvas_image, imageId) {
 
 	var current_image = fotobar.images[imageId];
@@ -1329,46 +1328,52 @@ FotobarUI.prototype.appendRemotePhotos = function(photos) {
 	$("div.photo_list").off('click');
 
 	for (photo in photos) {
+		var currentPhoto = photos[photo];		
+		var newImage = new Image();
+		newImage.onload = function() {
+			
+			var div = document.createElement("div");
+			div.className = 'photo_list';
+			div.setAttribute('id', currentPhoto.id);
+			div.setAttribute('image_url', this.src);
+			
+			var img = document.createElement("img");
+			img.setAttribute('src', this.src);
+			img.className = (this.height > this.width)?'social_square_portrait':'social_square_land';
+			div.appendChild(img);
+			
+			var imgSelected = document.createElement("img");
+			imgSelected.setAttribute('src', 'assets/img/CheckMark.png');
+			imgSelected.className = 'image_check';
+			div.appendChild(imgSelected);
+			
+			
+			
+			$(div).on(
+					'click',
+					function() {
 
-		var currentPhoto = photos[photo];
-		var div = document.createElement("div");
-		div.className = 'photo_list';
-		div.setAttribute('id', currentPhoto.id);
-		div.setAttribute('image_url', currentPhoto.url);
+						if ($(this).children('img.image_check').is(':visible')) {
 
-		var img = document.createElement("img");
-		img.className = 'social_media_square';
-		img.setAttribute('src', currentPhoto.url);
-		div.appendChild(img);
+							$(this).toggleClass('image_selected');
+							$(this).children('img.image_check').toggle();
+						} else {
 
-		var imgSelected = document.createElement("img");
-		imgSelected.setAttribute('src', 'assets/img/CheckMark.png');
-		imgSelected.className = 'image_check';
-		div.appendChild(imgSelected);
+							var max_selections = fotobarUI.getSelectCount($(
+									"div.image_selected").size());
 
-		$('#photo_list').append(div);
+							if (max_selections > 0) {
+
+								$(this).toggleClass('image_selected');
+								$(this).children('img.image_check').toggle();
+							}
+						}
+					});
+
+			$('#photo_list').append(div);
+		}
+		newImage.src = currentPhoto.url;		
 	}
-
-	$("div.photo_list").on(
-			'click',
-			function() {
-
-				if ($(this).children('img.image_check').is(':visible')) {
-
-					$(this).toggleClass('image_selected');
-					$(this).children('img.image_check').toggle();
-				} else {
-
-					var max_selections = fotobarUI.getSelectCount($(
-							"div.image_selected").size());
-
-					if (max_selections > 0) {
-
-						$(this).toggleClass('image_selected');
-						$(this).children('img.image_check').toggle();
-					}
-				}
-			});
 };
 
 FotobarUI.prototype.showRemotePhotos = function(photos) {

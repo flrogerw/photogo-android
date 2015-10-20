@@ -138,6 +138,7 @@ body {
 #photo_list{
 	margin-left: .5%;
 }
+
 div.photo_list {
 	display: inline-block;
 	width: 31vw;
@@ -145,7 +146,30 @@ div.photo_list {
 	margin: 1%;
 	vertical-align: top;
 	position: relative;
+	overflow: hidden;
 	
+}
+
+
+img.social_square_land {
+	
+	 position: absolute;
+  left: 50%;
+  top: 50%;
+  height: 100%;
+  width: auto;
+  -webkit-transform: translate(-50%,-50%);
+      -ms-transform: translate(-50%,-50%);
+}
+
+img.social_square_portrait {
+   position: absolute;
+  left: 50%;
+  top: 50%;
+  -webkit-transform: translate(-50%,-50%);
+      -ms-transform: translate(-50%,-50%);
+  width: 100%;
+  height: auto;
 }
 
 .image_check {
@@ -155,13 +179,6 @@ div.photo_list {
 	height: 28px;
 	width: 28px;
 	display: none;
-}
-
-img.social_media_square {
-	
-	vertical-align: middle;
-	height: 100%; 
-	width: 100%; 	
 }
 
 ul.photo_albums {
