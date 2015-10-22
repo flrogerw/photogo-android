@@ -1571,6 +1571,8 @@ FotobarUI.prototype.getFbAlbums = function() {
 	}
 };
 
+
+
 FotobarUI.prototype.showRemoteAlbums = function(albums) {
 
 	$('body').html(this.albumDisplayTpl());
@@ -1592,7 +1594,7 @@ FotobarUI.prototype.showRemoteAlbums = function(albums) {
 
 		var img = document.createElement("img");
 		img.setAttribute('src', currentImage);
-		img.className = "social_media_square";
+		img.className = "social_square_album";
 		
 		div.appendChild(img);
 		li.appendChild(div);

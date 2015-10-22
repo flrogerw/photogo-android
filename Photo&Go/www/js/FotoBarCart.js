@@ -238,7 +238,7 @@ FotobarCart.prototype.uploadImages = function(customer_form, itemIterator) {
 
 			if (itemIterator.length == 0) {
 
-				fotobarUI.updateCheckoutProgress(75, 2);
+				fotobarUI.updateCheckoutProgress(75, 1);
 
 				var imageStrings = fotobar.getImagesOrderString(Object
 						.keys(fotobarCart.items));
@@ -255,7 +255,7 @@ FotobarCart.prototype.uploadImages = function(customer_form, itemIterator) {
 					fotobar.deleteCurrentImages();
 					fotobarCart.items = {};
 					fotobarUI.slider_index = 0;
-					fotobarUI.updateCheckoutProgress(100, 3);
+					fotobarUI.updateCheckoutProgress(100, 2);
 					setTimeout(function() {
 						fotobarUI.renderThankyouView();
 						fotobarUI.alertUser({
@@ -390,6 +390,7 @@ FotobarCart.prototype.getCartDetailsDisplay = function() {
 				}
 				itemsCount[productInfo.name].quantity += imageCart[item].quantity;
 				itemsCount[productInfo.name].total += (productInfo.price * imageCart[item].quantity);
+				itemsCount[productInfo.name].price = productInfo.price;
 
 			}
 		}
@@ -398,15 +399,29 @@ FotobarCart.prototype.getCartDetailsDisplay = function() {
 	var indexes = Object.keys(itemsCount);
 	for( i in indexes){
 		var imageDetail = {};
-		imageDetail.quantity =  itemsCount[indexes[i]].quantity; 
+		imageDetail.quantity =  itemsCount[indexes[i]].quantity;
+		imageDetail.price =  itemsCount[indexes[i]].price;
 		imageDetail.text =  indexes[i]; 
 		imageDetail.total = itemsCount[indexes[i]].total;
 		cartDetails.push(imageDetail);
 	}
 	
+	console.log(cartDetails.sort(fotobarCart.sortCartDetails("-price")));
+	
 	return (cartDetails);
 };
 
+FotobarCart.prototype.sortCartDetails = function(property) {
+    var sortOrder = 1;
+    if(property[0] === "-") {
+        sortOrder = -1;
+        property = property.substr(1);
+    }
+    return function (a,b) {
+        var result = (a[property] < b[property]) ? -1 : (a[property] > b[property]) ? 1 : 0;
+        return result * sortOrder;
+    }
+};
 
 
 FotobarCart.prototype.getCartDetails = function() {
