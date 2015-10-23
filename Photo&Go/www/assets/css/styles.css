@@ -155,11 +155,15 @@ strong {
 
 .title {
 	font-size: 26px;
-	left: -15%;
+	left: -12.5%;
 	margin-left: 50%;
 	margin-top: 10px;
 	position: absolute;
 	width: 25%;
+}
+
+#title_preview, #title_photos{
+	left: -15%;
 }
 
 .btn_normal {
@@ -246,8 +250,8 @@ strong {
 	font-family: "MuseGo";
 	font-size: 16px;
 	font-weight: normal;
-	margin: 10px;
-	padding: 5px 10px;
+	margin: 10px 10px 10px 1px;
+	padding: 5px 10px 5px 5px;
 }
 
 .btn_header img {
@@ -278,7 +282,7 @@ strong {
 	cursor: pointer;
 	float: right;
 	font-size: 16px;
-	margin: 10px;
+	margin: 10px 5px 10px 10px;
 	padding: 5px 10px;
 }
 
@@ -393,10 +397,11 @@ strong {
 	width: 8vh;
 }
 
+/*
 .menu-format .format img.landscape {
 	margin: 0.5vh 0;
 }
-
+*/
 .format.selected {
 	color: #00b665;
 }
@@ -564,8 +569,10 @@ strong {
 
 .directions {
     color: #787878;
-    font-size: 11px;
+    font-size: 12px;
     text-align: center;
+    font-weight: bold;
+    line-height:17px;
 }
 
 .polaroids {

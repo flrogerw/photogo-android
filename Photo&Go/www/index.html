@@ -187,7 +187,7 @@ content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; st
 
 <div id="album_display_back_btn" class="btn_header btn_back"><img src="assets/img/btn-back.png"> Back</div>
 
-<div class="title">Albums</div>
+<div id="title_albums" class="title">Albums</div>
 
 <div class="btn_cart btn_header"><!-- img src="assets/img/cart.png" --> BUY ${{ getCart}}</div>
 
@@ -226,7 +226,7 @@ content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; st
 
 <div id="image_source_back_btn" class="btn_header btn_back"><img src="assets/img/btn-back.png"> Back</div>
 
-<div class="title">PHOTOS</div>
+<div id="title_photos" class="title">PHOTOS</div>
 
 <div id="image_source_cart_btn" class="btn_cart btn_header"><!-- img src="assets/img/cart.png" --> BUY ${{ getCart}}</div>
 
@@ -277,7 +277,7 @@ content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; st
 
 <div id="edit_done_btn" class="btn_header btn_back"><img src="assets/img/btn-back.png">Save</div>
 
-<div id="title" class="title">EDIT</div>
+<div id="title_edit" class="title">EDIT</div>
 
 <div class="btn_cart btn_header"><!-- img src="assets/img/cart.png" --> BUY $<span id="cart_total">{{ getCart}}</span></div>
 
@@ -304,7 +304,7 @@ content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; st
 	<button id="zoom-in">zoom in</button>
 	<button id="zoom-out">zoom out</button>
 </div>
-<div class="directions">hold to drag & position</div>
+<div class="directions">Hold and drag the photo to position it.</div>
 <div class="clear"></div>
 
 <div id="controls-container" class="controls-container polaroid-edit">
@@ -369,7 +369,7 @@ content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; st
 
 <div id="btn_addmore" class="btn_header btn_back"><img src="assets/img/btn-back.png">Add Photos</div>
 
-<div id="title" class="title">PREVIEW</div>
+<div id="title_preview" class="title">PREVIEW</div>
 
 <div class="btn_cart btn_header"><!-- img src="assets/img/cart.png" --> BUY $<span id="cart_total">{{ getCart}}</span></div>
 
@@ -395,7 +395,7 @@ content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; st
 <div id="image_legend_wrapper">
 <div id="image_legend"></div>
 
-<div class="directions">Swipe to scroll. Double tap to edit or delete.</div>
+<div class="directions">Swipe left or right to scroll thru your photos.<br/>Double tap the photo to edit or delete it.</div>
 </div>
 
 <div id="controls-container" class="controls-container polaroid-edit">
@@ -453,7 +453,7 @@ content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; st
 			<div id="checkout_back_btn" class="btn_header btn_back">
 				<img src="assets/img/btn-back.png"> Back
 			</div>
-			<div class="title">ORDER</div>
+			<div id="order_title" class="title">ORDER</div>
 			<div class="total">Total: $<span id="checkout_total">{{ getCart}}</span></div>
 			<div class="clear"></div>
 			<div class="spectrum-bottom"></div>
@@ -523,7 +523,7 @@ content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; st
 				<div class="store-selection">
 
 					<select class="" id="location_select" name="location_select" type="select">
-						<option value="0" selected>Please Select a Pickup Location</option> {{#each locations}}
+						<option value="0" selected style="padding-left:25px;">Please Select a Pickup Location</option> {{#each locations}}
 						<option value="{{this.id}}">{{this.name}}</option> {{/each}}
 					</select>
 

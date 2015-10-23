@@ -62,7 +62,7 @@ body {
 }
 
 .errorDiv {
-	z-index: 1000;
+	z-index: 37000;
 	width: 80vw;
 	height: 10vh;
 	margin: auto;
@@ -464,7 +464,7 @@ img.cart_items_img {
 	position: absolute;
 	width: 100vw;
 	height: 10px;
-	top: 73vh;
+	top: 70vh;
 	text-align: center;
 }
 
@@ -498,9 +498,10 @@ img.cart_items_img {
 	font-size: 4vw;
 	border-radius: 0;
 	margin: 0 3% 20px;
-	-webkit-appearance: none;
+	/* -webkit-appearance: none;*/
 	 outline: none;
 	 color: #A39D9D;
+	 height:25px;
 }
 
 input {
@@ -530,6 +531,8 @@ select option { color: black; }
 .minus_count, .plus_count{
 	
 	vertical-align:middle;
+	margin-right:10px;
+	margin-left: 10px;
 }
 .format_text_spacer{
 	height: 65px;
