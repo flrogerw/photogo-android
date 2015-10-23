@@ -1,11 +1,11 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="com.photogo.android" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>GoPrints by Photo & Go</name>
+    <name>GoPrints</name>
     <description>
       Upload your favorite photos from your phone, Facebook and Instagram and create GoPrints in minutes. 8x thicker than photo paper, a GoPrint is the best way to preserve your memories in vintage style. GoPrint from anywhere and pickup in store or ship anywhere in the U.S.
     </description>
     <author email="dev@photoandgo.com" href="http://photoandgo.com">
-       GoPrints by Photo & Go
+       GoPrints
     </author>
     <content src="index.html" />
     <plugin name="cordova-plugin-whitelist" version="1" />

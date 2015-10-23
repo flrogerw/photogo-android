@@ -257,7 +257,7 @@ div.canvas img {
 
 #swipe_panels {
 	width: 100vw;
-	top: 20vh;;
+	top: 17vh;;
 	overflow: hidden;
 	height: 50vh;
 	position: absolute;
@@ -530,4 +530,7 @@ select option { color: black; }
 .minus_count, .plus_count{
 	
 	vertical-align:middle;
+}
+.format_text_spacer{
+	height: 65px;
 }

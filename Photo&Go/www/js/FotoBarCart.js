@@ -120,42 +120,7 @@ FotobarCart.prototype.getCartTotal = function() {
 	}
 	return (currentTotal);
 };
-/*
-FotobarCart.prototype.bundleImage = function(imageUploadForm, imageId) {
 
-	return $.Deferred(function() {
-
-		// var imageCount = 0;
-		var self = this;
-
-		// this.is_remote = false // triggers get blob function on server if
-		// true
-
-		var imageBlob = fotobar.getImageUpload(imageId);
-
-		imageBlob.done(function(blob) {
-
-			fotobar.images[imageId].location_url = fotobarConfig.tokens.key
-					+ '/' + fotobar.images[imageId].name;
-
-			imageUploadForm.append('files', blob,
-					fotobar.images[imageId].location_url);
-			// imageCount++;
-
-			// if (imageCount == Object.keys(fotobarCart.items).length) {
-			// blob = null;
-			// delete blob;
-			self.resolve(imageUploadForm);
-			// }
-		});
-
-		imageBlob.fail(function(err) {
-			self.reject(err);
-		});
-
-	});
-};
-*/
 FotobarCart.prototype.getItemSize = function(sku) {
 
 	var current_item = this.filter(sku, this.products);

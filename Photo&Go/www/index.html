@@ -291,7 +291,7 @@ content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; st
 
 <div class="clear"></div>
 
-<div id="obj"></div>
+
 
 <div class="polaroids">
 
@@ -307,105 +307,25 @@ content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; st
 <div class="directions">hold to drag & position</div>
 <div class="clear"></div>
 
-<div class="controls-container polaroid-edit">
-
-
-
-<div class="controls">
-
-<div class="spectrum-top"></div>
-
-<div class="qty-container">
-
-<div class="clear"></div>
-
-<div class="controls-menu menu-format">
-
-<div class="format selected"><img src="assets/img/Formats-SX70.png"><br/><strong>Classic</strong></div>
-
-<div class="format"><strong><img src="assets/img/Formats-Series80-Portrait.png"><br/>Vintage</strong><br/>Portait</div>
-
-<div class="format"><strong><img src="assets/img/Formats-Series80-Landscape.png" class="landscape"><br/>Vintage</strong><br/>Landscape</div>
-
-<div class="format"><strong><img src="assets/img/Formats-Spectra.png"><br/>Retro</strong></div>
-
-<div class="clear"></div>
-
-</div>
-
-<div class="clear"></div>
-
-</div>
-
-</div>
-
-</div>
-
 <div id="controls-container" class="controls-container polaroid-edit">
 
 <div class="controls">
 
 <div class="spectrum-top"></div>
 
-<!-- div id="tabs" class="controls-buttons">
-
-<div id="size-tab" class="btn_normal selected">Size</div>
-
-<div id="style-tab" class="btn_normal">Style</div>
-
-</div -->
-
 <div class="clear"></div>
-
-<div id="menu-size" class="controls-menu menu-size" style="display:none">
-
-<div class="size selected small">
-
-<!-- div sku="703040" class="qty-indicator">{{ getQuantity '703040'}}</div -->
-
-<img class="polaroidicon" src="assets/img/Formats-SX70.png" width="20px"><br/><strong>Original</strong><br/>{{ getSize '703040'}} - ${{ getPrice '703040'}}
-
-<div sku="703040" class="qty"><img class="minus_count" src="assets/img/qty-minus.png" ><span>0</span><img class="plus_count" src="assets/img/qty-plus.png" ></div>
-
-</div>
-
-<div class="size medium">
-
-<!-- div sku="703047" class="qty-indicator">{{ getQuantity '703047'}}</div -->
-
-<img class="polaroidicon" src="assets/img/Formats-SX70.png" width="30px"><br/><strong>Medium</strong><br/>{{ getSize '703047'}} - ${{ getPrice '703047'}}
-
-<div sku="703047" class="qty"><img class="minus_count" src="assets/img/qty-minus.png" ><span>0</span><img class="plus_count" src="assets/img/qty-plus.png" ></div>
-
-</div>
-
-<div class="size large">
-
-<!-- div sku="703041" class="qty-indicator">{{ getQuantity '703041'}}</div -->
-
-<img class="polaroidicon" src="assets/img/Formats-SX70.png" width="40px"><br/><strong>Large</strong><br/>{{ getSize '703041'}} - ${{ getPrice '703041'}}
-
-<div sku="703041" class="qty"><img class="minus_count" src="assets/img/qty-minus.png" ><span>0</span><img class="plus_count" src="assets/img/qty-plus.png" ></div>
-
-</div>
-
-<div class="clear"></div>
-
-</div>
-
-
 
 <div id="menu-style" class="controls-menu menu-style">
 
 <div id="menu-format" class="menu-format">
 
-<div id="polaroid_button" class="format selected"><img src="assets/img/Formats-SX70.png"><br/><strong>Classic</strong></div>
+<div id="polaroid_button" class="format selected"><div class="format_text_spacer"><img src="assets/img/Formats-SX70.png"></div><strong>Classic</strong></div>
 
-<div id="full_frame_button_p" class="format"><strong><img src="assets/img/Formats-Series80-Portrait.png"><br/>Vintage</strong><br/>Portait</div>
+<div id="full_frame_button_p" class="format"><div class="format_text_spacer"><img src="assets/img/Formats-Series80-Portrait.png"></div><strong>Vintage</strong><br/>Portait</div>
 
-<div id="full_frame_button_l" class="format"><strong><img src="assets/img/Formats-Series80-Landscape.png" class="landscape"><br/>Vintage</strong><br/>Landscape</div>
+<div id="full_frame_button_l" class="format"><div class="format_text_spacer"><img src="assets/img/Formats-Series80-Landscape.png" class="landscape"></div><strong>Vintage</strong><br/>Landscape</div>
 
-<div id="spectra_frame_button" class="format"><strong><img src="assets/img/Formats-Spectra.png"><br/>Retro</strong></div>
+<div id="spectra_frame_button" class="format"><div class="format_text_spacer"><img src="assets/img/Formats-Spectra.png"></div><strong>Retro</strong></div>
 
 <div class="clear"></div>
 
@@ -439,7 +359,7 @@ content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; st
 </script>
 
 
-	<script id="image-preview" type="text/template">
+<script id="image-preview" type="text/template">	
 
 <div class="wrapper">
 
@@ -465,12 +385,6 @@ content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; st
 
 <div class="header-message-container">
 
-<div class="degree1" style="display:none">
-
-<div class="header-message">Please add X more photos or upgrade your size to Medium or Large</div>
-
-</div>
-
 </div>
 
 <div class="polaroids">
@@ -482,37 +396,6 @@ content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; st
 <div id="image_legend"></div>
 
 <div class="directions">Swipe to scroll. Double tap to edit or delete.</div>
-</div>
-<div class="controls-container polaroid-edit" style="display:none">
-
-<div class="controls">
-
-<div class="spectrum-top"></div>
-
-<div class="qty-container">
-
-<div class="clear"></div>
-
-<div class="controls-menu menu-format">
-
-<div class="format selected"><img src="assets/img/Formats-SX70.png"><br/><strong>Classic</strong></div>
-
-<div class="format"><strong><img src="assets/img/Formats-Series80-Portrait.png"><br/>Vintage</strong><br/>Portait</div>
-
-<div class="format"><strong><img src="assets/img/Formats-Series80-Landscape.png" class="landscape"><br/>Vintage</strong><br/>Landscape</div>
-
-<div class="format"><strong><img src="assets/img/Formats-Spectra.png"><br/>Retro</strong></div>
-
-<div class="clear"></div>
-
-</div>
-
-<div class="clear"></div>
-
-</div>
-
-</div>
-
 </div>
 
 <div id="controls-container" class="controls-container polaroid-edit">
@@ -546,42 +429,6 @@ content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; st
 <img class="polaroidicon" src="assets/img/Formats-SX70.png"><br/><strong>Large</strong><br/>{{ getSize '703041'}} - ${{ getPrice '703041'}}
 
 <div sku="703041" class="qty"><img class="minus_count" src="assets/img/qty-minus.png" ><span>0</span><img class="plus_count" src="assets/img/qty-plus.png" ></div>
-
-</div>
-
-<div class="clear"></div>
-
-</div>
-
-
-
-<div id="menu-style" class="controls-menu menu-style" style="display:none">
-
-<div id="menu-format" class="menu-format">
-
-<div id="polaroid_button" class="format selected"><img src="assets/img/Formats-SX70.png"><br/><strong>Classic</strong></div>
-
-<div id="full_frame_button_p" class="format"><strong><img src="assets/img/Formats-Series80-Portrait.png"><br/>Vintage</strong><br/>Portait</div>
-
-<div id="full_frame_button_l" class="format"><strong><img src="assets/img/Formats-Series80-Landscape.png" class="landscape"><br/>Vintage</strong><br/>Landscape</div>
-
-<div id="spectra_frame_button" class="format"><strong><img src="assets/img/Formats-Spectra.png"><br/>Retro</strong></div>
-
-<div class="clear"></div>
-
-</div>
-
-<div id="menu-fx" class="menu-fx">
-
-<div filter="blackwhite" class="fx BW">B&amp;W</div>
-
-<div filter="sepia" class="fx Sepia">Sepia</div>
-
-<div filter="none" class="fx None">No FX</div>
-
-<!-- div class="rotate"><img src="assets/img/rotate-right-90.png" height="35px"></div -->
-
-<div id="delete" class="delete"><img src="assets/img/trash.png" ></div>
 
 </div>
 
@@ -755,7 +602,9 @@ content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; st
 			
 		
 		<div class="checkout-step">
-			<p id="total_shipping" style="display:none">Total with Shipping: $<span id="total_with_shipping_cost"></span></p>
+			<p id="total_shipping" style="display:none">Total with Shipping: $<span id="total_with_shipping_cost"></span>
+			<br/><br/>You will receive your order in 5-7 business days.
+			</p>
 			<p id="total_no_shipping">Total: $<span id="total_with_shipping_cost"></span></p>
 		</div>
 		<div id="checkout_btn" class="btn_normal btn_start">

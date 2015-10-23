@@ -50,12 +50,12 @@
     <access origin="https://*.akamaihd.net" />
     <preference name="AndroidPersistentFileLocation" value="Internal" />
     <allow-intent href="market:*" />
-    <name>GoPrints by Photo &amp; Go</name>
+    <name>GoPrints</name>
     <description>
       Upload your favorite photos from your phone, Facebook and Instagram and create GoPrints in minutes. 8x thicker than photo paper, a GoPrint is the best way to preserve your memories in vintage style. GoPrint from anywhere and pickup in store or ship anywhere in the U.S.
     </description>
     <author email="dev@photoandgo.com" href="http://photoandgo.com">
-       GoPrints by Photo &amp; Go
+       GoPrints
     </author>
     <content src="index.html" />
     <access origin="*" />

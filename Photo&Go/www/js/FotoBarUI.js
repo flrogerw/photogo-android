@@ -40,7 +40,7 @@ var FotobarUI = function() {
 		return fotobarCart.getItemCount(sku);
 	});
 	Handlebars.registerHelper("getCart", function() {
-		return fotobarCart.getGrandTotal();
+		return fotobarCart.getCartTotal();
 	});
 	
 	$.get("js/partials/states_select.hbs", function(data) {
@@ -1662,7 +1662,7 @@ FotobarUI.prototype.getIgAccessToken = function() {
 
 				self.reject({
 					type : 'error',
-					text : 'Could not connect to InstaGram.'
+					text : 'Could not connect to Instagram.'
 				});
 			});
 		}
@@ -1687,7 +1687,7 @@ FotobarUI.prototype.getIgImages = function() {
 			fotobarUI.instagram.logout();
 			fotobarUI.alertUser({
 				type : 'error',
-				text : 'Could not get your InstaGram Photos.'
+				text : 'Could not get your Instagram Photos.'
 			});
 		});
 	});
