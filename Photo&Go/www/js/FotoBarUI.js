@@ -1519,9 +1519,12 @@ FotobarUI.prototype.getFbAlbums = function() {
 
 											var getAlbums = fotobarUI.faceBook
 													.getAlbums(fotobarConfig.user.facebook_userID);
-											getAlbums
-													.done(function(albums) {
+											getAlbums.done(function(albums) {
 
+												console.log(albums);
+												
+												
+												
 														fotobarUI.current_social_media = 'fb';
 
 														fotobarUI
@@ -1895,7 +1898,7 @@ FotobarUI.prototype.displayAlert = function(error) {
 		$('#alert_message').center();
 		$(window).scroll(function() { $('#alert_message').center(); });
 		
-		$("#alert_message").fadeOut(5000, function() {
+		$("#alert_message").fadeOut(8000, function() {
 			
 			$("#alert_message").remove();
 			self.resolve();

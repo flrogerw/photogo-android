@@ -12,7 +12,10 @@ var FotobarCart = function(products) {
 	this.tax_rate = 0;
 	this.is_shipped = false;
 	this.shipping_cost = 0;
-	this.taxByZip = {ship:0, pick_up:0};
+	this.taxByZip = {
+		ship : 0,
+		pick_up : 0
+	};
 	this.storeInfo = {};
 
 };
@@ -25,33 +28,33 @@ FotobarCart.prototype.deleteImageItems = function(imageId) {
 FotobarCart.prototype.setTaxRate = function(zip_code, delivery_option) {
 
 	return $.Deferred(function() {
-		
+
 		var self = this;
 		var currentZips = Object.keys(fotobarCart.taxByZip);
-		
-		if( currentZips.indexOf(zip_code) > -1 ){
-		
+
+		if (currentZips.indexOf(zip_code) > -1) {
+
 			fotobarCart.tax_rate = fotobarCart.taxByZip[zip_code];
 			fotobarCart.taxByZip[delivery_option] = zip_code;
 			self.resolve();
-		}else{
-			
-		var getAPI = new FotobarRest(fotobarConfig.configure.servers.api);
+		} else {
 
-		var getTax = getAPI.getCall('getTax', {
-			zip_code : zip_code
-		});
-		
-		getTax.done(function(data) {
+			var getAPI = new FotobarRest(fotobarConfig.configure.servers.api);
 
-			fotobarCart.tax_rate = parseFloat(data.tax_rate).toFixed(2);
-			fotobarCart.taxByZip[delivery_option] = zip_code;
-			fotobarCart.taxByZip[zip_code] = fotobarCart.tax_rate;
-		});
-		
-		getTax.always(function() {
-			self.resolve();
-		});
+			var getTax = getAPI.getCall('getTax', {
+				zip_code : zip_code
+			});
+
+			getTax.done(function(data) {
+
+				fotobarCart.tax_rate = parseFloat(data.tax_rate).toFixed(2);
+				fotobarCart.taxByZip[delivery_option] = zip_code;
+				fotobarCart.taxByZip[zip_code] = fotobarCart.tax_rate;
+			});
+
+			getTax.always(function() {
+				self.resolve();
+			});
 		}
 	});
 };
@@ -63,16 +66,17 @@ FotobarCart.prototype.getTaxTotal = function() {
 };
 
 FotobarCart.prototype.getShippingTotal = function() {
-	
-	var shipping_total = ( fotobarCart.is_shipped !== true )? 0: fotobarCart.shipping_cost;
+
+	var shipping_total = (fotobarCart.is_shipped !== true) ? 0
+			: fotobarCart.shipping_cost;
 	return (shipping_total);
 };
 
-FotobarCart.prototype.setShippingRate = function( ship_method, state ) {
-	
+FotobarCart.prototype.setShippingRate = function(ship_method, state) {
+
 	return $.Deferred(function() {
 		var self = this;
-		
+
 		var getAPI = new FotobarRest(fotobarConfig.configure.servers.api);
 
 		var getShipping = getAPI.getCall('getShipping', {
@@ -81,29 +85,29 @@ FotobarCart.prototype.setShippingRate = function( ship_method, state ) {
 			state : state,
 			items : fotobarCart.items
 		});
-		
-		getShipping.done(function(data){
-		
+
+		getShipping.done(function(data) {
+
 			fotobarCart.shipping_cost = data.shipping_cost;
-			
+
 		});
-		
-		getShipping.fail(function(data){
-			
+
+		getShipping.fail(function(data) {
+
 		});
-		
-		getShipping.always(function(data){
-			
+
+		getShipping.always(function(data) {
+
 			self.resolve(data);
 		});
-		
+
 	});
 };
 
 FotobarCart.prototype.getGrandTotal = function() {
 
 	var total = this.getCartTotal();
-	total += (this.is_shipped)? this.getShippingTotal(): 0;
+	total += (this.is_shipped) ? this.getShippingTotal() : 0;
 	total += this.getTaxTotal();
 
 	return (total.toFixed(2));
@@ -231,7 +235,10 @@ FotobarCart.prototype.uploadImages = function(customer_form, itemIterator) {
 				});
 
 				postOrder.fail(function(err) {
-					fotobarUI.alertUser({type:'error', text: err});
+					fotobarUI.alertUser({
+						type : 'error',
+						text : err
+					});
 				});
 
 			} else {
@@ -254,7 +261,9 @@ FotobarCart.prototype.processOrder = function(customer_form, cc_form) {
 
 	$("#dialog").show();
 	$('#dialog').center();
-	$(window).scroll(function() { $('#dialog').center(); });
+	$(window).scroll(function() {
+		$('#dialog').center();
+	});
 
 	var pickup_option = $("input[name=delivery_options]:checked").val();
 	pickup_option = (pickup_option == 'ship') ? 'shipped' : $(
@@ -329,10 +338,10 @@ FotobarCart.prototype.processOrderError = function(err, customer_form) {
 };
 
 FotobarCart.prototype.getCartDetailsDisplay = function() {
-	
+
 	var itemsCount = {};
 	var cartDetails = [];
-	
+
 	for (imageId in this.items) {
 
 		if (this.items[imageId].length > 0) {
@@ -346,11 +355,11 @@ FotobarCart.prototype.getCartDetailsDisplay = function() {
 						this.products);
 				cart_display.push(imageCart[item].quantity + ' '
 						+ productInfo.name);
-				
-				if( itemsCount[productInfo.name] == null ){
+
+				if (itemsCount[productInfo.name] == null) {
 					itemsCount[productInfo.name] = {
-							quantity : 0,
-							total : 0
+						quantity : 0,
+						total : 0
 					}
 				}
 				itemsCount[productInfo.name].quantity += imageCart[item].quantity;
@@ -360,34 +369,31 @@ FotobarCart.prototype.getCartDetailsDisplay = function() {
 			}
 		}
 	}
-	
+
 	var indexes = Object.keys(itemsCount);
-	for( i in indexes){
+	for (i in indexes) {
 		var imageDetail = {};
-		imageDetail.quantity =  itemsCount[indexes[i]].quantity;
-		imageDetail.price =  itemsCount[indexes[i]].price;
-		imageDetail.text =  indexes[i]; 
+		imageDetail.quantity = itemsCount[indexes[i]].quantity;
+		imageDetail.price = itemsCount[indexes[i]].price;
+		imageDetail.text = indexes[i];
 		imageDetail.total = itemsCount[indexes[i]].total;
 		cartDetails.push(imageDetail);
 	}
-	
-	console.log(cartDetails.sort(fotobarCart.sortCartDetails("-price")));
-	
 	return (cartDetails);
 };
 
 FotobarCart.prototype.sortCartDetails = function(property) {
-    var sortOrder = 1;
-    if(property[0] === "-") {
-        sortOrder = -1;
-        property = property.substr(1);
-    }
-    return function (a,b) {
-        var result = (a[property] < b[property]) ? -1 : (a[property] > b[property]) ? 1 : 0;
-        return result * sortOrder;
-    }
+	var sortOrder = 1;
+	if (property[0] === "-") {
+		sortOrder = -1;
+		property = property.substr(1);
+	}
+	return function(a, b) {
+		var result = (a[property] < b[property]) ? -1
+				: (a[property] > b[property]) ? 1 : 0;
+		return result * sortOrder;
+	}
 };
-
 
 FotobarCart.prototype.getCartDetails = function() {
 
@@ -402,13 +408,13 @@ FotobarCart.prototype.getCartDetails = function() {
 			var imageDetail = {};
 			var lineItemTotal = 0;
 
-			//imageDetail.image = fotobar.images[imageId].image.src;
-			
+			// imageDetail.image = fotobar.images[imageId].image.src;
+
 			for (item in imageCart) {
 
 				var productInfo = fotobarCart.filter(imageCart[item].sku,
 						fotobarCart.products);
-				
+
 				cart_display.push(imageCart[item].quantity + ' '
 						+ productInfo.name);
 
@@ -425,9 +431,8 @@ FotobarCart.prototype.getCartDetails = function() {
 	return (cartDetails);
 };
 
-
 FotobarCart.prototype.filter = function(sku, haystack) {
-	
+
 	var item = haystack.filter(function(obj) {
 		return obj.sku === sku;
 	})[0];
@@ -436,18 +441,16 @@ FotobarCart.prototype.filter = function(sku, haystack) {
 };
 
 /*
-FotobarCart.prototype.filterTaxState = function(state) {
-
-	var item = fotobarConfig.locations.filter(function(obj) {
-		return obj.state === state;
-	})[0];
-
-};
-*/
+ * FotobarCart.prototype.filterTaxState = function(state) {
+ * 
+ * var item = fotobarConfig.locations.filter(function(obj) { return obj.state
+ * === state; })[0];
+ *  };
+ */
 
 FotobarCart.prototype.updateQuantity = function(itemSku, itemQuantity, imageId) {
 
-	//var imageId = fotobarUI.current_image.id;
+	// var imageId = fotobarUI.current_image.id;
 
 	if (typeof (this.items[imageId]) == 'undefined') {
 
@@ -482,31 +485,43 @@ FotobarCart.prototype.validateCart = function() {
 
 	for (image in this.items) {
 
-		this.items[image].map(function(item) {
+		this.items[image]
+				.map(function(item) {
 
-			var product = fotobarCart.getProduct(item.sku);
-			var itemCount = fotobarCart.getItemCount(item.sku);
-			var totalItemCount = fotobarCart.getTotalItemCount();
-			var text = product.name + " requires a minimum of "+product.minQty+" total to checkout. ";
+					var product = fotobarCart.getProduct(item.sku);
+					var itemCount = fotobarCart.getItemCount(item.sku);
+					var totalItemCount = fotobarCart.getTotalItemCount();
+					// var text = product.name + " requires a minimum of
+					// "+product.minQty+" total to checkout. ";
+					var text = "Order does not meet minimum total of 6 Original size or 1 Medium/Large.";
 
-			if (product.minQty > 0 && product.minOverride
-					&& itemCount < product.minQty
-					&& totalItemCount <= itemCount) {
+					if (itemCount < product.minQty) {
 
-				if(processed.indexOf(product.name) == -1 ){
-					
-					inValid.push({type : 'error',text : text});
-					processed.push(product.name);
-				}
-			} else if (itemCount < product.minQty) {
+						if (product.minQty > 0 && product.minOverride
+						// && itemCount < product.minQty
+						&& totalItemCount <= itemCount) {
 
-				if(processed.indexOf(product.name) == -1 ){
-					
-					inValid.push({type : 'error',text : text});
-					processed.push(product.name);
-				}
-			}
-		});
+							if (processed.indexOf(product.name) == -1) {
+								inValid.push({
+									type : 'error',
+									text : text
+								});
+								processed.push(product.name);
+							}
+						} else if (!product.minOverride) {
+
+							if (processed.indexOf(product.name) == -1) {
+
+								inValid.push({
+									type : 'error',
+									text : text
+								});
+								processed.push(product.name);
+							}
+						}
+
+					}
+				});
 	}
 
 	var outcome = (inValid.length > 0) ? inValid : true;

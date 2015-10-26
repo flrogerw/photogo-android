@@ -73,10 +73,13 @@ FotobarFacebook.prototype.login = function() {
 
 FotobarFacebook.prototype.getAlbumPhotos = function(album_id) {
 
+	
+	//10207087803263316?fields=photos{source}
+	
 	return $.Deferred(function() {
 
 		var self = this;
-		facebookConnectPlugin.api("/" + album_id + "/photos?limit="+fotobarUI.photo_limit, null, function(
+		facebookConnectPlugin.api("/" + album_id + "/photos?limit="+fotobarUI.photo_limit+"&fields=source", null, function(
 				photos) {
 			
 			fotobarUI.faceBook.paginationUrl = (photos.paging.next == null )? null:photos.paging.next.replace(/^.*\/\/[^\/]+/, '');
@@ -84,12 +87,17 @@ FotobarFacebook.prototype.getAlbumPhotos = function(album_id) {
 				$('#show_more').hide();
 			}
 			
+			console.log(photos.paging.next);
+			
 			var igImages = [];
+			
+			//console.log(JSON.stringify(photos));
+			
 			for (count in photos.data) {
-
+				
 				imageData = {
 					id : photos.data[count].id,
-					url : photos.data[count].images[0].source
+					url : photos.data[count].source
 				}
 
 				igImages.push(imageData);
