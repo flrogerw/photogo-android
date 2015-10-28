@@ -157,9 +157,9 @@ Fotobar.prototype.factory = function(imageArray) {
 						+ this.tmpImage.name + '.' + fotobar.ouput_file_type;
 				fotobar.images[this.id] = new Polaroid(this.tmpImage);
 				fotobar.setCanvasRotation(this);
-				fotobarUI.initialize(this, true);
+				//fotobarUI.initialize(this, true);
 				fotobar.setImageParams(fotobar.images[this.id]);
-
+				
 				var imageURIs = imageArray.shift();
 				fotobar.images[this.id].image.org_uri = imageURIs[0];
 					

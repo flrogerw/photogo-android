@@ -258,6 +258,16 @@ FotobarUI.prototype.setPolaroidCords = function(canvas_image, imageId) {
 	switch (true) {
 
 	case (current_image.is_square):
+		
+		current_image.ty = current_image.tx = 0;
+		current_image.plot_y = current_image.plot_x = 0;
+		
+		
+		var ratio = ( current_image.image_width / fotobar.polaroidWidth);
+		current_image.ty = current_image.tx = 0;
+		current_image.plot_y = current_image.plot_x = 0;
+		current_image.plot_height = current_image.image_height;
+		current_image.plot_width = current_image.image_width;
 
 		canvas_image.width = fotobar.polaroidWidth;
 		canvas_image.height = fotobar.polaroidHeight;
@@ -272,9 +282,17 @@ FotobarUI.prototype.setPolaroidCords = function(canvas_image, imageId) {
 		left = (current_image.is_polaroid) ? (Math
 				.floor((canvas_image.width - fotobar.polaroidWidth) / 2) * -1)
 				: 0;
-
-		current_image.ty = 0;
+		
+		var ratio = ( current_image.image_height / fotobar.polaroidHeight);
+		
+		current_image.ty = current_image.plot_y = 0;
 		current_image.tx = left * -1;
+		
+		current_image.plot_x = Math.floor((current_image.tx * ratio));
+		
+		
+		current_image.plot_width = Math.floor(fotobar.polaroidHeight * ratio);
+		current_image.plot_height = current_image.image_height;
 
 		break;
 
@@ -287,15 +305,17 @@ FotobarUI.prototype.setPolaroidCords = function(canvas_image, imageId) {
 		top = (current_image.is_polaroid) ? (Math
 				.floor((canvas_image.height - fotobar.polaroidHeight) / 2) * -1)
 				: 0;
-
-		current_image.tx = 0;
+				
+		var ratio = ( current_image.image_width / fotobar.polaroidWidth);
 		current_image.ty = top * -1;
-		// this.bx = canvas_image.width;
-		// this.by = canvas_image.height;
+		current_image.tx = current_image.plot_tx = 0;
+		current_image.plot_y = Math.floor(current_image.ty * ratio);
+		current_image.plot_height = floor(fotobar.polaroidWidth * ratio);
+		current_image.plot_width = current_image.image_width;
 
 		break;
 	}
-
+	
 	$(canvas_image).animate({
 		top : top,
 		left : left
@@ -327,7 +347,15 @@ FotobarUI.prototype.initialize = function(image, is_new_order) {
 				+ 'px';
 		canvas_image.style.marginLeft = (fotobar.images[image.id].tx * -1)
 				+ 'px';
+		
+		
+		//fotobar.images[image.id].plot_width = Math.floor(fotobar.images[image.id].image_width / fotobar.images[image.id].zoom);	
+		//fotobar.images[image.id].plot_height = Math.floor(fotobar.images[image.id].image_height / fotobar.images[image.id].zoom);
+		//fotobar.images[image.id].plot_x = Math.floor(fotobar.images[image.id].tx + (fotobar.images[image.id].tx * fotobar.images[image.id].scale));
+		//fotobar.images[image.id].plot_y = Math.floor(fotobar.images[image.id].ty + (fotobar.images[image.id].ty * fotobar.images[image.id].scale));
+		
 	}
+	
 	current_canvas.appendChild(canvas_image);
 
 	var fotodiv = document.createElement('div');
@@ -1521,10 +1549,6 @@ FotobarUI.prototype.getFbAlbums = function() {
 													.getAlbums(fotobarConfig.user.facebook_userID);
 											getAlbums.done(function(albums) {
 
-												console.log(albums);
-												
-												
-												
 														fotobarUI.current_social_media = 'fb';
 
 														fotobarUI

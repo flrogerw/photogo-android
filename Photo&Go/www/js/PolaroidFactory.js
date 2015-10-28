@@ -7,12 +7,18 @@ var Polaroid = function(image) {
 	this.name = image.name;
 	this.height = 0;
 	this.width = 0;
+	this.image_height = this.image.height;
+	this.image_width = this.image.width;
 	this.canvas_width;
 	this.canvas_height;
 	this.tx = 0;
 	this.ty = 0;
 	this.bx = 0;
 	this.by = 0;
+	this.plot_width;
+	this.plot_height;
+	this.plot_x = 0;
+	this.plot_y = 0;
 	this.is_spectra = false;
 	this.is_polaroid = true;
 	this.zoom = 1;
