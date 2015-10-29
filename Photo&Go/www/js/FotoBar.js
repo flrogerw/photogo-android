@@ -213,6 +213,8 @@ Fotobar.prototype.setImageParams = function(current_image) {
 		if(current_image.is_landscape){
 			current_image.canvas_width = [current_image.canvas_height, current_image.canvas_height = current_image.canvas_width][0];
 		}
+		current_image.plot_width = Math.floor((current_image.width * current_image.image_scale));
+		current_image.plot_height = Math.floor((current_image.height * current_image.image_scale));
 		break;
 
 	case (2):
@@ -229,6 +231,8 @@ Fotobar.prototype.setImageParams = function(current_image) {
 		$(image_container).height(this.canvasSetHeight);
 		current_image.canvas_width = current_image.width;
 		current_image.canvas_height = current_image.width * current_image.aspect_ratio;
+		current_image.plot_width = Math.floor((current_image.width * current_image.image_scale));
+		current_image.plot_height = Math.floor((current_image.height * current_image.image_scale));
 		break;
 
 	case (3):
@@ -245,7 +249,8 @@ Fotobar.prototype.setImageParams = function(current_image) {
 		$(image_container).height(this.canvasSetWidth);
 		current_image.canvas_width = current_image.width * current_image.aspect_ratio;
 		current_image.canvas_height = current_image.width;
-		
+		current_image.plot_width = Math.floor((current_image.width * current_image.image_scale));
+		current_image.plot_height = Math.floor((current_image.height * current_image.image_scale));
 		
 		break;
 
@@ -263,11 +268,11 @@ Fotobar.prototype.setImageParams = function(current_image) {
 		$(image_container).height(this.canvasSetWidth);
 		current_image.canvas_width = current_image.width * current_image.aspect_ratio;
 		current_image.canvas_height = current_image.width;
+		current_image.image_scale = ( current_image.image_width / fotobar.polaroidWidth);
+		current_image.plot_width = Math.floor((current_image.width * current_image.image_scale));
+		current_image.plot_height = Math.floor((current_image.height * current_image.image_scale));
 		break;
 	}
-	
-	current_image.plot_width = Math.floor((current_image.width * current_image.image_scale));
-	current_image.plot_height = Math.floor((current_image.height * current_image.image_scale));
 };
 
 Fotobar.prototype.getRandom = function() {

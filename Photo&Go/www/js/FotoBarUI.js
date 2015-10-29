@@ -4,7 +4,7 @@ var FotobarUI = function() {
 	this.current_image_id;
 	this.current_canvas;
 	this.current_social_media;
-	this.max_text_length = 22;
+	this.max_text_length = 19;
 	this.maxImageCount = 50;
 	this.slider_index = 0;
 	this.photo_limit = 21;
@@ -390,15 +390,15 @@ FotobarUI.prototype.initialize = function(image, is_new_order) {
 		break;
 
 	case (fotobar.contains([ 4 ], fotobar.images[image.id].format)):
-		$(input_text).css("top", "78%");
-		$(input_text).css("width", "70%");
-		$(input_text).css("margin-left", "15%");
+		$(input_text).css("top", "82%");
+		$(input_text).css("width", "90%");
+		$(input_text).css("margin-left", "5%");
 		break;
 
 	default:
-		$(input_text).css("top", "82%");
-		$(input_text).css("width", "60%");
-		$(input_text).css("margin-left", "18%");
+		$(input_text).css("top", "85%");
+		$(input_text).css("width", "90%");
+		$(input_text).css("margin-left", "5%");
 		break;
 
 	}
