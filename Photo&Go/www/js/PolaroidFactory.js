@@ -9,6 +9,7 @@ var Polaroid = function(image) {
 	this.width = 0;
 	this.image_height = this.image.height;
 	this.image_width = this.image.width;
+	this.image_scale = 0;
 	this.canvas_width;
 	this.canvas_height;
 	this.tx = 0;

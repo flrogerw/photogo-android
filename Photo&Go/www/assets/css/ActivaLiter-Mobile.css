@@ -219,7 +219,7 @@ li.photo_albums_list {
 }
 
 input.none {
-	font-size: 28px;
+	font-size: 5vw;
 	border-style: none;
 	font-family: 'Marydale' !important;
 	position: absolute;

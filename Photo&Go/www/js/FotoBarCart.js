@@ -297,13 +297,15 @@ FotobarCart.prototype.processOrder = function(customer_form, cc_form) {
 
 				getCharge.fail(function(error) {
 
-					fotobarUI.alertUser(error)
+					fotobarUI.alertUser(error);
+					$("#dialog").hide();
 				});
 
 			} else {
 
 				fotobarUI.updateCheckoutProgress(25, 0);
 				fotobarCart.uploadImages(customer_form, itemIterator);
+				
 			}
 		});
 

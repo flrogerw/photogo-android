@@ -157,7 +157,7 @@ Fotobar.prototype.factory = function(imageArray) {
 						+ this.tmpImage.name + '.' + fotobar.ouput_file_type;
 				fotobar.images[this.id] = new Polaroid(this.tmpImage);
 				fotobar.setCanvasRotation(this);
-				//fotobarUI.initialize(this, true);
+				fotobarUI.initialize(this, true);
 				fotobar.setImageParams(fotobar.images[this.id]);
 				
 				var imageURIs = imageArray.shift();
@@ -245,6 +245,8 @@ Fotobar.prototype.setImageParams = function(current_image) {
 		$(image_container).height(this.canvasSetWidth);
 		current_image.canvas_width = current_image.width * current_image.aspect_ratio;
 		current_image.canvas_height = current_image.width;
+		
+		
 		break;
 
 	case (4):
@@ -263,6 +265,9 @@ Fotobar.prototype.setImageParams = function(current_image) {
 		current_image.canvas_height = current_image.width;
 		break;
 	}
+	
+	current_image.plot_width = Math.floor((current_image.width * current_image.image_scale));
+	current_image.plot_height = Math.floor((current_image.height * current_image.image_scale));
 };
 
 Fotobar.prototype.getRandom = function() {
