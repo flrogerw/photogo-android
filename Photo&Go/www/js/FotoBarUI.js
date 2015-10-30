@@ -457,7 +457,7 @@ FotobarUI.prototype.renderEditView = function() {
 
 		if ($(this).attr('filter') != 'none') {
 
-			fotobarUI.current_image.image.effect = $(this).attr('filter');
+			fotobarUI.current_image.effect = fotobarUI.current_image.image.effect = $(this).attr('filter');
 			$('#edit_image').addClass($(this).attr('filter'));
 		}
 	});
