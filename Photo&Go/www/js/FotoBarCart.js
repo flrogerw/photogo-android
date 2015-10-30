@@ -285,7 +285,7 @@ FotobarCart.prototype.processOrder = function(customer_form, cc_form) {
 					location : pickup_option,
 					ship_total : fotobarCart.getShippingTotal(),
 					//auth_only : (pickup_option == 'shipped') ? true : false
-					auth_only : true		
+					auth_only : false		
 				};
 
 				var getCharge = payment.postStripeCharge(cc_form, order_data);
