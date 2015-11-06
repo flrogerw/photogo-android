@@ -87,8 +87,6 @@ FotobarFacebook.prototype.getAlbumPhotos = function(album_id) {
 				$('#show_more').hide();
 			}
 			
-			console.log(photos.paging.next);
-			
 			var igImages = [];
 			
 			//console.log(JSON.stringify(photos));

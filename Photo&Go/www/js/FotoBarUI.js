@@ -7,7 +7,7 @@ var FotobarUI = function() {
 	this.max_text_length = 19;
 	this.maxImageCount = 50;
 	this.slider_index = 0;
-	this.photo_limit = 21;
+	this.photo_limit = 15;
 	this.contact_form = {};
 	this.cc_form = {};
 	this.mime_types = {
@@ -1358,10 +1358,17 @@ FotobarUI.prototype.frameButtonClick = function(buttonId) {
  * SOCIAL MEDIA
  */
 FotobarUI.prototype.appendRemotePhotos = function(photos) {
+	
+	return $.Deferred(function() {
 
-	$("div.photo_list").off('click');
+		var self = this;
 
-	for (photo in photos) {
+	//$("div.photo_list").off('click');
+	
+	var photoArrayLength = photos.length;
+
+	for (var i = 0; i < photoArrayLength; i++) {
+
 		//var currentPhoto = photos[photo];		
 		var newImage = new Image();
 		newImage.onload = function() {
@@ -1403,9 +1410,18 @@ FotobarUI.prototype.appendRemotePhotos = function(photos) {
 					});
 
 			$('#photo_list').append(div);
+			
+			photos.shift();
+			if (photos.length == 0) {
+
+				self.resolve();
+			}
+			
 		}
-		newImage.src = photos[photo].url;		
+		newImage.src = photos[i].url;		
 	}
+	
+	});
 };
 
 FotobarUI.prototype.showRemotePhotos = function(photos) {
@@ -1413,7 +1429,10 @@ FotobarUI.prototype.showRemotePhotos = function(photos) {
 	fotobarUI.appendRemotePhotos(photos);
 
 	$('#show_more').on('click', function() {
-
+		
+		$("#pagination_loading").show();
+		$("#show_more").hide();
+		
 		switch (fotobarUI.current_social_media) {
 
 		case ('ig'):
@@ -1421,7 +1440,12 @@ FotobarUI.prototype.showRemotePhotos = function(photos) {
 			var getPagination = fotobarUI.instagram.pagination();
 			getPagination.done(function(photos) {
 
-				fotobarUI.appendRemotePhotos(photos);
+				var paginationDisplay = fotobarUI.appendRemotePhotos(photos);
+				paginationDisplay.done(function(){
+					$("body, html").scrollTop($("#photo_list").prop("scrollHeight"));
+					$("#pagination_loading").hide();
+					$("#show_more").show();
+				});
 			});
 			break;
 
@@ -1430,7 +1454,15 @@ FotobarUI.prototype.showRemotePhotos = function(photos) {
 			var getPagination = fotobarUI.faceBook.pagination();
 			getPagination.done(function(photos) {
 
-				fotobarUI.appendRemotePhotos(photos);
+				var paginationDisplay = fotobarUI.appendRemotePhotos(photos);
+				paginationDisplay.done(function(){
+					$("body, html").scrollTop($("#photo_list").prop("scrollHeight"));
+					$("#pagination_loading").hide();
+					$("#show_more").show();
+				});
+				
+				
+	
 			});
 			break;
 
@@ -1627,13 +1659,23 @@ FotobarUI.prototype.showRemoteAlbums = function(albums) {
 
 		var img = document.createElement("img");
 		img.setAttribute('src', currentImage);
+		img.setAttribute('align', "middle");
 		img.className = "social_square_album";
 		
 		div.appendChild(img);
 		li.appendChild(div);
 
-		var span = document.createElement("span");
-		span.innerHTML = currentAlbum.name + ' - ' + albumPhoteCount;
+		var span = document.createElement("div");
+		$(span).css({
+			'display':'inline-block',
+			'white-space': 'pre-wrap',
+			'width': '60%',
+			'vertical-align': 'middle'
+		});
+
+		//span.innerHTML = currentAlbum.name + ' - ' + albumPhoteCount;
+		span.innerHTML = currentAlbum.name;
+		
 		li.appendChild(span);
 
 		$('#photo_albums').prepend(li);
@@ -1704,6 +1746,8 @@ FotobarUI.prototype.getIgAccessToken = function() {
 
 FotobarUI.prototype.getIgImages = function() {
 
+	$("#gram_src_btn").click(false);
+	
 	var getAccessToken = fotobarUI.getIgAccessToken();
 
 	getAccessToken.done(function(access_key) {
@@ -1718,11 +1762,14 @@ FotobarUI.prototype.getIgImages = function() {
 		igPhotos.fail(function(err) {
 
 			fotobarUI.instagram.logout();
+			$("#gram_src_btn").on("click", fotobarUI.getIgImages);
 			fotobarUI.alertUser({
 				type : 'error',
 				text : 'Could not get your Instagram Photos.'
 			});
 		});
+		
+		
 	});
 
 	getAccessToken.fail(function(err) {
@@ -1912,27 +1959,34 @@ FotobarUI.prototype.displayAlert = function(error) {
 
 	return $.Deferred(function() {
 
+		if(error.text.length < 5){
+			self.resolve();
+		}
+		
+		
 		var self = this;
-		var messageDiv = document.createElement('div');
+		//var messageDiv = document.createElement('textarea');
 		var currentClass = (error.type == 'error') ? 'errorDiv' : 'succesDiv';
-		$(messageDiv).attr('id', 'message_div');
-		$(messageDiv).addClass(currentClass);
-		$(messageDiv).html(error.text);
+		//$(messageDiv).attr('id', 'message_div');
+		//$(messageDiv).addClass(currentClass);
+		//$(messageDiv).html(error.text);
 
 		$('<div/>', {
 			id : 'alert_message',
 			class : currentClass,
-			text : error.text
+			html : error.text
 		}).prependTo('body');
 		
 		$('#alert_message').center();
 		$(window).scroll(function() { $('#alert_message').center(); });
 		
-		$("#alert_message").fadeOut(8000, function() {
+		setTimeout(function(){ 
 			
 			$("#alert_message").remove();
 			self.resolve();
-		});
+			}
+		, 5000);
+		
 	});
 };
 
