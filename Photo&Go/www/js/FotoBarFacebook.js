@@ -19,9 +19,9 @@ FotobarFacebook.prototype.pagination = function() {
 				self.resolve(igImages);
 			}
 			
-			fotobarUI.faceBook.paginationUrl = (photos.paging.next == null )? null:photos.paging.next.replace(/^.*\/\/[^\/]+/, '');
+			fotobarUI.faceBook.paginationUrl = (typeof photos.paging.next == 'undefined' )? null:photos.paging.next.replace(/^.*\/\/[^\/]+/, '');
 			
-			if( photos.paging.next == null ){
+			if( fotobarUI.faceBook.paginationUrl == null ){
 				$('#show_more').hide();
 			}
 			
@@ -29,7 +29,7 @@ FotobarFacebook.prototype.pagination = function() {
 
 				imageData = {
 					id : photos.data[count].id,
-					url : photos.data[count].images[0].source
+					url : photos.data[count].source
 				}
 
 				igImages.push(imageData);

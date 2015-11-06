@@ -61,12 +61,13 @@ FotobarInstagram.prototype.pagination = function(access_token) {
 	return $.Deferred(function() {
 		
 		var igImages = [];
+		var self = this;
 		
 		if(fotobarUI.instagram.paginationUrl == null ){
+			$('#show_more').hide();
 			self.resolve(igImages);
 		}
 
-		var self = this;
 		var getIgPhotos = fotobarUI.instagram.api.getCall(fotobarUI.instagram.paginationUrl);
 
 		getIgPhotos.done(function(photos) {
@@ -121,9 +122,10 @@ FotobarInstagram.prototype.getPhotos = function(access_token) {
 				igImages.push(imageData);
 			}
 
-			fotobarUI.instagram.paginationUrl = (photos.pagination.next_url == null )? null:photos.pagination.next_url.split('/').splice(4).join('/');
+			fotobarUI.instagram.paginationUrl = ( typeof photos.pagination.next_url == 'undefined' )? null:photos.pagination.next_url.split('/').splice(4).join('/');
 			fotobarUI.current_social_media = 'ig';
-			if( photos.pagination.next_url == null ){
+			
+			if( fotobarUI.instagram.paginationUrl == null ){
 				$('#show_more').hide();
 			}
 			
