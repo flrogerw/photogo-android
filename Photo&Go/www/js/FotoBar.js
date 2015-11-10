@@ -146,6 +146,8 @@ Fotobar.prototype.factory = function(imageArray) {
 			var org_uri = imageArray[i][0];
 			var newImage = new Image();
 			newImage.onload = function() {
+				
+			
 				this.tmpImage = {};
 				this.id = this.tmpImage.id = fotobar.getRandom();
 				this.tmpImage.src = this.src;
