@@ -377,7 +377,7 @@ FotobarUI.prototype.initialize = function(image, is_new_order) {
 
 	var input_text = document.createElement('input');
 	input_text.addEventListener('blur', function() {
-		fotobar.images[image.id].text = $(this).val();
+		fotobar.images[image.id].text = $(this).val().replace(/[^A-Za-z0-9.,:;<>%@#+=?$&\'"\_\/\*\- !{}()\[\]]/g, "");
 	}, false);
 	input_text.className = "none";
 	input_text.setAttribute("id", "text_" + image.id);

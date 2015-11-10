@@ -56,8 +56,8 @@ $(document).ready(
 			document.addEventListener('deviceready', function() {
 				
 				navigator.app.clearCache();
-				
 				$('body').show();
+				
 				//playAudio();
 				//var green_fade = $("div.slide01").animate({
 					//'opacity' : 0
@@ -85,12 +85,16 @@ $(document).ready(
 					fotobarCart = new FotobarCart(
 							fotobarConfig.configure.products);
 					fotobarUI = new FotobarUI();
-						
+					
 						fotobarUI.renderHomeView();
-
+						
+						setTimeout(function(){
+						navigator.splashscreen.hide();
 						if(fotobarConfig.errors.display.length > 0){
 							fotobarUI.alertUser(fotobarConfig.errors.display);
 						}
+				}, 1000);
+						
 
 					window.addEventListener('native.keyboardshow',
 							fotobarUI.keyboardDisplay);
