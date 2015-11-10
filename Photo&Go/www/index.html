@@ -142,7 +142,7 @@ content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; st
 	<div class="checkout-success">
 		<div class="message">
 			<h1>Success!</h1>
-			<p id="ship-message" class="ship-message" style="display:none">Your order will ship within 3 days. You will receive an email with tracking information.</p>
+			<p id="ship-message" class="ship-message" style="display:none">You'll receive your order in 5-7 business days. We'll send you an email with tracking information once your order ships.</p>
 			<p id="pickup-message" class="pickup-message" style="display:none">We will contact you when your order is ready for pickup.</p>
 			<p id="pickup-message-no-pay" class="pickup-message" style="display:none">Printing will begin when you pay at the store.</p>
 		</div>	
@@ -397,7 +397,7 @@ content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; st
 <div id="image_legend_wrapper">
 <div id="image_legend"></div>
 
-<div class="directions">Swipe photo left or right to scroll thru your photos.<br/>Double tap photo to edit or delete it.</div>
+<div class="directions">Swipe photo left/right to scroll thru photos.<br/>Double tap photo to edit or delete it.</div>
 </div>
 
 <div id="controls-container" class="controls-container polaroid-edit">
@@ -516,7 +516,9 @@ content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; st
 
 			<input type="radio" id="delivery_options_pickup"
 				name="delivery_options" value="pick_up" checked /><label
-				class="radio">Pickup In-Store</label> <input type="radio"
+				class="radio">Pickup In-Store</label>
+<div class="clear"></div>
+ <input type="radio"
 				id="delivery_options_ship" name="delivery_options" value="ship" /><label
 				class="radio">Ship within USA</label>
 
@@ -573,7 +575,8 @@ content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; st
 <form>
 			<input type="radio" id="payment_options_later" name="payment_options"
 				value="later" checked /><label class="radio">Pay Store Cashier</label>
-			<input style="margin-left:0px" type="radio" id="payment_options_now" name="payment_options"
+<div class="clear"></div>
+			<input type="radio" id="payment_options_now" name="payment_options"
 				value="now" /><label class="radio">Pay On Phone</label>
 </form>
 			<div class="clear"></div>
