@@ -2024,7 +2024,7 @@ FotobarUI.prototype.displayAlert = function(error) {
 
 			$("#alert_message").remove();
 			self.resolve();
-		}, 5000);
+		}, 4000);
 
 	});
 };
