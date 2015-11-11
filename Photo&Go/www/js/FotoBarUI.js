@@ -377,8 +377,15 @@ FotobarUI.prototype.initialize = function(image, is_new_order) {
 
 	var input_text = document.createElement('input');
 	input_text.addEventListener('blur', function() {
-		fotobar.images[image.id].text = $(this).val().replace(/[^A-Za-z0-9.,:;<>%@#+=?$&\'"\_\/\*\- !{}()\[\]]/g, "");
+		fotobar.images[image.id].text = $(this).val();
 	}, false);
+	
+	input_text.addEventListener('keyup', function() {
+		$(this).val($(this).val().replace(/[^A-Za-z0-9.,:;<>%@#+=?$&\'"\_\/\*\- !{}()\[\]]/g, ""));
+	}, false);
+	
+	
+	
 	input_text.className = "none";
 	input_text.setAttribute("id", "text_" + image.id);
 	input_text.setAttribute("placeholder", "Add Caption");
