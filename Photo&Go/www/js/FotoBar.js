@@ -101,6 +101,7 @@ Fotobar.prototype.getRemoteImage = function(remote_url) {
 	});
 };
 
+/*
 Fotobar.prototype.getImageUpload = function(imageId) {
 
 	return $.Deferred(function() {
@@ -128,7 +129,7 @@ Fotobar.prototype.getImageUpload = function(imageId) {
 		});
 	});
 };
-
+*/
 Fotobar.prototype.factory = function(imageArray) {
 
 	return $.Deferred(function() {
@@ -163,8 +164,9 @@ Fotobar.prototype.factory = function(imageArray) {
 				fotobar.setImageParams(fotobar.images[this.id]);
 				
 				var imageURIs = imageArray.shift();
-				fotobar.images[this.id].image.org_uri = imageURIs[0];
-					
+				//fotobar.images[this.id].image.org_uri = imageURIs[0];
+				fotobar.images[this.id].image.org_uri = this.tmpImage.src;
+				
 				fotobarCart.updateQuantity(fotobarUI.defaultSku, 1, this.id);
 
 				if (imageArray.length == 0) {

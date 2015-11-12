@@ -50,7 +50,7 @@ FotobarCart.prototype.setTaxRate = function(zip_code, delivery_option) {
 				if( !data.ship_tax && fotobarCart.is_shipped){
 					fotobarCart.tax_rate = 0;
 				}else{
-					fotobarCart.tax_rate = parseFloat(data.tax_rate).toFixed(2);
+					fotobarCart.tax_rate = parseFloat(data.tax_rate).toFixed(4);
 				}
 
 				fotobarCart.taxByZip[delivery_option] = zip_code;
