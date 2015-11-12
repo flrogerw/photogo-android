@@ -42,12 +42,17 @@ FotobarCart.prototype.setTaxRate = function(zip_code, delivery_option) {
 			var getAPI = new FotobarRest(fotobarConfig.configure.servers.api);
 
 			var getTax = getAPI.getCall('getTax', {
-				zip_code : zip_code
+				zip_code : zip_code,
 			});
 
 			getTax.done(function(data) {
+				
+				if( !data.ship_tax && fotobarCart.is_shipped){
+					fotobarCart.tax_rate = 0;
+				}else{
+					fotobarCart.tax_rate = parseFloat(data.tax_rate).toFixed(2);
+				}
 
-				fotobarCart.tax_rate = parseFloat(data.tax_rate).toFixed(2);
 				fotobarCart.taxByZip[delivery_option] = zip_code;
 				fotobarCart.taxByZip[zip_code] = fotobarCart.tax_rate;
 			});
