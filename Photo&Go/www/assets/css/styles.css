@@ -634,6 +634,7 @@ strong {
 
 .homeslider div {
 	display: none;
+	overflow: hidden;
 }
 
 .homeslider div.current {

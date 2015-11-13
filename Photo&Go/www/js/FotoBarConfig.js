@@ -1,12 +1,14 @@
 var FotobarConfig = function() {
 
+	
 	this.root_directory = 'Photogo';
 	this.aws_container = 'loopback-upload'
 	this.ig_auth_url = 'https://api.instagram.com/oauth/authorize';
 	this.ig_app_id = '87a6373396d941eab4b61a3cfa7259a5';
 	this.ig_redirect = 'http://photoandgo.com';
 	this.ig_api_url = 'https://api.instagram.com/v1/';
-	this.stripe_pk = 'pk_test_gj1pPepZi2KqMUl8wtHB8YZE';
+	//this.stripe_pk = 'pk_test_gj1pPepZi2KqMUl8wtHB8YZE';
+	this.stripe_pk = 'pk_test_nSZz2pA51q7nF3nP0oxTXN0g';
 	this.stripe_script_url = 'https://js.stripe.com/v2/';
 	this.products;
 	this.server_alive = false;
