@@ -131,53 +131,118 @@ Fotobar.prototype.getImageUpload = function(imageId) {
 };
 */
 Fotobar.prototype.factory = function(imageArray) {
+    
+    return $.Deferred(function() {
+                      
+                      var self = this;
+                      var imageArrayLength = imageArray.length;
+                      
+                      for (var i = 0; i < imageArrayLength; i++) {
+                      
+                      if( typeof( imageArray[i] ) == 'string' ){
+                      
+                      imageArray[i] = [ imageArray[i], imageArray[i] ];
+                      }
+                      
+                      var org_uri = imageArray[i][0];
+                      var newImage = new Image();
+                      newImage.onload = function() {
+                      
+                      var that = this;
+                
+                      var getExif = fotobar.getExif( that );
+                      
+                      getExif.done(function(exif){
+                                   
+                                   console.log(exif);
+                                   
+                                   that.tmpImage = {};
+                                   that.id = that.tmpImage.id = fotobar.getRandom();
+                                   that.tmpImage.src = that.src;
+                                   
+                                   that.tmpImage.width = exif.width;
+                                   that.tmpImage.height = exif.height;
+                                   that.tmpImage.orientation = exif.orientation;
+                                   
+                                   that.tmpImage.name = that.src.split('/').pop().split(/[?#]/)[0]
+                                   .replace(/\.[^/.]+$/, "");
+                                   that.tmpImage.name = that.tmpImage.id + '_'
+                                   + that.tmpImage.name + '.' + fotobar.ouput_file_type;
+                                   fotobar.images[that.id] = new Polaroid(that.tmpImage);
+                                   
+                                   fotobar.images[that.id].is_landscape = exif.is_landscape;
+                                   fotobar.images[that.id].is_square = exif.is_square;
+                                   fotobar.images[that.id].aspect_ratio = exif.aspect_ratio;
+                                   
+                                   
+                                   fotobarUI.initialize(that, true);
+                                   fotobar.setImageParams(fotobar.images[that.id]);
+                                   
+                                   var imageURIs = imageArray.shift();
+                                   fotobar.images[that.id].image.org_uri = that.src;
+                                   
+                                   fotobarCart.updateQuantity(fotobarUI.defaultSku, 1, that.id);
+                                   
+                                   if (imageArray.length == 0) {
+                                   
+                                   newImage = null;
+                                   self.resolve();
+                                   }
+                                   
+                                   });
+            
+                      }
+                      newImage.src = imageArray[i][1];
+                      }
+                      });
+};
 
-	return $.Deferred(function() {
 
-		var self = this;
-		var imageArrayLength = imageArray.length;
 
-		for (var i = 0; i < imageArrayLength; i++) {
-			
-			if( typeof( imageArray[i] ) == 'string' ){
-				
-				imageArray[i] = [ imageArray[i], imageArray[i] ];			
-			}
-					
-			var org_uri = imageArray[i][0];
-			var newImage = new Image();
-			newImage.onload = function() {
-				
-			
-				this.tmpImage = {};
-				this.id = this.tmpImage.id = fotobar.getRandom();
-				this.tmpImage.src = this.src;
-				this.tmpImage.width = this.width;
-				this.tmpImage.height = this.height;
-				this.tmpImage.name = this.src.split('/').pop().split(/[?#]/)[0]
-						.replace(/\.[^/.]+$/, "");
-				this.tmpImage.name = this.tmpImage.id + '_'
-						+ this.tmpImage.name + '.' + fotobar.ouput_file_type;
-				fotobar.images[this.id] = new Polaroid(this.tmpImage);
-				fotobar.setCanvasRotation(this);
-				fotobarUI.initialize(this, true);
-				fotobar.setImageParams(fotobar.images[this.id]);
-				
-				var imageURIs = imageArray.shift();
-				//fotobar.images[this.id].image.org_uri = imageURIs[0];
-				fotobar.images[this.id].image.org_uri = this.tmpImage.src;
-				
-				fotobarCart.updateQuantity(fotobarUI.defaultSku, 1, this.id);
+Fotobar.prototype.getExif = function( image ){
+    
+    return $.Deferred(function() {
+                      
+    var self = this;
+                      
+    
+    EXIF.getData(image, function() {
+                 
+                 var exif = {
+                 is_square: false,
+                 is_landscape: false
+                 };
+                
+                 var tmpHeight = ( typeof( EXIF.getTag(this, "PixelYDimension")) == 'undefined')? image.height: EXIF.getTag(this, "PixelYDimension");
+                 var tmpWidth = ( typeof( EXIF.getTag(this, "PixelXDimension")) == 'undefined')? image.width: EXIF.getTag(this, "PixelXDimension");
+                
+                 exif.orientation = ( typeof EXIF.getTag(this, "Orientation") == 'undefined' )? 1: EXIF.getTag(this, "Orientation");
+                 exif.height = ( fotobar.contains( [6], exif.orientation) )? tmpWidth: tmpHeight;
+                 exif.width = ( fotobar.contains( [6], exif.orientation) )? tmpHeight: tmpWidth;
+                 
+                 
+                 exif.aspect_ratio = exif.height / exif.width;
+                 
+                 switch (true) {
+                 
+                 case (exif.height < exif.width ):
+                 
+                 exif.is_landscape = true;
+                 exif.aspect_ratio = exif.width / exif.height;
+                 
+                 break;
+                 
+                 case (exif.height == exif.width):
+                 
+                 exif.is_square = true;
+                 exif.aspect_ratio = 1;
+                 break;
+                 }
 
-				if (imageArray.length == 0) {
-
-					newImage = null;
-					self.resolve();
-				}
-			}
-			newImage.src = imageArray[i][1];
-		}
-	});
+                 
+                 self.resolve( exif );
+        });
+    });
 };
 
 Fotobar.prototype.imageCount = function() {

@@ -203,6 +203,7 @@ FotobarCart.prototype.uploadImages = function(customer_form, itemIterator) {
 	var postToS3 = fotobarUI.postS3(current_image.org_uri, accountFolder
 			+ current_image.name);
 
+	
 	postToS3.done(function(response) {
 
 		if (response.responseCode >= 300) {
@@ -286,7 +287,8 @@ FotobarCart.prototype.processOrder = function(customer_form, cc_form) {
 					location : pickup_option,
 					ship_total : fotobarCart.getShippingTotal(),
 					//auth_only : (pickup_option == 'shipped') ? true : false
-					auth_only : false		
+					auth_only : false,
+					debug: fotobarConfig.isDebug()
 				};
 
 				var getCharge = payment.postStripeCharge(cc_form, order_data);

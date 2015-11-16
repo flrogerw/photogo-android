@@ -811,7 +811,7 @@ FotobarUI.prototype.renderCheckoutView = function() {
 
 						case ('cc_exp_year'):
 
-							if (!/^20\d{2}$/.test($(this).val())) {
+							if (!/^\d{2}$/.test($(this).val())) {
 								hasErrors = true;
 								$(this).css({
 									"border-color" : "red"
@@ -876,6 +876,7 @@ FotobarUI.prototype.renderCheckoutView = function() {
 						var customer_form = $('#contact_form')
 								.serializeFormJSON();
 						var cc_form = document.getElementById('cc_form');
+						
 						fotobarCart.processOrder(customer_form, cc_form);
 					}, 500);
 

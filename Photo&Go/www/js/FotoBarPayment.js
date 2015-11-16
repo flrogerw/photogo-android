@@ -2,7 +2,7 @@ var FotobarPayment = function() {
 
 };
 
-FotobarPayment.prototype.postStripeCharge = function(cc_form, order_data) {
+FotobarPayment.prototype.postStripeCharge = function(cc_form, order_data, debug) {
 	
 	return $.Deferred(function(){
 		
@@ -32,7 +32,8 @@ FotobarPayment.prototype.postStripeCharge = function(cc_form, order_data) {
 						ccPostForm.append('metadata', JSON.stringify({
 							tax : order_data.tax_total, //fotobarCart.getTaxTotal(),
 							location : order_data.location, //'shipped',
-							shipping : order_data.ship_total //fotobarCart.getShippingTotal()
+							shipping : order_data.ship_total, //fotobarCart.getShippingTotal()
+							debug: order_data.debug
 						}));
 
 						var stripePost = stripePost.postForm('orders', ccPostForm);
