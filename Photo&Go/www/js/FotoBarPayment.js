@@ -10,11 +10,11 @@ FotobarPayment.prototype.postStripeCharge = function(cc_form, order_data, debug)
 
 	$.getScript(fotobarConfig.stripe_script_url).done(
 			function(script, textStatus) {
-
+				
 				Stripe.setPublishableKey(fotobarConfig.stripe_pk);
 
 				Stripe.card.createToken(cc_form, function(status, response){
-
+					
 					if (response.error) {
 						
 						self.reject({
@@ -38,7 +38,19 @@ FotobarPayment.prototype.postStripeCharge = function(cc_form, order_data, debug)
 
 						var stripePost = stripePost.postForm('orders', ccPostForm);
 						stripePost.done(function(data) {
+							
+							var parsed_data = JSON.parse(data);
+							
+							if( parsed_data.error === true ){
+							self.reject({
+								type : 'error',
+								text : 'An Error Occured. Your Card was NOT Charged.'
+							});
+							
+							}else{
+							
 							self.resolve(data);
+							}
 						});
 					}				
 				});

@@ -8,9 +8,7 @@ var FotobarConfig = function() {
 	this.ig_redirect = 'http://photoandgo.com';
 	this.ig_api_url = 'https://api.instagram.com/v1/';
 	
-	this.stripe_pk = ( this.is_debug === true )? 'pk_test_gj1pPepZi2KqMUl8wtHB8YZE': 'pk_test_nSZz2pA51q7nF3nP0oxTXN0g'; // mine = debug
-	
-	console.log(this.stripe_pk);
+	this.stripe_pk = ( this.is_debug === true )? 'pk_test_nSZz2pA51q7nF3nP0oxTXN0g': 'pk_test_zgDx0zJkR407RtuxSVbcnqcs'// mine = live
 
 	this.stripe_script_url = 'https://js.stripe.com/v2/';
 	this.products;
