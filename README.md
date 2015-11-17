@@ -32,3 +32,20 @@ cordova plugin add cordova-plugin-screen-orientation
 cordova plugin add cordova-instagram-plugin
 
 cordova plugin add https://github.com/bez4pieci/Phonegap-Cookies-Plugin.git
+
+## SUBMISSION ##
+:: CREATE RELEASE VERSION ::
+cordova build android --release
+
+:: CREATE OUTSIDE OF APP DIRECTORY ::
+keytool -genkey -v -keystore photogo.keystore -alias photogo -keyalg RSA -keysize 2048 -validity 10000
+
+:: PUT IN platforms/android/ant.properties ::
+key.store=[ PATH TO KEYSTORE FILE ]
+key.alias=photogo
+
+:: MOVE THE *-release-unsigned.apk TO THE KEYSTORE DIRECTORY YOU CREATED ABOVE ::
+jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore photogo.keystore android-release-unsigned.apk photogo
+
+:: COPY zipalign.exe INTO KEYSTORE DIRECTORY ::
+zipalign -v 4 android-release-unsigned.apk GoPrints.apk
