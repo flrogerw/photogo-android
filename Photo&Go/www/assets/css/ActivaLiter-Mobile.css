@@ -233,7 +233,7 @@ input.none {
 	text-align: center;
 	margin: auto;
 	display: block;
-	z-index: 5000;
+	z-index: 15000;
 }
 
 .image_container {

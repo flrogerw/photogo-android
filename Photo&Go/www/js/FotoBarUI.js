@@ -361,8 +361,6 @@ FotobarUI.prototype.initialize = function(image, is_new_order) {
 
 	}
 
-	//console.log(fotobar.images[image.id]);
-
 	current_canvas.appendChild(canvas_image);
 
 	var fotodiv = document.createElement('div');
@@ -383,8 +381,6 @@ FotobarUI.prototype.initialize = function(image, is_new_order) {
 	input_text.addEventListener('keyup', function() {
 		$(this).val($(this).val().replace(/[^A-Za-z0-9.,:;<>%@#+=?$&\'"\_\/\*\- !{}()\[\]]/g, ""));
 	}, false);
-	
-	
 	
 	input_text.className = "none";
 	input_text.setAttribute("id", "text_" + image.id);
@@ -417,7 +413,11 @@ FotobarUI.prototype.initialize = function(image, is_new_order) {
 
 	$(input_text).attr('maxlength', fotobarUI.max_text_length);
 	$(input_text).val(fotobar.images[image.id].text);
-	// $(input_text).prop('disabled', true);
+	
+	$(input_text).on('tap',function(){
+		
+		$(this).focus();
+	});
 
 };
 
@@ -1628,6 +1628,7 @@ FotobarUI.prototype.getFbAlbums = function() {
 							if (buttonIndex == 1) {
 
 								var login = fotobarUI.faceBook.login();
+								
 
 								login
 										.done(function() {

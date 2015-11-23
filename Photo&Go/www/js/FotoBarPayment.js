@@ -8,9 +8,6 @@ FotobarPayment.prototype.postStripeCharge = function(cc_form, order_data, debug)
 		
 		var self = this;
 
-	$.getScript(fotobarConfig.stripe_script_url).done(
-			function(script, textStatus) {
-				
 				Stripe.setPublishableKey(fotobarConfig.stripe_pk);
 
 				Stripe.card.createToken(cc_form, function(status, response){
@@ -54,15 +51,6 @@ FotobarPayment.prototype.postStripeCharge = function(cc_form, order_data, debug)
 						});
 					}				
 				});
-				
-
-			}).fail(function(jqxhr, settings, exception) {
-
-		self.reject({
-			type : 'error',
-			text : 'Could not load Payment module.'
-		});
-	});
 	
 	});
 };
