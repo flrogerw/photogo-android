@@ -162,8 +162,7 @@ Fotobar.prototype.factory = function(imageArray) {
                                    that.tmpImage.height = exif.height;
                                    that.tmpImage.orientation = exif.orientation;
                                    
-                                   that.tmpImage.name = that.src.split('/').pop().split(/[?#]/)[0]
-                                   .replace(/\.[^/.]+$/, "");
+                                   that.tmpImage.name = that.src.split('/').pop().split(/[?#]/)[0].replace(/[^a-z0-9]/gi, "");
                                    that.tmpImage.name = that.tmpImage.id + '_'
                                    + that.tmpImage.name + '.' + fotobar.ouput_file_type;
                                    fotobar.images[that.id] = new Polaroid(that.tmpImage);
