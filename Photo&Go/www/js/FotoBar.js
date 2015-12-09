@@ -71,7 +71,7 @@ Fotobar.prototype.getRemoteImage = function(remote_url) {
 		var self = this;
 		var writer = new FotobarFileWriter();
 		var download_link = encodeURI(remote_url);
-		var filename = remote_url.split('/').pop().split(/[?#]/)[0];// .replace(/\.[^/.]+$/,
+		var filename = remote_url.split('/').pop().split(/[?#]/)[0].replace(/[^a-z0-9]/gi, "_");// .replace(/\.[^/.]+$/,
 		// "");
 
 		var getFileSystem = writer.getDownloadDir(fotobarConfig.root_directory
