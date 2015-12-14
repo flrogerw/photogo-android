@@ -101,35 +101,6 @@ Fotobar.prototype.getRemoteImage = function(remote_url) {
 	});
 };
 
-/*
-Fotobar.prototype.getImageUpload = function(imageId) {
-
-	return $.Deferred(function() {
-
-		var self = this;
-		var imageSrc = fotobar.images[imageId].image.org_uri;
-
-		window.resolveLocalFileSystemURL(imageSrc, function(fileEntry) {
-
-			fileEntry.file(function(file) {
-
-				var reader = new FileReader();
-				reader.onloadend = function(e) {
-					var blob = new Blob([ e.target.result ], {
-						type : "image/jpeg"
-					});
-					//var reader = null;
-					self.resolve(blob);
-				}
-				reader.readAsArrayBuffer(file);
-			});
-		}, function(err) {
-
-			alert(JSON.stringify(err));
-		});
-	});
-};
-*/
 Fotobar.prototype.factory = function(imageArray) {
     
     return $.Deferred(function() {
@@ -164,7 +135,8 @@ Fotobar.prototype.factory = function(imageArray) {
                                    
                                    that.tmpImage.name = that.src.split('/').pop().split(/[?#]/)[0].replace(/[^a-z0-9]/gi, "_");
                                    that.tmpImage.name = that.tmpImage.id + '_'
-                                   + that.tmpImage.name + '.' + fotobar.ouput_file_type;
+                                   + that.tmpImage.name + '.' + that.tmpImage.name.substr(that.tmpImage.name.lastIndexOf('_') + 1);
+                                   
                                    fotobar.images[that.id] = new Polaroid(that.tmpImage);
                                    
                                    fotobar.images[that.id].is_landscape = exif.is_landscape;

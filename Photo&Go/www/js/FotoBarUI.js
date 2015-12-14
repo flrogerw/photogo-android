@@ -1858,6 +1858,7 @@ FotobarUI.prototype.getSelectCount = function(selected_images) {
 	return (remainderCount);
 };
 
+/*
 FotobarUI.prototype.postS3 = function(imageURI, fileName) {
 
 	var deferred = $.Deferred(), ft = new FileTransfer(), options = new FileUploadOptions();
@@ -1899,6 +1900,7 @@ FotobarUI.prototype.postS3 = function(imageURI, fileName) {
 	return deferred.promise();
 };
 
+*/
 FotobarUI.prototype.repopForm = function(form) {
 
 	for (i in form) {
