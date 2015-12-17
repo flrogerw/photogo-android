@@ -170,8 +170,8 @@ FotobarUI.prototype.showNextImage = function(ev_type) {
 		$(this).text(fotobarCart.getItemCount($(this).attr('sku')));
 	});
 
-	current_id_index = imageArray
-			.indexOf(fotobarUI.current_image.id.toString());
+	current_id_index = imageArray.indexOf(fotobarUI.current_image.id.toString());
+	
 	$("#image_legend").html(
 			(current_id_index + 1) + ' of ' + fotobar.imageCount());
 };
@@ -288,12 +288,14 @@ FotobarUI.prototype.setPolaroidCords = function(canvas_image, imageId) {
 				: 0;
 
 		current_image.image_scale = (current_image.image_height / fotobar.polaroidHeight);
+		
 
 		current_image.ty = current_image.plot_y = 0;
 		current_image.tx = left * -1;
 
 		current_image.plot_x = Math
 				.floor((current_image.tx * current_image.image_scale));
+		
 		// current_image.plot_width = Math.floor((fotobar.polaroidHeight *
 		// current_image.image_scale));
 		// current_image.plot_height = current_image.image_height;
@@ -361,9 +363,9 @@ FotobarUI.prototype.initialize = function(image, is_new_order) {
 		// fotobar.images[image.id].plot_height =
 		// Math.floor(fotobar.images[image.id].image_height /
 		// fotobar.images[image.id].zoom);
-		fotobar.images[image.id].plot_x = Math.floor(fotobar.images[image.id].tx);
-		fotobar.images[image.id].plot_y = Math.floor(fotobar.images[image.id].ty);
-
+		
+		fotobar.images[image.id].plot_x = Math.floor(fotobar.images[image.id].tx * fotobar.images[image.id].image_scale);
+		fotobar.images[image.id].plot_y = Math.floor(fotobar.images[image.id].ty * fotobar.images[image.id].image_scale);
 	}
 
 	current_canvas.appendChild(canvas_image);
