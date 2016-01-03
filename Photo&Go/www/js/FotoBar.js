@@ -143,6 +143,7 @@ Fotobar.prototype.factory = function(imageArray) {
                                    fotobar.images[that.id].is_square = exif.is_square;
                                    fotobar.images[that.id].aspect_ratio = exif.aspect_ratio;
                                    
+                                   fotobar.images[that.id].format = ( fotobar.images[that.id].is_landscape === true )? 3: 2;
                                    
                                    fotobarUI.initialize(that, true);
                                    fotobar.setImageParams(fotobar.images[that.id]);
