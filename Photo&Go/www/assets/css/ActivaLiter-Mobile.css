@@ -590,31 +590,38 @@ select option {
 	}
 
 .text_overlay{	
-    height: 5vh;
-    background-color: rgba(0,0,0,0.3);
+    height: 7vh;
+    background-color: rgba(0,0,0,0.5);
     position: relative;
-    bottom: 5vh;
     z-index: 10000;
     text-align: center;
+    font-family: 'Marydale' !important;
+	color: white;
+	font-size: 22px;
+	width: 100%;
+	/* -webkit-transform: rotate(7deg);*/
 }
 
 #add_text_input{
 text-align: center;
-font-family: Marydale;
-background-color: rgba(0,0,0,0.1);
+font-family: 'Marydale' !important;
 border: none;
 color: white;
-font-size: 16px;
+font-size: 22px;
 width: 100%;
+background-color: rgba(0,0,0,0.0);
+position: relative;
+
 }
 
 .text_overlay_preview {
-height: 5vh;
-background-color: rgba(0,0,0,0.3);
-position: absolute;
-bottom: 2vh;
+
+height: 7vh;
+background-color: rgba(0,0,0,0.5);
+position: relative;
 text-align: center;
 z-index: 10000;
 font-family: 'Marydale' !important;
 color: white;
+font-size: 22px;
 }

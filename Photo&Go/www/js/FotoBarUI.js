@@ -406,7 +406,6 @@ FotobarUI.prototype.initialize = function(image, is_new_order) {
 	*/
 	$('#swipe_panels').prepend(fotodiv);
 
-	console.log("XXXX: "+ JSON.stringify(fotobar.images[image.id]));
 	switch (true) {
 
 	case (fotobar.images[image.id].text.length == 0):
@@ -428,6 +427,12 @@ FotobarUI.prototype.initialize = function(image, is_new_order) {
 	}
 
 	$(input_text).html(fotobar.images[image.id].text);
+		
+	var text_ribbon_top = (fotobar.images[image.id].text_ribbon_y == 0)? $(input_text).height(): fotobar.images[image.id].text_ribbon_y;
+	$(input_text).css('top', (( text_ribbon_top - fotobar.frame_margin.y) * -1) + 'px');
+	
+	 $(input_text).css("background-color", fotobar.images[image.id].text_ribbon_bg);
+	
 	//$(input_text).attr('maxlength', fotobarUI.max_text_length);
 	//$(input_text).val(fotobar.images[image.id].text);
 	
@@ -445,51 +450,12 @@ FotobarUI.prototype.renderEditView = function() {
 	$('body').html(fotobarUI.imageEditTpl());
 	var canvas_image = $(fotobarUI.current_canvas).children('img');
 	var current_image = fotobarUI.current_image;
-
-	//fotobarUI.setFormatButtons();
-	//$("#edit_panel_text").html(current_image.text);
-	( current_image.text.length == 0 )? $("#add_text_button").html('Add Caption'): $("#add_text_button").html('Edit Caption');
-	$("#add_text_button").on("click", function(){
-		
-		$("#add_text_input").focus();
-
-	});
-	
-	$("#add_text_input").val(current_image.text);
-	
-	var add_text = document.getElementById("add_text_input");
-	
-	add_text.addEventListener('blur', function() {
-		
-		current_image.text = $(this).val();
-		( $(this).val().length == 0 )? $("#add_text_button").html('Add Caption'): $("#add_text_button").html('Edit Caption');
-	}, false);
 	
 	
-	$("#add_text_input").keydown(function( event ) {
-		  if ( event.which == 13 ) {
-			  current_image.text = $(this).val();
-			  console.log("text:: "+fotobarUI.current_image.text);
-			  }else{
-				  
-			$(this).val($(this).val().replace(/[^A-Za-z0-9.,:;<>%@#+=?$&\'"\_\/\*\- !{}()\[\]]/g, ""));  
-			  }
-	});
-	
-	
-	$(add_text).on('tap',function(){
-		
-		$(this).focus();
-	});
-
 	$('#edit_image').attr('src', $(canvas_image).attr('src'));
 	$('#edit_panel').width(current_image.width);
 	$('#edit_panel').height(current_image.height);
 	$('#edit_image').addClass(current_image.image.effect);
-	// $('#edit_image').width(current_image.canvas_width);
-	// $('#edit_image').height(current_image.canvas_height);
-
-	// alert(fotobar.margin.x);
 
 	$('#edit_panel').css(
 			{
@@ -511,6 +477,75 @@ FotobarUI.prototype.renderEditView = function() {
 			y : current_image.ty
 		}
 	});
+	
+	
+	 $( "#edit_panel_text" ).draggable({ 
+		 containment: "parent",
+		 stop: function( event, ui ) {
+			 current_image.text_ribbon_y = Math.abs(ui.position.top);
+		 }
+	 });
+	 
+	 
+	 var text_ribbon_top = (current_image.text_ribbon_y == 0)? $("#edit_panel_text").height(): current_image.text_ribbon_y ;
+	 $( "#edit_panel_text" ).css('top', text_ribbon_top * -1 ); 
+	 
+	 
+	 
+	 var span_text = (current_image.text == '')? 'Tap to Add Caption': current_image.text;
+	 $("#add_text_span").html(span_text);
+	 
+	 $( "#edit_panel_text" ).on("tap", function(){
+		 
+		 $("#add_text_span").hide();
+		 $("#add_text_input").show();
+		 $("#add_text_input").focus();
+		 
+	 });
+	 
+	 $(".text_overlay").css("background-color", current_image.text_ribbon_bg);
+	
+	 $("#text_background_color").val(current_image.text_ribbon_bg);
+	 $('#text_background_color').slider({ trackTheme: "a", theme: "e" });
+	 
+	$("#text_background_color").on("change", function(){
+		
+		$(".text_overlay").css("background-color", $("option:selected",this).val());
+		current_image.text_ribbon_bg = $("option:selected",this).val();
+	});
+	
+	$("#add_text_input").val(current_image.text);
+	//$("#edit_panel_text").html(current_image.text);
+	
+	var add_text = document.getElementById("add_text_input");
+	
+	add_text.addEventListener('blur', function() {
+		
+		current_image.text = $(this).val();
+		$("#add_text_input").hide();
+		$("#add_text_span").html($(this).val());
+		$("#add_text_span").show();
+		
+	}, false);
+	
+	
+	
+	$("#add_text_input").keydown(function( event ) {
+		
+		  if ( event.which == 13 ) {
+			  
+			  current_image.text = $(this).val();
+			  $("#add_text_input").hide();
+			  $("#add_text_span").html($(this).val());
+			  $("#add_text_span").show();
+			  }else{
+				  
+			$(this).val($(this).val().replace(/[^A-Za-z0-9.,:;<>%@#+=?$&\'"\_\/\*\- !{}()\[\]]/g, ""));
+			  }
+	});
+	
+	
+	
 
 	$('#menu-fx div.fx')
 			.on(

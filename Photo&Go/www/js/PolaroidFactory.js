@@ -30,4 +30,6 @@ var Polaroid = function(image) {
 	this.location_url;
 	this.is_remote = true;
 	this.timestamp;
+	this.text_ribbon_y = 0;
+	this.text_ribbon_bg = "rgba(0,0,0,0.5)";
 };
