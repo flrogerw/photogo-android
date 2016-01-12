@@ -145,7 +145,7 @@ Fotobar.prototype.factory = function(imageArray) {
                                    
                                    fotobar.images[that.id].format = ( fotobar.images[that.id].is_landscape === true )? 3: 2;
                                    
-                                   fotobarUI.initialize(that, true);
+                                  // fotobarUI.initialize(that, true);
                                    fotobar.setImageParams(fotobar.images[that.id]);
                                    
                                    var imageURIs = imageArray.shift();
@@ -230,11 +230,11 @@ Fotobar.prototype.setImageParams = function(current_image) {
 	var image_container = document.getElementById('container_'
 			+ current_image.id);
 	var current_canvas = document.getElementById(current_image.id);
-
+	
 	switch (current_image.format) {
 
 	case (1):
-		
+
 		$(current_canvas).height(this.polaroidHeight);
 		current_image.height = this.polaroidHeight;
 		$(current_canvas).width(this.polaroidWidth);

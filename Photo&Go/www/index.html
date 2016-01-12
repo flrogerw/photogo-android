@@ -25,7 +25,7 @@
 
 </head>
 
-<body>
+<body data-role="none">
 
 <script id="home-tpl" type="text/template">
 
@@ -282,7 +282,7 @@
 <div id="edit_panel">
 <img src="" id="edit_image">
 <div id="edit_panel_text" class="text_overlay">
-<span id="add_text_span">Tap to Add Caption</span>
+<span class="add_text_span" id="add_text_span">Tap to Add Caption</span>
 <input id="add_text_input" style="display:none" type="text" placeholder="Add Caption"/>
 </div>
 
@@ -310,12 +310,64 @@
 
 <div id="add_text">
 
-Background Color:
-<select id="text_background_color">
-<option value="rgba(0,0,0,0.0)"> None </option>
-<option value="rgba(0,0,0,0.5)"> Black </option>
-</select>
-<!-- button id="add_text_button">Add Text</button -->
+<table style="width: 100%">
+<tr>
+<td>
+Text Options
+</td>
+<td>
+Orientation
+</td>
+</tr>
+<tr>
+<td>
+
+
+<table id="text_options">
+<tr>
+<td>
+&nbsp;&nbsp;Background &nbsp;
+</td>
+<td>
+<div style="background-color: black" class="text_background_color" color="rgba(0,0,0,0.4)">
+</div>
+&nbsp;&nbsp;
+<div class="text_background_color" color="rgba(0,0,0,0.0)">
+</div>
+</td>
+</tr>
+<tr>
+<td>
+&nbsp;&nbsp;Color &nbsp;
+</td><td>
+<div style="background-color: black" class="text_font_color" color="#000000">
+</div>
+&nbsp;&nbsp;
+<div style="background-color: white" class="text_font_color" color="#ffffff">
+</div>
+</td>
+</tr>
+</table>
+
+
+</td>
+
+<td>
+<div class="image_orientation" style="height:68px;width:40px" format="2">
+</div>
+<div class="image_orientation" style="height:40px;width:68px;position: relative; top: -28px;" format="3">
+</div>
+</td>
+
+
+<!-- td>
+<div id="rotate_group">
+  <button disabled value="ccw" class="rotate_button" id="rotate_ccw">CCW</button>
+  <button disabled value="cc" class="rotate_button" id="rotate_cw">CC</button>
+</div>
+</td -->
+</tr>
+</table>
 </div>
 
 <!--
@@ -654,6 +706,8 @@ Background Color:
 	<script type="text/javascript" src="libs/FacebookConnectPlugin.js"></script>
 	<script type="text/javascript" src="libs/jquery.exif.js"></script>
 	<script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+	<script type="text/javascript" src="libs/jquery.emoji.js"></script>
+	
 
 </body>
 

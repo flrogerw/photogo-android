@@ -586,12 +586,12 @@ select option {
 }
 
 #add_text {
-	height:8vh;
+	height:19vh;
 	}
 
 .text_overlay{	
-    height: 7vh;
-    background-color: rgba(0,0,0,0.5);
+    height: 6vh;
+    background-color: rgba(0,0,0,0.4);
     position: relative;
     z-index: 10000;
     text-align: center;
@@ -608,7 +608,7 @@ font-family: 'Marydale' !important;
 border: none;
 color: white;
 font-size: 22px;
-width: 100%;
+/*width: 100%; */
 background-color: rgba(0,0,0,0.0);
 position: relative;
 
@@ -616,12 +616,32 @@ position: relative;
 
 .text_overlay_preview {
 
-height: 7vh;
-background-color: rgba(0,0,0,0.5);
+height: 6vh;
+background-color: rgba(0,0,0,0.4);
 position: relative;
 text-align: center;
 z-index: 10000;
 font-family: 'Marydale' !important;
 color: white;
 font-size: 22px;
+}
+
+#text_options{
+	text-align: left;
+	height: 14vh;
+	font-size: 12px;
+}
+
+.text_background_color, .text_font_color{
+	
+	width: 30px;
+	height: 20px;
+	border: 1px black solid;
+	display: inline-block;
+}
+.image_orientation{
+	
+	border: 1px black solid;
+	display: inline-block;
+	margin:2px;
 }
