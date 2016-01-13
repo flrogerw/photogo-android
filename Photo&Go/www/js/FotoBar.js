@@ -282,6 +282,7 @@ Fotobar.prototype.setImageParams = function(current_image) {
 			"top" : this.frame_margin.x,
 			"left" : this.frame_margin.y
 		});
+		
 		current_image.width = this.fullFrameHeight;
 		current_image.height = this.fullFrameWidth;
 		$(image_container).width(this.canvasSetHeight);
@@ -289,7 +290,7 @@ Fotobar.prototype.setImageParams = function(current_image) {
 		current_image.canvas_width = current_image.width * current_image.aspect_ratio;
 		current_image.canvas_height = current_image.width;
 		current_image.plot_width = Math.floor((current_image.width * current_image.image_scale));
-		current_image.plot_height = Math.floor((current_image.height * current_image.image_scale));
+		current_image.plot_height = Math.floor((current_image.height * current_image.image_scale)); 
 		
 		break;
 
@@ -312,6 +313,8 @@ Fotobar.prototype.setImageParams = function(current_image) {
 		current_image.plot_height = Math.floor((current_image.height * current_image.image_scale));
 		break;
 	}
+	
+	current_image.text_ribbon_width = ( current_image.text_ribbon_width < 0 )? current_image.width: current_image.text_ribbon_width;
 };
 
 Fotobar.prototype.getRandom = function() {
