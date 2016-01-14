@@ -205,7 +205,6 @@ FotobarUI.prototype.renderImages = function(imageArray) {
 	fotobarUI.renderImageView();
 	$.when(fotobar.factory(imageArray)).done(function() {
 
-		//fotobarUI.renderImageView();
 		fotobarUI.redrawCurrent();
 		$(".preview_overlay").css('opacity', 0);
 		fotobarUI.showNextImage(null);
@@ -447,8 +446,7 @@ FotobarUI.prototype.renderEditView = function() {
 			y : current_image.ty
 		}
 	});
-	
-	
+		
 	 $( "#edit_panel_text" ).draggable({ 
 		 containment: "parent",
 		 stop: function( event, ui ) {
@@ -456,13 +454,10 @@ FotobarUI.prototype.renderEditView = function() {
 			 current_image.text_ribbon_x = Math.abs(ui.position.left);
 		 }
 	 });
-	 
-	 
+	 	 
 	 var text_ribbon_top = (current_image.text_ribbon_y == 0)? $("#edit_panel_text").height(): current_image.text_ribbon_y ;
 	 $( "#edit_panel_text" ).css({'top': (text_ribbon_top * -1), 'left' : current_image.text_ribbon_x } ); 
-	 
-	 
-	 
+	 	 
 	 var span_text = (current_image.text == '')? 'Tap to Add Caption': current_image.text;
 	 $("#add_text_span").html(span_text);
 	// $("#add_text_span").emoji();
@@ -472,11 +467,9 @@ FotobarUI.prototype.renderEditView = function() {
 		 $("#add_text_span").hide();
 		 $( "#edit_panel_text" ).css({'left': '0px', 'width':'100%' });
 		 $("#add_text_input").show();
-		 $("#add_text_input").focus();
-		 
+		 $("#add_text_input").focus(); 
 	 });
-	 
-	
+	 	
 	 $(".image_orientation[format='"+current_image.format+"']").css('border', '2px green solid');
 
 	 $(".image_orientation").on("click", function(){
@@ -484,7 +477,9 @@ FotobarUI.prototype.renderEditView = function() {
 		$('.image_orientation').css('border', '1px black solid');
 		$(this).css('border', '2px green solid');
 		current_image.text_ribbon_width = -1;
-		current_image.text_ribbon_x = current_image.text_ribbon_x = 0;
+		current_image.text_ribbon_x = current_image.text_ribbon_y = 0;
+		current_image.text_ribbon_bg = "rgba(0,0,0,0.4)";
+		current_image.text = $("#add_text_input").val();
 		fotobarUI.updateImageCoords(picture.guillotine('getData'));
 		current_image.format = parseInt($(this).attr('format'));
 		fotobar.setImageParams(current_image);
@@ -504,7 +499,7 @@ FotobarUI.prototype.renderEditView = function() {
 		if(current_image.text_ribbon_bg == "rgba(0,0,0,0.0)"){
 			
 			current_image.text_ribbon_width = $('#add_text_span').width();
-			current_image.text_ribbon_x = (( current_image.width - $('#add_text_span').width()) /2);
+			current_image.text_ribbon_x = (( current_image.guillotine_width - $('#add_text_span').width()) /2);
 			$(".text_overlay").css("left", current_image.text_ribbon_x);
 				
 		}else{
@@ -542,9 +537,7 @@ FotobarUI.prototype.renderEditView = function() {
 	});
 	
 	*/
-	
-	
-	
+		
 	 $(".text_font_color[color='"+current_image.text_font_color+"']").css('border', '2px green solid');
 	 $(".text_overlay span, .text_overlay input").css("color", current_image.text_font_color);
 	 $(".text_font_color").on("click", function(){
