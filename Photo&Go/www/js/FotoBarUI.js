@@ -174,6 +174,9 @@ FotobarUI.prototype.showNextImage = function(ev_type) {
 	
 	$("#image_legend").html(
 			(current_id_index + 1) + ' of ' + fotobar.imageCount());
+	
+	var rotate_degree = (fotobarUI.current_image.format == 2)? 0: 90;
+	$(".polaroidicon").css("-webkit-transform", "rotate("+rotate_degree+"deg)" );
 };
 
 FotobarUI.prototype.addGestures = function(current_canvas) {
@@ -203,7 +206,7 @@ FotobarUI.prototype.renderImages = function(imageArray) {
 	$.when(fotobar.factory(imageArray)).done(function() {
 
 		//fotobarUI.renderImageView();
-		//fotobarUI.redrawCurrent();
+		fotobarUI.redrawCurrent();
 		$(".preview_overlay").css('opacity', 0);
 		fotobarUI.showNextImage(null);
 	});
@@ -267,16 +270,10 @@ FotobarUI.prototype.setPolaroidCords = function(canvas_image, imageId) {
 
 		current_image.ty = current_image.tx = 0;
 		current_image.plot_y = current_image.plot_x = 0;
-
 		current_image.image_scale = (current_image.image_width / fotobar.polaroidWidth);
 		current_image.ty = current_image.tx = 0;
 		current_image.plot_y = current_image.plot_x = 0;
-		// current_image.plot_height = current_image.image_height;
-		// current_image.plot_width = current_image.image_width;
-
-		canvas_image.width = 263;
-		canvas_image.height = 263;
-		
+		canvas_image.width = canvas_image.height = fotobar.fullFrameHeight;
 		break;
 
 	case (current_image.is_landscape || current_image.is_spectra):
@@ -290,18 +287,11 @@ FotobarUI.prototype.setPolaroidCords = function(canvas_image, imageId) {
 				: 0;
 
 		current_image.image_scale = (current_image.image_height / fotobar.polaroidHeight);
-		
-
 		current_image.ty = current_image.plot_y = 0;
 		current_image.tx = left * -1;
 
 		current_image.plot_x = Math
 				.floor((current_image.tx * current_image.image_scale));
-		
-		// current_image.plot_width = Math.floor((fotobar.polaroidHeight *
-		// current_image.image_scale));
-		// current_image.plot_height = current_image.image_height;
-
 		break;
 
 	default: // portrait
@@ -319,10 +309,6 @@ FotobarUI.prototype.setPolaroidCords = function(canvas_image, imageId) {
 		current_image.tx = current_image.plot_tx = 0;
 		current_image.plot_y = Math.floor(current_image.ty
 				* current_image.image_scale);
-		// current_image.plot_height = floor(fotobar.polaroidWidth *
-		// current_image.image_scale);
-		// current_image.plot_width = current_image.image_width;
-
 		break;
 	}
 
@@ -350,15 +336,16 @@ FotobarUI.prototype.initialize = function(image, is_new_order) {
 		this.setPolaroidCords(canvas_image, image.id);
 		return;
 	} else {
-		canvas_image.width = fotobar.images[image.id].canvas_width
-				* fotobar.images[image.id].zoom;
-		canvas_image.height = fotobar.images[image.id].canvas_height
-				* fotobar.images[image.id].zoom;
+		canvas_image.width = fotobar.images[image.id].canvas_width;
+				//* fotobar.images[image.id].zoom;
+		canvas_image.height = fotobar.images[image.id].canvas_height;
+				//* fotobar.images[image.id].zoom;
 		canvas_image.style.marginTop = (fotobar.images[image.id].ty * -1)
 				+ 'px';
 		canvas_image.style.marginLeft = (fotobar.images[image.id].tx * -1)
 				+ 'px';
 
+		
 		// fotobar.images[image.id].plot_width =
 		// Math.floor(fotobar.images[image.id].image_width /
 		// fotobar.images[image.id].zoom);
@@ -435,8 +422,9 @@ FotobarUI.prototype.renderEditView = function() {
 	var current_image = fotobarUI.current_image;
 		
 	$('#edit_image').attr('src', $(canvas_image).attr('src'));
-	$('#edit_panel').width(current_image.width);
-	$('#edit_panel').height(current_image.height);
+	
+	$('#edit_panel').width(current_image.guillotine_width);
+	$('#edit_panel').height(current_image.guillotine_height);
 	$('#edit_image').addClass(current_image.image.effect);
 
 	$('#edit_panel').css(
@@ -450,10 +438,10 @@ FotobarUI.prototype.renderEditView = function() {
 	var picture = $('#edit_image'); // Must be already loaded or cached!
 	picture.guillotine('remove');
 	picture.guillotine({
-		width : current_image.width,
-		height : current_image.height,
+		width : current_image.guillotine_width,
+		height : current_image.guillotine_height,
 		init : {
-			scale : current_image.scale,
+			scale : 0.001,
 			angle : 0,
 			x : current_image.tx,
 			y : current_image.ty
@@ -495,6 +483,12 @@ FotobarUI.prototype.renderEditView = function() {
 		 
 		$('.image_orientation').css('border', '1px black solid');
 		$(this).css('border', '2px green solid');
+		current_image.text_ribbon_width = -1;
+		current_image.text_ribbon_x = current_image.text_ribbon_x = 0;
+		fotobarUI.updateImageCoords(picture.guillotine('getData'));
+		current_image.format = parseInt($(this).attr('format'));
+		fotobar.setImageParams(current_image);
+		fotobarUI.renderEditView();
 	 });
 	 
 	$(".text_overlay").css("width", current_image.text_ribbon_width+"px");
@@ -506,9 +500,7 @@ FotobarUI.prototype.renderEditView = function() {
 		$(this).css('border', '2px green solid');
 		$(".text_overlay").css("background-color", $(this).attr('color'));
 		current_image.text_ribbon_bg = $(this).attr('color');
-		
-		
-		
+				
 		if(current_image.text_ribbon_bg == "rgba(0,0,0,0.0)"){
 			
 			current_image.text_ribbon_width = $('#add_text_span').width();
@@ -519,7 +511,7 @@ FotobarUI.prototype.renderEditView = function() {
 			
 			$(".text_overlay").css({"left":"0px"});
 			current_image.text_ribbon_x = 0;
-			current_image.text_ribbon_width = $('#edit_panel').width();
+			current_image.text_ribbon_width = current_image.guillotine_width;
 			
 		}
 		
@@ -595,7 +587,7 @@ FotobarUI.prototype.renderEditView = function() {
 			current_image.text = $(this).val();
 		  	$("#add_text_input").hide();
 		  	$("#add_text_span").html($(this).val());
-		  	current_image.text_ribbon_width = (current_image.text_ribbon_bg == "rgba(0,0,0,0.0)")? $('#add_text_span').width(): current_image.width;
+		  	current_image.text_ribbon_width = (current_image.text_ribbon_bg == "rgba(0,0,0,0.0)")? $('#add_text_span').width(): current_image.guillotine_width;
 		  //$("#add_text_span").emoji();
 		  	$("#add_text_span").show();
 			break;
@@ -1040,7 +1032,6 @@ FotobarUI.prototype.renderCheckoutView = function() {
 						text : 'Please confirm your information is correct.'
 					});
 				}
-
 			});
 
 	$("input[name=delivery_options]:radio, input[name=payment_options]:radio")
@@ -1407,39 +1398,7 @@ FotobarUI.prototype.renderThankyouView = function() {
  * BUTTONS
  */
 
-/*
-FotobarUI.prototype.setFormatButtons = function() {
 
-	var menuArray = $("#menu-format div.format");
-	$(menuArray).not('#polaroid_button').css({
-		opacity : .25
-	});
-
-	switch (true) {
-
-	case (this.current_image.is_landscape):
-		$('#full_frame_button_l, #spectra_frame_button').css({
-			opacity : 1
-		});
-		break;
-
-	case (this.current_image.is_square):
-		break;
-
-	default: // portrait
-		$('#full_frame_button_p').css({
-			opacity : 1
-		});
-		break;
-	}
-
-	var selectedFormat = $(menuArray).get(this.current_image.format - 1);
-	$(menuArray).removeClass('selected');
-	$(selectedFormat).addClass('selected');
-	$(this.current_image).children('img').addClass(this.current_image.effect);
-
-};
-*/
 FotobarUI.prototype.deleteButtonClick = function() {
 
 	navigator.notification.confirm(
@@ -1470,58 +1429,6 @@ FotobarUI.prototype.deleteButtonClick = function() {
 					}
 				}
 			}, 'GoPrints by Photo & Go', 'Delete,Cancel');
-};
-
-FotobarUI.prototype.frameButtonClick = function(buttonId) {
-
-	var canvas_image = $(this.current_canvas).children('img');
-
-	switch (buttonId) {
-
-	case ('full_frame_button_p'):
-
-		// $(canvas_image).css('top', 0);
-		$("#text_" + this.current_image.id).hide();
-		this.current_image.is_polaroid = false;
-		this.current_image.is_spectra = false;
-		this.current_image.format = 2;
-		break;
-
-	case ('full_frame_button_l'):
-
-		// $(canvas_image).css('left', 0);
-		$("#text_" + this.current_image.id).hide();
-		this.current_image.is_polaroid = false;
-		this.current_image.is_spectra = false;
-		this.current_image.format = 3;
-		break;
-
-	case ('spectra_frame_button'):
-
-		$("#text_" + this.current_image.id).show();
-		this.current_image.is_polaroid = false;
-		this.current_image.is_spectra = true;
-		this.current_image.format = 4;
-		break;
-
-	default:
-
-		$("#text_" + this.current_image.id).show();
-		this.current_image.is_polaroid = true;
-		this.current_image.is_spectra = false;
-		this.current_image.format = 1;
-		break;
-	}
-
-	fotobar.setImageParams(this.current_image);
-	// this.setPolaroidCords($(this.current_canvas).children('img'),
-	// this.current_image.id);
-
-	fotobarUI.renderEditView();
-
-	// var imageContainer = document.getElementById('container_'
-	// + this.current_image.id);
-	// fotobarUI.carousel.updateFormat(imageContainer, this.current_image);
 };
 
 /*******************************************************************************
@@ -1834,7 +1741,7 @@ FotobarUI.prototype.getFbAlbums = function() {
 		});
 
 		getAlbums.fail(function(error) {
-			// alert(error);
+
 			fotobarUI.alertUser({
 				type : 'error',
 				text : 'We could not get your albums at this time.'
@@ -2016,7 +1923,6 @@ FotobarUI.prototype.getSelectCount = function(selected_images) {
 	return (remainderCount);
 };
 
-
 FotobarUI.prototype.repopForm = function(form) {
 
 	for (i in form) {
@@ -2054,7 +1960,6 @@ FotobarUI.prototype.repopForm = function(form) {
 
 			break;
 		}
-
 	}
 
 	if (form.location_select != null && form.location_select != 0) {
@@ -2062,7 +1967,6 @@ FotobarUI.prototype.repopForm = function(form) {
 		fotobarUI.popStoreAddress(form.location_select);
 		$("#address_info").show();
 	}
-
 };
 
 FotobarUI.prototype.popStoreAddress = function(storeId) {
@@ -2130,11 +2034,7 @@ FotobarUI.prototype.displayAlert = function(error) {
 		}
 
 		var self = this;
-		// var messageDiv = document.createElement('textarea');
 		var currentClass = (error.type == 'error') ? 'errorDiv' : 'succesDiv';
-		// $(messageDiv).attr('id', 'message_div');
-		// $(messageDiv).addClass(currentClass);
-		// $(messageDiv).html(error.text);
 
 		$('<div/>', {
 			id : 'alert_message',

@@ -645,3 +645,8 @@ font-size: 22px;
 	display: inline-block;
 	margin:2px;
 }
+
+#text_display_table td{
+	width: 50%;
+	text-align: center;
+}

@@ -239,7 +239,8 @@
 <div class="instagram">Instagram</div>
 
 <div class="facebook">Facebook</div>
-
+<br/>
+<div class="directions">Remember, Original Size has a minimum of 6.</div>
 </div>	
 
 <div class="logout">
@@ -294,7 +295,7 @@
 	<button id="zoom-in">zoom in</button>
 	<button id="zoom-out">zoom out</button>
 </div -->
-<div class="directions">Hold and drag the photo to position it.</div>
+<div class="directions">Hold and drag the photo or text to reposition it.</div>
 <div class="clear"></div>
 
 <div id="controls-container" class="controls-container polaroid-edit">
@@ -309,13 +310,13 @@
 
 <div id="add_text">
 
-<table style="width: 100%">
+<table id="text_display_table" style="width: 100%">
 <tr>
 <td>
 Text Options
 </td>
 <td>
-Orientation
+&nbsp;&nbsp;Orientation
 </td>
 </tr>
 <tr>
@@ -352,10 +353,18 @@ Orientation
 </td>
 
 <td>
-<div class="image_orientation" style="height:68px;width:40px" format="2">
+<table style="width:100%">
+<tr>
+<td>
+<div class="image_orientation" style="height:50px;width:40px;float:right" format="2">
 </div>
-<div class="image_orientation" style="height:40px;width:68px;position: relative; top: -28px;" format="3">
+</td>
+<td>
+<div class="image_orientation" style="height:40px;width:50px;float:left" format="3">
 </div>
+</td>
+</tr>
+</table>
 </td>
 
 
@@ -466,7 +475,7 @@ Orientation
 
 <div class="size selected small">
 
-<img class="polaroidicon" src="assets/img/Formats-SX70.png"><br/><strong>Original</strong><br/>{{ getSize '703040'}} - ${{ getPrice '703040'}}
+<img class="polaroidicon" src="assets/img/Formats-Series80-Portrait.png"><br/><strong>Original</strong><br/>{{ getSize '703040'}} - ${{ getPrice '703040'}}
 
 <div sku="703040" class="qty"><img class="minus_count" src="assets/img/qty-minus.png" ><span>0</span><img class="plus_count" src="assets/img/qty-plus.png" ></div>
 
@@ -474,7 +483,7 @@ Orientation
 
 <div class="size medium">
 
-<img class="polaroidicon" src="assets/img/Formats-SX70.png"><br/><strong>Medium</strong><br/>{{ getSize '703047'}} - ${{ getPrice '703047'}}
+<img class="polaroidicon" src="assets/img/Formats-Series80-Portrait.png"><br/><strong>Medium</strong><br/>{{ getSize '703047'}} - ${{ getPrice '703047'}}
 
 <div sku="703047" class="qty"><img class="minus_count" src="assets/img/qty-minus.png" ><span>0</span><img class="plus_count" src="assets/img/qty-plus.png" ></div>
 
@@ -482,7 +491,7 @@ Orientation
 
 <div class="size large">
 
-<img class="polaroidicon" src="assets/img/Formats-SX70.png"><br/><strong>Large</strong><br/>{{ getSize '703041'}} - ${{ getPrice '703041'}}
+<img class="polaroidicon" src="assets/img/Formats-Series80-Portrait.png"><br/><strong>Large</strong><br/>{{ getSize '703041'}} - ${{ getPrice '703041'}}
 
 <div sku="703041" class="qty"><img class="minus_count" src="assets/img/qty-minus.png" ><span>0</span><img class="plus_count" src="assets/img/qty-plus.png" ></div>
 
