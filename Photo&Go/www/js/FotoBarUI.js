@@ -479,6 +479,7 @@ FotobarUI.prototype.renderEditView = function() {
 		current_image.text_ribbon_width = -1;
 		current_image.text_ribbon_x = current_image.text_ribbon_y = 0;
 		current_image.text_ribbon_bg = "rgba(0,0,0,0.4)";
+		current_image.text_font_color = "#ffffff";
 		current_image.text = $("#add_text_input").val();
 		fotobarUI.updateImageCoords(picture.guillotine('getData'));
 		current_image.format = parseInt($(this).attr('format'));
@@ -507,7 +508,6 @@ FotobarUI.prototype.renderEditView = function() {
 			$(".text_overlay").css({"left":"0px"});
 			current_image.text_ribbon_x = 0;
 			current_image.text_ribbon_width = current_image.guillotine_width;
-			
 		}
 		
 		$(".text_overlay").css("width", current_image.text_ribbon_width + "px");
@@ -547,13 +547,11 @@ FotobarUI.prototype.renderEditView = function() {
 			$(".text_overlay span, .text_overlay input").css("color", $(this).attr('color'));
 			current_image.text_font_color = $(this).attr('color');
 		});
-	
-	
+		
 	$("#add_text_input").val(current_image.text);
 	$("#add_text_input").attr('maxlength', fotobarUI.max_text_length);
 	
-	var add_text = document.getElementById("add_text_input");
-	
+	var add_text = document.getElementById("add_text_input");	
 	add_text.addEventListener('blur', function() {
 		
 		current_image.text = $(this).val();
@@ -562,45 +560,41 @@ FotobarUI.prototype.renderEditView = function() {
 			current_image.text_ribbon_x = current_image.width - $("#add_text_span").width();
 		}
 		
-		 $( "#edit_panel_text" ).css({'left': current_image.text_ribbon_x, 'width':current_image.text_ribbon_width });
+		$( "#edit_panel_text" ).css({'left': current_image.text_ribbon_x, 'width':current_image.text_ribbon_width });
 		$("#add_text_input").hide();
 		// $("#add_text_span").emoji();
 		$("#add_text_span").show();
 		
 	}, false);
-	
-	
-	
+		
 	$("#add_text_input").keydown(function( event ) {
 		
 		switch(true){
 		
-		case(event.which == 13):
+			case(event.which == 13):
+				
+				current_image.text = $(this).val();
+			  	$("#add_text_input").hide();
+			  	$("#add_text_span").html($(this).val());
+			  	current_image.text_ribbon_width = (current_image.text_ribbon_bg == "rgba(0,0,0,0.0)")? $('#add_text_span').width(): current_image.guillotine_width;
+			  //$("#add_text_span").emoji();
+			  	$("#add_text_span").show();
+				break;
 			
-			current_image.text = $(this).val();
-		  	$("#add_text_input").hide();
-		  	$("#add_text_span").html($(this).val());
-		  	current_image.text_ribbon_width = (current_image.text_ribbon_bg == "rgba(0,0,0,0.0)")? $('#add_text_span').width(): current_image.guillotine_width;
-		  //$("#add_text_span").emoji();
-		  	$("#add_text_span").show();
-			break;
-		
-		default:
-			
-			$(this).val($(this).val().replace(/[^A-Za-z0-9.,:;<>%@#+=?$&\'"\_\/\*\- !{}()\[\]]/g, ""));
-			current_image.text = $(this).val();
-			//$(this).emoji();
-			break;
-		}
+			default:
+				
+				$(this).val($(this).val().replace(/[^A-Za-z0-9.,:;<>%@#+=?$&\'"\_\/\*\- !{}()\[\]]/g, ""));
+				current_image.text = $(this).val();
+				$("#add_text_span").html(current_image.text);
+				console.log('span width: '+$("#add_text_span").width());
+				//$(this).emoji();
+				break;
+			}
 	});
 	
-	$('#menu-fx div.fx')
-			.on(
-					'click',
-					function() {
+	$('#menu-fx div.fx').on('click',function() {
 
-						$('#edit_image').removeClass(
-								fotobarUI.current_image.effect);
+						$('#edit_image').removeClass(fotobarUI.current_image.effect);
 						fotobarUI.current_image.image.effect = '';
 						$('#edit_image').removeClass();
 
@@ -612,7 +606,6 @@ FotobarUI.prototype.renderEditView = function() {
 						}
 					});
 
-	// Delete
 	$("#delete").on("click", function() {
 		fotobarUI.deleteButtonClick();
 	});
@@ -652,9 +645,7 @@ FotobarUI.prototype.renderEditView = function() {
 						zoom_factor);
 			});
 */
-	$('#edit_done_btn').on(
-			'click',
-			function() {
+	$('#edit_done_btn').on('click',function() {
 				
 				fotobarUI.current_image.text = $("#add_text_input").val();
 				
@@ -679,10 +670,8 @@ FotobarUI.prototype.updateImageCoords = function(imageCords, zoom_factor) {
 	fotobarUI.current_image.ty = imageCords.y;
 	fotobarUI.current_image.bx = imageCords.x + imageCords.w;
 	fotobarUI.current_image.by = imageCords.y + imageCords.h;
-
 	fotobarUI.current_image.zoom = zoom_factor;
 	fotobarUI.current_image.scale = imageCords.scale;
-
 };
 
 FotobarUI.prototype.renderCheckoutView = function() {
@@ -711,109 +700,100 @@ FotobarUI.prototype.renderCheckoutView = function() {
 	$('#total_with_shipping_cost, #checkout_total').html(
 			fotobarCart.getGrandTotal());
 
-	$('#ship_state, #ship_type').on(
-			'change',
-			function() {
+	$('#ship_state, #ship_type').on('change',function() {
 
-				if ($('#ship_state').val() == 0) {
-					$('#ship_state').css('color', '#A39D9D');
-					alertUser({
-						type : 'error',
-						text : 'Please select a state for shipping'
-
-					});
-				} else {
-					$('#ship_state').css('color', '#323030');
-					var setShipping = fotobarCart.setShippingRate($(
-							'#ship_type').val(), $('#ship_state').val());
-
-					setShipping.done(function() {
-						$('#total_with_shipping_cost, #checkout_total').html(
-								fotobarCart.getGrandTotal());
-					});
-
-				}
+		if ($('#ship_state').val() == 0) {
+			$('#ship_state').css('color', '#A39D9D');
+			alertUser({
+				type : 'error',
+				text : 'Please select a state for shipping'
 			});
+		} else {
+			$('#ship_state').css('color', '#323030');
+			var setShipping = fotobarCart.setShippingRate($(
+					'#ship_type').val(), $('#ship_state').val());
+
+			setShipping.done(function() {
+				$('#total_with_shipping_cost, #checkout_total').html(
+						fotobarCart.getGrandTotal());
+			});
+		}
+	});
 
 	/**
 	 * Update Taxes on Zip Code Change
 	 */
-	$("#ship_zip").on(
-			'blur',
-			function() {
+	$("#ship_zip").on('blur',function() {
 
-				$(this).css({
-					"border-color" : "#323030"
-				});
+		$(this).css({
+			"border-color" : "#323030"
+		});
 
-				if (!/^\d{5}(-\d{4})?$/.test($(this).val())) {
+		if (!/^\d{5}(-\d{4})?$/.test($(this).val())) {
 
-					$(this).css({
-						"border-color" : "red"
-					});
-					fotobarUI.alertUser({
-						type : 'error',
-						text : 'Please enter a valid zip code'
-					});
-				} else {
-					var tax_zip = $(this).val().split('-')[0];
-					var setTaxRate = fotobarCart.setTaxRate(tax_zip, 'ship');
-					setTaxRate.done(function() {
+			$(this).css({
+				"border-color" : "red"
+			});
+			fotobarUI.alertUser({
+				type : 'error',
+				text : 'Please enter a valid zip code'
+			});
+		} else {
+			var tax_zip = $(this).val().split('-')[0];
+			var setTaxRate = fotobarCart.setTaxRate(tax_zip, 'ship');
+			setTaxRate.done(function() {
 
-						$('#total_with_shipping_cost, #checkout_total').html(
-								fotobarCart.getGrandTotal());
-					});
-				}
+				$('#total_with_shipping_cost, #checkout_total').html(
+						fotobarCart.getGrandTotal());
+			});
+		}
+	});
+
+	$("#location_select").on('change',function() {
+
+			$("#location_select option[value='0']").remove();
+			$('#location_select').css('color', '#323030');
+			$(
+					"#location_hours,#location_address,#location_city,#location_phone")
+					.empty();
+			$("#address_info").show();
+
+			var storeId = $("#location_select option:selected")
+					.val();
+			fotobarCart.storeInfo = fotobarConfig.configure.locations
+					.filter(function(obj) {
+						return obj.id === storeId;
+					})[0];
+
+			var setTaxRate = fotobarCart.setTaxRate(
+					fotobarCart.storeInfo.zip_code, 'pick_up');
+			setTaxRate.done(function() {
+
+				$('#total_with_shipping_cost, #checkout_total')
+						.html(fotobarCart.getGrandTotal());
 			});
 
-	$("#location_select")
-			.on(
-					'change',
-					function() {
+			var streetArray = [ fotobarCart.storeInfo.addr1,
+					fotobarCart.storeInfo.addr2,
+					fotobarCart.storeInfo.addr3 ];
+			streetArray = streetArray.filter(function(e) {
+				return e === 0 || e
+			});
+			$("#location_address").append(streetArray.join(', '))
+			$("#location_city").append(
+					fotobarCart.storeInfo.city + ', '
+							+ fotobarCart.storeInfo.state + ' '
+							+ fotobarCart.storeInfo.zip_code);
+			$("#location_phone")
+					.append(fotobarCart.storeInfo.phone);
+			for (line in fotobarCart.storeInfo.hours) {
 
-						$("#location_select option[value='0']").remove();
-						$('#location_select').css('color', '#323030');
-						$(
-								"#location_hours,#location_address,#location_city,#location_phone")
-								.empty();
-						$("#address_info").show();
-
-						var storeId = $("#location_select option:selected")
-								.val();
-						fotobarCart.storeInfo = fotobarConfig.configure.locations
-								.filter(function(obj) {
-									return obj.id === storeId;
-								})[0];
-
-						var setTaxRate = fotobarCart.setTaxRate(
-								fotobarCart.storeInfo.zip_code, 'pick_up');
-						setTaxRate.done(function() {
-
-							$('#total_with_shipping_cost, #checkout_total')
-									.html(fotobarCart.getGrandTotal());
-						});
-
-						var streetArray = [ fotobarCart.storeInfo.addr1,
-								fotobarCart.storeInfo.addr2,
-								fotobarCart.storeInfo.addr3 ];
-						streetArray = streetArray.filter(function(e) {
-							return e === 0 || e
-						});
-						$("#location_address").append(streetArray.join(', '))
-						$("#location_city").append(
-								fotobarCart.storeInfo.city + ', '
-										+ fotobarCart.storeInfo.state + ' '
-										+ fotobarCart.storeInfo.zip_code);
-						$("#location_phone")
-								.append(fotobarCart.storeInfo.phone);
-						for (line in fotobarCart.storeInfo.hours) {
-
-							var storeHours = fotobarCart.storeInfo.hours[line];
-							$("#location_hours").append(
-									"<tr><td>" + storeHours.day + "</td><td>"
-											+ storeHours.hours + "</td></tr>");
-						}
-					});
+				var storeHours = fotobarCart.storeInfo.hours[line];
+				$("#location_hours").append(
+						"<tr><td>" + storeHours.day + "</td><td>"
+								+ storeHours.hours + "</td></tr>");
+			}
+		});
 
 	$("#checkout_back_btn").on('click', function() {
 
@@ -831,125 +811,76 @@ FotobarUI.prototype.renderCheckoutView = function() {
 		$('#contact_form').submit();
 	});
 
-	$('#contact_form').submit(
-			function(e) {
-				e.preventDefault();
-				// window.scrollTo(0, 0);
+	$('#contact_form').submit(function(e) {
+		
+		e.preventDefault();
+		// window.scrollTo(0, 0);
 
-				var hasErrors = false;
-				$("input, select").css({
-					"border-color" : "#323030"
-				});
+		var hasErrors = false;
+		$("input, select").css({
+			"border-color" : "#323030"
+		});
 
-				var pickup_options = $(
-						'input[name="delivery_options"]:checked',
-						'#contact_form').val();
+		var pickup_options = $(
+				'input[name="delivery_options"]:checked',
+				'#contact_form').val();
 
-				$("input, select", this).each(
-						function() {
+		$("input, select", this).each(function() {
 
-							switch ($(this).attr('name')) {
+				switch ($(this).attr('name')) {
 
-							case ('location_select'):
+				case ('location_select'):
 
-								if ($(this).val() == 0
-										&& pickup_options == 'pick_up') {
-									hasErrors = true;
-									$(this).css({
-										"border-color" : "red"
-									});
-								}
-								break;
-
-							case ('name'):
-
-								if ($(this).val() == '') {
-									hasErrors = true;
-									$(this).css({
-										"border-color" : "red"
-									});
-								}
-								break;
-
-							case ('email'):
-
-								if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test($(this)
-										.val())) {
-									hasErrors = true;
-									$(this).css({
-										"border-color" : "red"
-									});
-								}
-								break;
-
-							case ('mobile'):
-
-								if (!/^(\()?\d{3}(\))?(-|\s)?\d{3}(-|\s)\d{4}$/
-										.test($(this).val())) {
-									hasErrors = true;
-									$(this).css({
-										"border-color" : "red"
-									});
-								}
-								break;
-
-							default:
-
-								if (pickup_options == 'ship') {
-
-									switch ($(this).attr('name')) {
-
-									case ('ship_state'):
-
-										if ($(this).val() == '') {
-											hasErrors = true;
-											$(this).css({
-												"border-color" : "red"
-											});
-										}
-										break;
-
-									case ('ship_first_name'):
-									case ('ship_last_name'):
-									case ('ship_address'):
-									case ('ship_city'):
-
-										if ($(this).val() == '') {
-											hasErrors = true;
-											$(this).css({
-												"border-color" : "red"
-											});
-										}
-										break;
-
-									case ('ship_zip'):
-										if (!/^\d{5}(-\d{4})?$/.test($(this)
-												.val())) {
-											hasErrors = true;
-											$(this).css({
-												"border-color" : "red"
-											});
-										}
-										break;
-									}
-								}
-
-								break;
-							}
+					if ($(this).val() == 0
+							&& pickup_options == 'pick_up') {
+						hasErrors = true;
+						$(this).css({
+							"border-color" : "red"
 						});
+					}
+					break;
 
-				var payment_radio = $(
-						"input:radio[name=payment_options]:checked").val();
+				case ('name'):
 
-				if (payment_radio == 'now') {
+					if ($(this).val() == '') {
+						hasErrors = true;
+						$(this).css({
+							"border-color" : "red"
+						});
+					}
+					break;
 
-					$("#cc_form > input").each(function() {
+				case ('email'):
+
+					if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test($(this)
+							.val())) {
+						hasErrors = true;
+						$(this).css({
+							"border-color" : "red"
+						});
+					}
+					break;
+
+				case ('mobile'):
+
+					if (!/^(\()?\d{3}(\))?(-|\s)?\d{3}(-|\s)\d{4}$/
+							.test($(this).val())) {
+						hasErrors = true;
+						$(this).css({
+							"border-color" : "red"
+						});
+					}
+					break;
+
+				default:
+
+					if (pickup_options == 'ship') {
 
 						switch ($(this).attr('name')) {
 
-						case ('cc_exp_year'):
+						case ('ship_state'):
 
-							if (!/^\d{2}$/.test($(this).val())) {
+							if ($(this).val() == '') {
 								hasErrors = true;
 								$(this).css({
 									"border-color" : "red"
@@ -957,32 +888,12 @@ FotobarUI.prototype.renderCheckoutView = function() {
 							}
 							break;
 
-						case ('cc_number'):
+						case ('ship_first_name'):
+						case ('ship_last_name'):
+						case ('ship_address'):
+						case ('ship_city'):
 
-							if (!/^(?:\d){13,16}\b$/.test($(this).val())) {
-
-								hasErrors = true;
-								$(this).css({
-									"border-color" : "red"
-								});
-							}/*
-								 * else{ $(this).val( $(this).val().replace(/[
-								 * -]/g, "") ) }
-								 */
-							break;
-
-						case ('ccv'):
-
-							if (!/(^\d{3,4}$)/.test($(this).val())) {
-								hasErrors = true;
-								$(this).css({
-									"border-color" : "red"
-								});
-							}
-							break;
-						case ('cc_exp_month'):
-
-							if (!/^(0[1-9]|1[0-2])$/.test($(this).val())) {
+							if ($(this).val() == '') {
 								hasErrors = true;
 								$(this).css({
 									"border-color" : "red"
@@ -990,8 +901,9 @@ FotobarUI.prototype.renderCheckoutView = function() {
 							}
 							break;
 
-						case ('cc_zip'):
-							if (!/^\d{5}(-\d{4})?$/.test($(this).val())) {
+						case ('ship_zip'):
+							if (!/^\d{5}(-\d{4})?$/.test($(this)
+									.val())) {
 								hasErrors = true;
 								$(this).css({
 									"border-color" : "red"
@@ -999,115 +911,160 @@ FotobarUI.prototype.renderCheckoutView = function() {
 							}
 							break;
 						}
-					});
+					}
 
-				}
-
-				if (hasErrors === false) {
-
-					$("input:focus", this).blur();
-					// $(this).off();
-					// $("#checkout_back_btn").off();
-
-					setTimeout(function() {
-
-						var customer_form = $('#contact_form')
-								.serializeFormJSON();
-						var cc_form = document.getElementById('cc_form');
-						
-						fotobarCart.processOrder(customer_form, cc_form);
-					}, 500);
-
-				} else {
-
-					fotobarUI.alertUser({
-						type : 'error',
-						text : 'Please confirm your information is correct.'
-					});
+					break;
 				}
 			});
 
-	$("input[name=delivery_options]:radio, input[name=payment_options]:radio")
-			.on(
-					'change',
-					function() {
+			var payment_radio = $(
+					"input:radio[name=payment_options]:checked").val();
 
-						if ($(this).attr('name') == 'delivery_options') {
+			if (payment_radio == 'now') {
 
-							$('.btn_tab').toggleClass('selected');
-							$("#ship_details, #pickup_details").toggle();
-							hasErrors = false;
-							$("#total_shipping, #total_no_shipping").toggle();
+				$("#cc_form > input").each(function() {
+
+					switch ($(this).attr('name')) {
+
+					case ('cc_exp_year'):
+
+						if (!/^\d{2}$/.test($(this).val())) {
+							hasErrors = true;
+							$(this).css({
+								"border-color" : "red"
+							});
 						}
+						break;
 
-						var delivery_radio = $(
-								"input:radio[name=delivery_options]:checked")
-								.val();
-						var payment_radio = $(
-								"input:radio[name=payment_options]:checked")
-								.val();
+					case ('cc_number'):
 
-						switch (true) {
+						if (!/^(?:\d){13,16}\b$/.test($(this).val())) {
 
-						case (delivery_radio == 'ship'):
-							$("#ship_details").show();
-						case (payment_radio == 'now'):
+							hasErrors = true;
+							$(this).css({
+								"border-color" : "red"
+							});
+						}/*
+							 * else{ $(this).val( $(this).val().replace(/[
+							 * -]/g, "") ) }
+							 */
+						break;
 
-							$("#cc_details, #payment_print").show();
-							$("#payment_no_print").hide();
-							$('input:radio[name=payment_options]:nth(1)').prop(
-									'checked', true);
-							fotobarCart.is_cc_charge = true;
-							fotobarCart.captured = (delivery_radio == 'ship') ? false
-									: true;
-							fotobarCart.is_shipped = (delivery_radio == 'ship') ? true
-									: false;
-							break;
+					case ('ccv'):
 
-						default:
-							$("#cc_details, #payment_print").hide();
-							$("#payment_no_print").show();
-							fotobarCart.is_cc_charge = false;
-							fotobarCart.captured = false;
-							fotobarCart.is_shipped = false;
-							break;
-
+						if (!/(^\d{3,4}$)/.test($(this).val())) {
+							hasErrors = true;
+							$(this).css({"border-color" : "red"});
 						}
+						break;
+					case ('cc_exp_month'):
 
-						var tax_zip;
-						var options;
-
-						if (!fotobarCart.is_shipped) {
-
-							var storeId = $("#location_select option:selected")
-									.val();
-							options = 'pick_up';
-
-							if (storeId == 0) {
-								tax_zip = 00000;
-							} else {
-
-								var storeInfo = fotobarConfig.configure.locations
-										.filter(function(obj) {
-											return obj.id === storeId;
-										})[0];
-
-								tax_zip = storeInfo.zip_code;
-							}
-
-						} else {
-
-							tax_zip = $("#ship_zip").val();
-							options = 'ship';
+						if (!/^(0[1-9]|1[0-2])$/.test($(this).val())) {
+							hasErrors = true;
+							$(this).css({
+								"border-color" : "red"
+							});
 						}
+						break;
 
-						var setTaxRate = fotobarCart.setTaxRate(tax_zip,
-								options);
-						setTaxRate.done(function() {
-							$('#total_with_shipping_cost, #checkout_total')
-									.html(fotobarCart.getGrandTotal());
-						});
+					case ('cc_zip'):
+						if (!/^\d{5}(-\d{4})?$/.test($(this).val())) {
+							hasErrors = true;
+							$(this).css({
+								"border-color" : "red"
+							});
+						}
+						break;
+					}
+				});
+			}
+
+			if (hasErrors === false) {
+
+				$("input:focus", this).blur();
+
+				setTimeout(function() {
+
+					var customer_form = $('#contact_form').serializeFormJSON();
+					var cc_form = document.getElementById('cc_form');
+					fotobarCart.processOrder(customer_form, cc_form);
+				}, 500);
+
+			} else {
+
+				fotobarUI.alertUser({
+					type : 'error',
+					text : 'Please confirm your information is correct.'
+				});
+			}
+		});
+
+	$("input[name=delivery_options]:radio, input[name=payment_options]:radio").on('change',function() {
+
+			if ($(this).attr('name') == 'delivery_options') {
+
+				$('.btn_tab').toggleClass('selected');
+				$("#ship_details, #pickup_details").toggle();
+				hasErrors = false;
+				$("#total_shipping, #total_no_shipping").toggle();
+			}
+
+			var delivery_radio = $("input:radio[name=delivery_options]:checked").val();
+			var payment_radio = $("input:radio[name=payment_options]:checked").val();
+
+			switch (true) {
+
+			case (delivery_radio == 'ship'):
+				$("#ship_details").show();
+			case (payment_radio == 'now'):
+				$("#cc_details, #payment_print").show();
+				$("#payment_no_print").hide();
+				$('input:radio[name=payment_options]:nth(1)').prop('checked', true);
+				fotobarCart.is_cc_charge = true;
+				fotobarCart.captured = (delivery_radio == 'ship') ? false: true;
+				fotobarCart.is_shipped = (delivery_radio == 'ship') ? true: false;
+				break;
+
+			default:
+				$("#cc_details, #payment_print").hide();
+				$("#payment_no_print").show();
+				fotobarCart.is_cc_charge = false;
+				fotobarCart.captured = false;
+				fotobarCart.is_shipped = false;
+				break;
+			}
+
+			var tax_zip;
+			var options;
+
+			if (!fotobarCart.is_shipped) {
+
+				var storeId = $("#location_select option:selected").val();
+				options = 'pick_up';
+
+				if (storeId == 0) {
+					tax_zip = 00000;
+				} else {
+
+					var storeInfo = fotobarConfig.configure.locations.filter(function(obj) {
+								return obj.id === storeId;
+							})[0];
+
+					tax_zip = storeInfo.zip_code;
+				}
+
+			} else {
+
+				tax_zip = $("#ship_zip").val();
+				options = 'ship';
+			}
+
+			var setTaxRate = fotobarCart.setTaxRate(tax_zip, options);
+			setTaxRate.done(function() {
+				
+				$('#total_with_shipping_cost, #checkout_total').html(fotobarCart.getGrandTotal());
 					});
+				});
 };
 
 FotobarUI.prototype.renderImageSrcView = function() {
@@ -1161,8 +1118,6 @@ FotobarUI.prototype.renderImageSrcView = function() {
 		fotobarUI.instagram.logout();
 		$("#ig_logout").hide();
 	});
-
-	// $("#gram_src_btn").on("click", fotobarUI.faceBook.logout);
 };
 
 FotobarUI.prototype.renderImageView = function() {
@@ -1207,7 +1162,7 @@ FotobarUI.prototype.renderImageView = function() {
 		fotobarUI.renderImageSrcView();
 	});
 
-	// style/size tabs
+/*	// style/size tabs
 	$("#size-tab").on("click", function() {
 
 		$("#tabs div.btn_normal").removeClass('selected');
@@ -1223,52 +1178,26 @@ FotobarUI.prototype.renderImageView = function() {
 		$("#menu-size").hide();
 		$("#menu-style").show();
 	});
+*/
+	$("div.qty").children('img').on('click',function() {
 
-	$("div.qty")
-			.children('img')
-			.on(
-					'click',
-					function() {
+		var sku = $(this).parent("div.qty").attr('sku');
+		var quantityUpdate = ($(this).hasClass('minus_count')) ? -1: 1;
+		fotobarCart.updateQuantity(sku, quantityUpdate,fotobarUI.current_image.id);
 
-						var sku = $(this).parent("div.qty").attr('sku');
-						var quantityUpdate = ($(this).hasClass('minus_count')) ? -1
-								: 1;
-						fotobarCart.updateQuantity(sku, quantityUpdate,
-								fotobarUI.current_image.id);
+		$("div.qty").each(function() {
 
-						$("div.qty")
-								.each(
-										function() {
+				var itemCount = fotobarCart.getImageItemCount($(this).attr('sku'),fotobarUI.current_image.id);
+				$(' > span', this).html(itemCount);
+				});
 
-											var itemCount = fotobarCart
-													.getImageItemCount(
-															$(this).attr('sku'),
-															fotobarUI.current_image.id);
-											$(' > span', this).html(itemCount);
-										});
+		$("div.qty-indicator[sku]").each(function() {
 
-						$("div.qty-indicator[sku]").each(
-								function() {
+					$(this).text(fotobarCart.getItemCount($(this).attr('sku')));
+				});
 
-									$(this).text(
-											fotobarCart.getItemCount($(this)
-													.attr('sku')));
-								});
-
-						$("#cart_total").text(fotobarCart.getCartTotal());
-					});
-
-	// Boarder Format
-	$("#menu-format div.format").on("click", function() {
-
-		if ($(this).css('opacity') == 1 && !$(this).hasClass("selected")) {
-
-			$('#menu-format div.format').removeClass("selected")
-			$(this).addClass("selected");
-			fotobarUI.frameButtonClick($(this).attr('id'));
-		}
+		$("#cart_total").text(fotobarCart.getCartTotal());
 	});
-
 };
 
 FotobarUI.prototype.renderHomeView = function() {
@@ -1394,9 +1323,8 @@ FotobarUI.prototype.renderThankyouView = function() {
 
 FotobarUI.prototype.deleteButtonClick = function() {
 
-	navigator.notification.confirm(
-			'Are you sure you want to remove this image from the order?', // message
-			function(buttonIndex) {
+	navigator.notification.confirm( 'Are you sure you want to remove this image from the order?', function(buttonIndex) {
+		
 				if (buttonIndex == 1) {
 
 					fotobar.deleteImage(fotobarUI.current_image);
@@ -1429,78 +1357,59 @@ FotobarUI.prototype.deleteButtonClick = function() {
  */
 FotobarUI.prototype.appendRemotePhotos = function(photos) {
 
-	return $
-			.Deferred(function() {
+	return $.Deferred(function() {
 
-				var self = this;
+		var self = this;
+		var photoArrayLength = photos.length;
 
-				// $("div.photo_list").off('click');
+		for (var i = 0; i < photoArrayLength; i++) {
 
-				var photoArrayLength = photos.length;
+			var newImage = new Image();
+			newImage.onload = function() {
 
-				for (var i = 0; i < photoArrayLength; i++) {
+				var div = document.createElement("div");
+				div.className = 'photo_list';
+				div.setAttribute('image_url', this.src);
 
-					// var currentPhoto = photos[photo];
-					var newImage = new Image();
-					newImage.onload = function() {
+				var img = document.createElement("img");
+				img.setAttribute('src', this.src);
+				img.className = (this.height > this.width) ? 'social_square_portrait': 'social_square_land';
+				div.appendChild(img);
 
-						var div = document.createElement("div");
-						div.className = 'photo_list';
-						// div.setAttribute('id', currentPhoto.id);
-						div.setAttribute('image_url', this.src);
+				var imgSelected = document.createElement("img");
+				imgSelected.setAttribute('src','assets/img/CheckMark.png');
+				imgSelected.className = 'image_check';
+				div.appendChild(imgSelected);
 
-						var img = document.createElement("img");
-						img.setAttribute('src', this.src);
-						img.className = (this.height > this.width) ? 'social_square_portrait'
-								: 'social_square_land';
-						div.appendChild(img);
+				$(div).on('click',function() {
 
-						var imgSelected = document.createElement("img");
-						imgSelected.setAttribute('src',
-								'assets/img/CheckMark.png');
-						imgSelected.className = 'image_check';
-						div.appendChild(imgSelected);
+					if ($(this).children('img.image_check').is(':visible')) {
 
-						$(div).on(
-								'click',
-								function() {
+						$(this).toggleClass('image_selected');
+						$(this).children('img.image_check').toggle();
+					} else {
 
-									if ($(this).children('img.image_check').is(
-											':visible')) {
+						var max_selections = fotobarUI.getSelectCount($("div.image_selected").size());
 
-										$(this).toggleClass('image_selected');
-										$(this).children('img.image_check')
-												.toggle();
-									} else {
+						if (max_selections > 0) {
 
-										var max_selections = fotobarUI
-												.getSelectCount($(
-														"div.image_selected")
-														.size());
-
-										if (max_selections > 0) {
-
-											$(this).toggleClass(
-													'image_selected');
-											$(this).children('img.image_check')
-													.toggle();
-										}
-									}
-								});
-
-						$('#photo_list').append(div);
-
-						photos.shift();
-						if (photos.length == 0) {
-
-							self.resolve();
+							$(this).toggleClass('image_selected');
+							$(this).children('img.image_check').toggle();
 						}
-
 					}
-					newImage.src = photos[i].url;
-				}
+				});
 
-			});
+				$('#photo_list').append(div);
+
+				photos.shift();
+				if (photos.length == 0) {
+
+					self.resolve();
+				}
+			}
+			newImage.src = photos[i].url;
+		}
+	});
 };
 
 FotobarUI.prototype.showRemotePhotos = function(photos) {
@@ -1524,116 +1433,86 @@ FotobarUI.prototype.showRemotePhotos = function(photos) {
 		break;
 	}
 
-	$('#show_more').on(
-			'click',
-			function() {
+	$('#show_more').on('click',function() {
 
-				$("#pagination_loading").show();
-				$("#show_more").hide();
+		$("#pagination_loading").show();
+		$("#show_more").hide();
 
-				switch (fotobarUI.current_social_media) {
+		switch (fotobarUI.current_social_media) {
 
-				case ('ig'):
-
-					var getPagination = fotobarUI.instagram.pagination();
-					getPagination.done(function(photos) {
-
-						var paginationDisplay = fotobarUI
-								.appendRemotePhotos(photos);
-						paginationDisplay.done(function() {
-							$("body, html").scrollTop(
-									$("#photo_list").prop("scrollHeight"));
-							$("#pagination_loading").hide();
-
-							if (fotobarUI.instagram.paginationUrl != null) {
-								$("#show_more").show();
-							}
-						});
-					});
-					break;
-
-				case ('fb'):
-
-					var getPagination = fotobarUI.faceBook.pagination();
-					getPagination.done(function(photos) {
+			case ('ig'):
+	
+				var getPagination = fotobarUI.instagram.pagination();
+				getPagination.done(function(photos) {
+	
+					var paginationDisplay = fotobarUI.appendRemotePhotos(photos);
+					paginationDisplay.done(function() {
 						
-						var paginationDisplay = fotobarUI.appendRemotePhotos(photos);
-						paginationDisplay.done(function() {
-							$("body, html").scrollTop(
-									$("#photo_list").prop("scrollHeight"));
-							$("#pagination_loading").hide();
-
-							if (fotobarUI.faceBook.paginationUrl != null) {
-								$("#show_more").show();
-							}
-						});
-
+						$("body, html").scrollTop($("#photo_list").prop("scrollHeight"));
+						$("#pagination_loading").hide();
+	
+						if (fotobarUI.instagram.paginationUrl != null) {
+							$("#show_more").show();
+						}
 					});
-					break;
+				});
+				break;
+	
+			case ('fb'):
+	
+				var getPagination = fotobarUI.faceBook.pagination();
+				getPagination.done(function(photos) {
+					
+					var paginationDisplay = fotobarUI.appendRemotePhotos(photos);
+					paginationDisplay.done(function() {
+						$("body, html").scrollTop($("#photo_list").prop("scrollHeight"));
+						$("#pagination_loading").hide();
+	
+						if (fotobarUI.faceBook.paginationUrl != null) {
+							$("#show_more").show();
+						}
+					});
+				});
+				break;
+		}
+	});
 
-				default:
+	$("#image_display_cancel").on('click',function() {
 
-					break;
+		(fotobarUI.current_social_media == 'ig') ? fotobarUI.renderImageSrcView() : fotobarUI.getFbAlbums();
+	});
 
-				}
-
-			});
-
-	$("#image_display_cancel").on(
-			'click',
-			function() {
-
-				(fotobarUI.current_social_media == 'ig') ? fotobarUI
-						.renderImageSrcView() : fotobarUI.getFbAlbums();
-
-			});
-
-	$("#image_display_done")
-			.on(
-					'click',
-					function() {
+	$("#image_display_done").on('click',function() {
 
 						var fotosToSelect = [];
 						var imageCounter = 0;
 
-						$('div.image_selected')
-								.each(
-										function() {
+						$('div.image_selected').each(function() {
 
-											var getLocalUrl = fotobar
-													.getRemoteImage($(this)
-															.attr('image_url'));
+											var getLocalUrl = fotobar.getRemoteImage($(this).attr('image_url'));
 
-											getLocalUrl
-													.done(function(local_url) {
+											getLocalUrl.done(function(local_url) {
 
-														fotosToSelect
-																.push(local_url);
+												fotosToSelect.push(local_url);
+														});
 
-													});
+											getLocalUrl.fail(function(err) {
 
-											getLocalUrl
-													.fail(function(err) {
-
-														fotobarUI
-																.alertUser({
+												fotobarUI.alertUser({
 																	type : 'error',
 																	text : 'Could not download image: '
 																			+ err.source
 																});
 													});
 
-											getLocalUrl
-													.always(function() {
+											getLocalUrl.always(function() {
 
 														imageCounter++;
 														if (imageCounter == $('div.image_selected').length) {
 															fotobarUI.current_image = null;
-															fotobarUI
-																	.renderImages(fotosToSelect);
+															fotobarUI.renderImages(fotosToSelect);
 														}
 													});
-
 										});
 					});
 };
@@ -1779,7 +1658,6 @@ FotobarUI.prototype.showRemoteAlbums = function(albums) {
 			'vertical-align' : 'middle'
 		});
 
-		// span.innerHTML = currentAlbum.name + ' - ' + albumPhoteCount;
 		span.innerHTML = currentAlbum.name;
 
 		li.appendChild(span);
@@ -1890,7 +1768,7 @@ FotobarUI.prototype.getIgImages = function() {
 FotobarUI.prototype.keyboardDisplay = function(event) {
 
 	if (event.type == 'native.keyboardhide') {
-
+		$('input').blur();
 		$("#controls-container, #image_legend_wrapper").show();
 	} else {
 

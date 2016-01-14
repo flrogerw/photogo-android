@@ -245,6 +245,7 @@ input.none {
 	margin: auto;
 	display: block;
 	z-index: 15000;
+	width: 100%  !important;
 }
 
 .image_container {
