@@ -84,14 +84,28 @@ body {
 	font-size: 14px;
 	color: white;
 	font-weight: bold;
-	background-color: #eb051d;
+	background-color: rgba(235,5,29,0.7);
 	border-radius: 5px;
 	padding: 20px;
 	width: 80%;
 	line-height: 16px;
 }
 
-.succesDiv {
+.warnDiv {
+	z-index: 37000;
+	left: 5vw;
+	text-align: center;
+	font-size: 14px;
+	color: #808080;
+	font-weight: bold;
+	background-color: rgba(255,299,102,0.7);
+	border-radius: 5px;
+	padding: 20px;
+	width: 80%;
+	line-height: 16px;
+}
+
+.successDiv {
 	z-index: 1000;
 	width: 80vw;
 	height: 10vh;
@@ -102,7 +116,7 @@ body {
 	color: white;
 	left: 10vw;
 	font-weight: bold;
-	background-color: #b6f18d;
+	background-color: rgba(182,241,141,0.7);
 	border: 1px solid green;
 	border-radius: 10px;
 	padding: 20px;
@@ -650,4 +664,8 @@ font-size: 22px;
 #text_display_table td{
 	width: 50%;
 	text-align: center;
+}
+#add_text_span {
+white-space:nowrap;
+padding-left:2px;
 }

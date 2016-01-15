@@ -20,8 +20,10 @@ var Polaroid = function(image) {
 	this.plot_height;
 	this.plot_x = 0;
 	this.plot_y = 0;
-	this.is_spectra = false;
-	this.is_polaroid = false;
+	this.plot_ribbon_x = 0;
+	this.plot_ribbon_y = 0;
+	//this.is_spectra = false;
+	//this.is_polaroid = false;
 	this.zoom = 1;
 	this.scale = 0.001;
 	this.format = 2;

@@ -6,9 +6,9 @@ var Fotobar = function() {
 	this.current_id;
 	this.canvasSetHeight = Math.floor($(window).width() * .8);// 295
 	this.canvasSetWidth = Math.floor(this.canvasSetHeight * .8474);// 250	
-	this.polaroidWidth = Math.ceil(this.canvasSetWidth * .89); // 222
-	this.polaroidHeight = this.polaroidWidth; // 222
-	this.fullFrameWidth = this.polaroidWidth; // 222
+	//this.polaroidWidth = Math.ceil(this.canvasSetWidth * .89); // 222
+	//this.polaroidHeight = this.polaroidWidth; // 222
+	this.fullFrameWidth = Math.ceil(this.canvasSetWidth * .89); // 222
 	this.fullFrameHeight = Math.ceil(this.fullFrameWidth * 1.2027); // 267
 	this.frame_margin = {
 		x : Math.floor(this.canvasSetWidth * .056),

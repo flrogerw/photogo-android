@@ -269,54 +269,30 @@ FotobarUI.prototype.setPolaroidCords = function(canvas_image, imageId) {
 
 		current_image.ty = current_image.tx = 0;
 		current_image.plot_y = current_image.plot_x = 0;
-		current_image.image_scale = (current_image.image_width / fotobar.polaroidWidth);
-		current_image.ty = current_image.tx = 0;
-		current_image.plot_y = current_image.plot_x = 0;
+		current_image.image_scale = (current_image.image_width / fotobar.fullFrameWidth);
 		canvas_image.width = canvas_image.height = fotobar.fullFrameHeight;
 		break;
 
-	case (current_image.is_landscape || current_image.is_spectra):
+	case (current_image.is_landscape):
 
-		canvas_image.height = fotobar.polaroidHeight;
-		canvas_image.width = fotobar.polaroidHeight
-				* current_image.aspect_ratio;
-
-		left = (current_image.is_polaroid) ? (Math
-				.floor((canvas_image.width - fotobar.polaroidWidth) / 2) * -1)
-				: 0;
-
-		current_image.image_scale = (current_image.image_height / fotobar.polaroidHeight);
+		canvas_image.height = fotobar.fullFrameWidth;
+		canvas_image.width = fotobar.fullFrameWidth * current_image.aspect_ratio;
+		current_image.image_scale = (current_image.image_height / fotobar.fullFrameWidth);
 		current_image.ty = current_image.plot_y = 0;
-		current_image.tx = left * -1;
-
-		current_image.plot_x = Math
-				.floor((current_image.tx * current_image.image_scale));
+		current_image.tx = (Math.floor((canvas_image.height - fotobar.fullFrameHeight) / 2) * -1);; 
+		current_image.plot_x = Math.floor((current_image.tx * current_image.image_scale));
 		break;
 
 	default: // portrait
 
-		canvas_image.width = fotobar.polaroidWidth;
-		canvas_image.height = fotobar.polaroidWidth
-				* current_image.aspect_ratio;
-
-		top = (current_image.is_polaroid) ? (Math
-				.floor((canvas_image.height - fotobar.polaroidHeight) / 2) * -1)
-				: 0;
-
-		current_image.image_scale = (current_image.image_width / fotobar.polaroidWidth);
-		current_image.ty = top * -1;
+		canvas_image.width = fotobar.fullFrameWidth;
+		canvas_image.height = fotobar.fullFrameWidth * current_image.aspect_ratio;
+		current_image.image_scale = (current_image.image_width / fotobar.fullFrameWidth);
+		current_image.ty = (Math.floor((canvas_image.height - fotobar.fullFrameHeight) / 2) * -1);
 		current_image.tx = current_image.plot_tx = 0;
-		current_image.plot_y = Math.floor(current_image.ty
-				* current_image.image_scale);
+		current_image.plot_y = Math.floor(current_image.ty * current_image.image_scale);
 		break;
 	}
-
-	$(canvas_image).animate({
-		top : top,
-		left : left
-	}, this.formatShrink, function() {
-
-	});
 };
 
 FotobarUI.prototype.initialize = function(image, is_new_order) {
@@ -391,25 +367,16 @@ FotobarUI.prototype.initialize = function(image, is_new_order) {
 		//$(input_text).emoji();
 			
 		var text_ribbon_top = (fotobar.images[image.id].text_ribbon_y == 0)? $(input_text).height(): fotobar.images[image.id].text_ribbon_y;
-		$(input_text).css('top', (( text_ribbon_top - fotobar.frame_margin.y) * -1) + 'px');
 		var text_ribbon_left = (fotobar.images[image.id].text_ribbon_x == 0)? 0: (fotobar.images[image.id].text_ribbon_x);
-		$(input_text).css('left', text_ribbon_left + 'px');
-		
-		 $(input_text).css("background-color", fotobar.images[image.id].text_ribbon_bg);
+		$(input_text).css({
+			'top': (( text_ribbon_top - fotobar.frame_margin.y) * -1) + 'px',
+			'left': text_ribbon_left + 'px',
+			'background-color': fotobar.images[image.id].text_ribbon_bg,
+			'height': '40px'
+		});
 		break;
 
 	}
-
-	
-	
-	 //$(input_text).attr('maxlength', fotobarUI.max_text_length);
-	//$(input_text).val(fotobar.images[image.id].text);
-	
-	//$(input_text).on('tap',function(){
-		
-		//$(this).focus();
-	//});
-
 };
 
 /** **************************************************** */
@@ -419,6 +386,8 @@ FotobarUI.prototype.renderEditView = function() {
 	$('body').html(fotobarUI.imageEditTpl());
 	var canvas_image = $(fotobarUI.current_canvas).children('img');
 	var current_image = fotobarUI.current_image;
+	
+	console.log(JSON.stringify(current_image));
 		
 	$('#edit_image').attr('src', $(canvas_image).attr('src'));
 	
@@ -430,8 +399,7 @@ FotobarUI.prototype.renderEditView = function() {
 			{
 				'padding' : fotobar.frame_margin.x + 'px',
 				'top' : '20vh',
-				'left' : (($(window).width() - $('#edit_panel').width()) / 2)
-						- fotobar.frame_margin.x
+				'left' : (($(window).width() - $('#edit_panel').width()) / 2) - fotobar.frame_margin.x
 			});
 
 	var picture = $('#edit_image'); // Must be already loaded or cached!
@@ -452,22 +420,25 @@ FotobarUI.prototype.renderEditView = function() {
 		 stop: function( event, ui ) {
 			 current_image.text_ribbon_y = Math.abs(ui.position.top);
 			 current_image.text_ribbon_x = Math.abs(ui.position.left);
+			 current_image.plot_ribbon_x =  Math.floor((current_image.text_ribbon_x * current_image.image_scale));
+			 current_image.plot_ribbon_y =  Math.floor((current_image.text_ribbon_y * current_image.image_scale));
 		 }
 	 });
-	 	 
+	 
 	 var text_ribbon_top = (current_image.text_ribbon_y == 0)? $("#edit_panel_text").height(): current_image.text_ribbon_y ;
-	 $( "#edit_panel_text" ).css({'top': (text_ribbon_top * -1), 'left' : current_image.text_ribbon_x } ); 
-	 	 
-	 var span_text = (current_image.text == '')? 'Tap to Add Caption': current_image.text;
-	 $("#add_text_span").html(span_text);
-	// $("#add_text_span").emoji();
+	 $( "#edit_panel_text" ).css({
+		 'top': (text_ribbon_top * -1), 
+		 'left' : current_image.text_ribbon_x,
+		 'height': '40px'
+		 }); 
 	 
 	 $( "#edit_panel_text" ).on("tap", function(){
 		 
 		 $("#add_text_span").hide();
-		 $( "#edit_panel_text" ).css({'left': '0px', 'width':'100%' });
-		 $("#add_text_input").show();
-		 $("#add_text_input").focus(); 
+		 $( "#edit_panel_text, #add_text_input" ).css({'left': '0px', 'width':'100%' });
+		 $("#add_text_input").show().focus();
+		// $("#add_text_input").show();
+		// $("#add_text_input").focus(); 
 	 });
 	 	
 	 $(".image_orientation[format='"+current_image.format+"']").css('border', '2px green solid');
@@ -480,7 +451,7 @@ FotobarUI.prototype.renderEditView = function() {
 		current_image.text_ribbon_x = current_image.text_ribbon_y = 0;
 		current_image.text_ribbon_bg = "rgba(0,0,0,0.4)";
 		current_image.text_font_color = "#ffffff";
-		current_image.text = $("#add_text_input").val();
+		current_image.text = $("#add_text_input").val().trim();
 		fotobarUI.updateImageCoords(picture.guillotine('getData'));
 		current_image.format = parseInt($(this).attr('format'));
 		fotobar.setImageParams(current_image);
@@ -549,12 +520,14 @@ FotobarUI.prototype.renderEditView = function() {
 		});
 		
 	$("#add_text_input").val(current_image.text);
-	$("#add_text_input").attr('maxlength', fotobarUI.max_text_length);
+	var span_text = (current_image.text == '')? 'Tap to Add Caption': current_image.text;
+	$("#add_text_span").html(span_text);
+	// $("#add_text_span").emoji();
 	
 	var add_text = document.getElementById("add_text_input");	
 	add_text.addEventListener('blur', function() {
 		
-		current_image.text = $(this).val();
+		current_image.text = $(this).val().trim();
 		$("#add_text_span").html($(this).val());
 		if( ($("#add_text_span").width() + current_image.text_ribbon_x) > current_image.width && current_image.text_ribbon_bg == "rgba(0,0,0,0.0)"){
 			current_image.text_ribbon_x = current_image.width - $("#add_text_span").width();
@@ -566,14 +539,39 @@ FotobarUI.prototype.renderEditView = function() {
 		$("#add_text_span").show();
 		
 	}, false);
+	
+	
+	var current_text_string = $("#add_text_input").val();
+	var was_truncated = false;
+	for( i=0; i<  $("#add_text_input").val().length; i++){
 		
+		if($("#add_text_span").width() <= (current_image.guillotine_width * .9)){
+			
+			var max_length = 40;
+			current_image.text = current_text_string;
+			$("#add_text_span").html(current_text_string);
+			$("#add_text_input").attr('maxlength', max_length);
+			$("#add_text_input").val(current_text_string);
+			if(was_truncated){
+				
+				var max_length = current_text_string.length;
+				fotobarUI.alertUser({type : 'warn',text : 'Your text was truncated to fit orientation.'});
+			}
+			break;
+			}
+		was_truncated = true;
+		current_text_string = current_text_string.slice(0, -1);
+		console.log(current_text_string);
+		$("#add_text_span").html(current_text_string);
+	}
+	
 	$("#add_text_input").keydown(function( event ) {
 		
 		switch(true){
 		
 			case(event.which == 13):
 				
-				current_image.text = $(this).val();
+				current_image.text = $(this).val().trim();;
 			  	$("#add_text_input").hide();
 			  	$("#add_text_span").html($(this).val());
 			  	current_image.text_ribbon_width = (current_image.text_ribbon_bg == "rgba(0,0,0,0.0)")? $('#add_text_span').width(): current_image.guillotine_width;
@@ -584,9 +582,15 @@ FotobarUI.prototype.renderEditView = function() {
 			default:
 				
 				$(this).val($(this).val().replace(/[^A-Za-z0-9.,:;<>%@#+=?$&\'"\_\/\*\- !{}()\[\]]/g, ""));
-				current_image.text = $(this).val();
-				$("#add_text_span").html(current_image.text);
-				console.log('span width: '+$("#add_text_span").width());
+				current_image.text = $(this).val().trim();
+				$("#add_text_span").html($(this).val());
+				
+				if($("#add_text_span").width() > (current_image.guillotine_width * .8)){
+					
+					var max_length = $(this).val().length;
+					$("#add_text_span").html($(this).val());
+					$("#add_text_input").attr('maxlength', max_length);
+				}
 				//$(this).emoji();
 				break;
 			}
@@ -600,8 +604,7 @@ FotobarUI.prototype.renderEditView = function() {
 
 						if ($(this).attr('filter') != 'none') {
 
-							fotobarUI.current_image.effect = fotobarUI.current_image.image.effect = $(
-									this).attr('filter');
+							fotobarUI.current_image.effect = fotobarUI.current_image.image.effect = $(this).attr('filter');
 							$('#edit_image').addClass($(this).attr('filter'));
 						}
 					});
@@ -647,21 +650,17 @@ FotobarUI.prototype.renderEditView = function() {
 */
 	$('#edit_done_btn').on('click',function() {
 				
-				fotobarUI.current_image.text = $("#add_text_input").val();
-				
-				var zoom_factor = parseInt($('div.guillotine-canvas').css(
-						'width'))
-						/ fotobarUI.current_image.canvas_width;
-				fotobarUI.updateImageCoords(picture.guillotine('getData'),
-						zoom_factor);
-				picture.guillotine('remove');
-
-				fotobarUI.renderImageView();
-				fotobarUI.redrawCurrent();
-				$(".preview_overlay").css('opacity', 0);
-				fotobarUI.showNextImage(null);
-			});
-	// SHOW WHEN CLOSE $(fotobarUI.current_canvas).css('overflow': 'hidden');
+		cordova.plugins.Keyboard.close();
+		fotobarUI.current_image.text = $("#add_text_input").val();
+		
+		var zoom_factor = parseInt($('div.guillotine-canvas').css('width'))/ fotobarUI.current_image.canvas_width;
+		fotobarUI.updateImageCoords(picture.guillotine('getData'),zoom_factor);
+		picture.guillotine('remove');
+		fotobarUI.renderImageView();
+		fotobarUI.redrawCurrent();
+		$(".preview_overlay").css('opacity', 0);
+		fotobarUI.showNextImage(null);
+	});
 };
 
 FotobarUI.prototype.updateImageCoords = function(imageCords, zoom_factor) {
@@ -1146,39 +1145,10 @@ FotobarUI.prototype.renderImageView = function() {
 		}
 	});
 
-	$('#menu-fx div.fx').on('click', function() {
-
-		var current_image = $(fotobarUI.current_canvas).children('img');
-		$(current_image).removeClass(fotobarUI.current_image.effect);
-
-		if ($(this).attr('filter') != 'none') {
-
-			fotobarUI.current_image.effect = $(this).attr('filter');
-			current_image.addClass($(this).attr('filter'));
-		}
-	});
-
 	$("#btn_addmore").on("click", function() {
 		fotobarUI.renderImageSrcView();
 	});
 
-/*	// style/size tabs
-	$("#size-tab").on("click", function() {
-
-		$("#tabs div.btn_normal").removeClass('selected');
-		$(this).addClass('selected');
-		$("#menu-size").show();
-		$("#menu-style").hide();
-
-	});
-	$("#style-tab").on("click", function() {
-
-		$("#tabs div.btn_normal").removeClass('selected');
-		$(this).addClass('selected');
-		$("#menu-size").hide();
-		$("#menu-style").show();
-	});
-*/
 	$("div.qty").children('img').on('click',function() {
 
 		var sku = $(this).parent("div.qty").attr('sku');
@@ -1344,7 +1314,7 @@ FotobarUI.prototype.deleteButtonClick = function() {
 						fotobarUI.renderImageSrcView();
 						fotobarUI.current_image = null;
 						fotobarUI.alertUser({
-							type : 'error',
+							type : 'warn',
 							text : 'You have deleted all of your pictures.'
 						});
 					}
@@ -1905,7 +1875,7 @@ FotobarUI.prototype.displayAlert = function(error) {
 		}
 
 		var self = this;
-		var currentClass = (error.type == 'error') ? 'errorDiv' : 'succesDiv';
+		var currentClass = error.type + 'Div';
 
 		$('<div/>', {
 			id : 'alert_message',
@@ -1922,7 +1892,7 @@ FotobarUI.prototype.displayAlert = function(error) {
 
 			$("#alert_message").remove();
 			self.resolve();
-		}, 4000);
+		}, 3500);
 
 	});
 };
