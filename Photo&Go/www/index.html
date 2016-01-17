@@ -285,7 +285,8 @@
 <span class="add_text_span" id="add_text_span">Tap to Add Caption</span>
 <input id="add_text_input" style="display:none" type="text" placeholder="Add Caption"/>
 </div>
-
+<div style="display:none" id="text_drag_instructions" class="text_drag directions-text">Drag band up or down</div>
+<div style="display:none" id="text_float_instructions" class="text_drag directions-text">Drag caption anywhere</div>
 </div>
 
 </div>
@@ -310,17 +311,17 @@
 
 <div id="add_text">
 
-<table id="text_display_table" style="width: 100%">
+<table id="text_display_table">
 <tr>
 <td>
-&nbsp;&nbsp;Orientation
+Orientation
 </td>
 <td>
 Caption Options
 </td>
 </tr>
 <tr>
-<td>
+<td style="width: 40%">
 
 
 
@@ -339,7 +340,7 @@ Caption Options
 </table>
 </td>
 
-<td>
+<td style="width: 60%">
 
 <table id="text_options">
 <tr>
@@ -348,9 +349,9 @@ Black Band
 </td>
 <td>
  		<div class="switch switch-black">
-      <input type="radio" class="switch-input" name="Band" value="on" id="on" checked>
+      <input type="radio" class="switch-input" name="Band" value="rgba(0,0,0,0.4)" id="on" checked>
       <label for="on" class="switch-label switch-label-off">ON</label>
-      <input type="radio" class="switch-input" name="Band" value="off" id="off">
+      <input type="radio" class="switch-input" name="Band" value="rgba(0,0,0,0.0)" id="off">
       <label for="off" class="switch-label switch-label-on">OFF</label>
       <span class="switch-selection"></span>
     </div>
@@ -361,9 +362,9 @@ Black Band
 &nbsp;Font&nbsp;Color &nbsp;
 </td><td>
 		<div class="switch switch-blue">
-      <input type="radio" class="switch-input" name="Color" value="black" id="black" checked>
+      <input type="radio" class="switch-input" name="Color" value="#000000" id="black">
       <label for="black" class="switch-label switch-label-off">Black</label>
-      <input type="radio" class="switch-input" name="Color" value="white" id="white">
+      <input type="radio" class="switch-input" name="Color" value="#ffffff" id="white" checked>
       <label for="white" class="switch-label switch-label-on">White</label>
       <span class="switch-selection"></span>
    </div>

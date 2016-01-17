@@ -386,11 +386,9 @@ FotobarUI.prototype.renderEditView = function() {
 	$('body').html(fotobarUI.imageEditTpl());
 	var canvas_image = $(fotobarUI.current_canvas).children('img');
 	var current_image = fotobarUI.current_image;
-	
-	console.log(JSON.stringify(current_image));
+	var hideTimer;
 		
-	$('#edit_image').attr('src', $(canvas_image).attr('src'));
-	
+	$('#edit_image').attr('src', $(canvas_image).attr('src'));	
 	$('#edit_panel').width(current_image.guillotine_width);
 	$('#edit_panel').height(current_image.guillotine_height);
 	$('#edit_image').addClass(current_image.image.effect);
@@ -398,7 +396,7 @@ FotobarUI.prototype.renderEditView = function() {
 	$('#edit_panel').css(
 			{
 				'padding' : fotobar.frame_margin.x + 'px',
-				'top' : '20vh',
+				'top' : (current_image.format == 3 )? '20vh': '17vh',
 				'left' : (($(window).width() - $('#edit_panel').width()) / 2) - fotobar.frame_margin.x
 			});
 
@@ -453,64 +451,44 @@ FotobarUI.prototype.renderEditView = function() {
 	 });
 	 
 	$(".text_overlay").css("width", current_image.text_ribbon_width+"px");
-	$(".text_overlay").css("background-color", current_image.text_ribbon_bg);		
-	$(".text_background_color[color='"+current_image.text_ribbon_bg+"']").css('border', '2px green solid');	 
-	$(".text_background_color").on("click", function(){
+	$(".text_overlay").css("background-color", current_image.text_ribbon_bg);
+	
+	$("input.switch-input[name='Band'][value='"+current_image.text_ribbon_bg+"']").prop('checked',true);
+	
+	$("input.switch-input[name='Band']").change( function(){
 		
-		$('.text_background_color').css('border', '1px black solid');
-		$(this).css('border', '2px green solid');
-		$(".text_overlay").css("background-color", $(this).attr('color'));
-		current_image.text_ribbon_bg = $(this).attr('color');
+		clearInterval(hideTimer);
+		$('.text_drag').hide();
+		hideTimer = setInterval(function(){ $('.text_drag').hide(); }, 3000);
+		
+		$(".text_overlay").css("background-color", $(this).val());
+		current_image.text_ribbon_bg = $(this).val();
 				
 		if(current_image.text_ribbon_bg == "rgba(0,0,0,0.0)"){
 			
+			$('#text_float_instructions').show();
 			current_image.text_ribbon_width = $('#add_text_span').width();
 			current_image.text_ribbon_x = (( current_image.guillotine_width - $('#add_text_span').width()) /2);
 			$(".text_overlay").css("left", current_image.text_ribbon_x);
 				
 		}else{
 			
+			$('#text_drag_instructions').show();
 			$(".text_overlay").css({"left":"0px"});
 			current_image.text_ribbon_x = 0;
 			current_image.text_ribbon_width = current_image.guillotine_width;
 		}
 		
 		$(".text_overlay").css("width", current_image.text_ribbon_width + "px");
-		
-		/*
-		if($("option:selected",this).val() != "rgba(0,0,0,0.0)"){
-			
-			current_image.text_ribbon_x = current_image.text_rotation = 0;
-			$(".text_overlay").css("left", "0px");
-			$(".text_overlay").css("width", "100%");
-			$(".text_overlay").css("-webkit-transform", "rotate(0deg)" );
-			 $(".rotate_button").prop("disabled",true);
-		}else{
-			 $(".rotate_button").prop("disabled",false);
-			$(".text_overlay").css("width", "50%");
-		}
-		*/
-			
 	});
-	
-	/*
-	$( ".rotate_button" ).on("click", function(){
 		
-		current_image.text_rotation += ( $(this).val() == "ccw")? -5: 5;
-		current_image.text_rotation = ( current_image.text_rotation >= 360 )? 0: current_image.text_rotation;
-		$(".text_overlay").css("-webkit-transform", "rotate("+ current_image.text_rotation +"deg)" );
-	});
-	
-	*/
-		
-	 $(".text_font_color[color='"+current_image.text_font_color+"']").css('border', '2px green solid');
+	 $("input.switch-input[name='Color'][value='"+current_image.text_font_color+"']").prop('checked',true);
 	 $(".text_overlay span, .text_overlay input").css("color", current_image.text_font_color);
-	 $(".text_font_color").on("click", function(){
 		 
-		 $('.text_font_color').css('border', '1px black solid');
-			$(this).css('border', '2px green solid');
-			$(".text_overlay span, .text_overlay input").css("color", $(this).attr('color'));
-			current_image.text_font_color = $(this).attr('color');
+		 $("input.switch-input[name='Color']").change( function(){
+		 
+			$(".text_overlay span, .text_overlay input").css("color", $(this).val());
+			current_image.text_font_color = $(this).val();
 		});
 		
 	$("#add_text_input").val(current_image.text);
@@ -555,7 +533,6 @@ FotobarUI.prototype.renderEditView = function() {
 			}
 		was_truncated = true;
 		current_text_string = current_text_string.slice(0, -1);
-		console.log(current_text_string);
 		$("#add_text_span").html(current_text_string);
 	}
 	
@@ -608,33 +585,12 @@ FotobarUI.prototype.renderEditView = function() {
 	});
 
 	/*
-	$("#menu-format div.format").on("click", function() {
-
-		if ($(this).css('opacity') == 1 && !$(this).hasClass("selected")) {
-
-			$('#menu-format div.format').removeClass("selected")
-			$(this).addClass("selected");
-			fotobarUI.frameButtonClick($(this).attr('id'));
-		}
-	});
 
 	$('#zoom-in').on(
 			'click',
 			function() {
 
 				picture.guillotine('zoomIn');
-				var zoom_factor = parseInt($('div.guillotine-canvas').css(
-						'width'))
-						/ fotobarUI.current_image.canvas_width;
-				fotobarUI.updateImageCoords(picture.guillotine('getData'),
-						zoom_factor);
-			});
-
-	$('#zoom-out').on(
-			'click',
-			function() {
-
-				picture.guillotine('zoomOut');
 				var zoom_factor = parseInt($('div.guillotine-canvas').css(
 						'width'))
 						/ fotobarUI.current_image.canvas_width;
@@ -656,15 +612,15 @@ FotobarUI.prototype.renderEditView = function() {
 		fotobarUI.showNextImage(null);
 	});
 	
-	 var text_ribbon_top = (current_image.text_ribbon_y == 0 && current_image.text.length == 0)? current_image.guillotine_height: current_image.text_ribbon_y ;
+	 var text_ribbon_top = (current_image.text_ribbon_y == 0)? current_image.guillotine_height: current_image.text_ribbon_y ;
 	 $( "#edit_panel_text" ).css({
 		 'top': (text_ribbon_top * -1), 
 		 'left' : current_image.text_ribbon_x,
 		 'height': '40px'
 		 }); 
 	
-	if(current_image.text_ribbon_y == 0 && current_image.text.length == 0){
-		$('#edit_panel_text').animate({ top: $('#edit_panel_text').height() * -1 }, {duration: 1200, easing: 'easeOutBounce'});
+	if(current_image.text_ribbon_y == 0){
+		$('#edit_panel_text').animate({ top: $('#edit_panel_text').height() * -1 }, {duration: 1000, easing: 'easeOutBounce'});
 	}
 	
 };

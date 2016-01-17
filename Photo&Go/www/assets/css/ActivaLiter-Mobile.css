@@ -642,7 +642,7 @@ font-size: 22px;
 }
 
 #text_options{
-	text-align: left;
+	text-align: center;
 	height: 14vh;
 	font-size: 12px;
 	width:100%;
@@ -663,14 +663,22 @@ font-size: 22px;
 	margin:2px;
 }
 
-#text_display_table td{
-	width: 50%;
+#text_display_table{
+	width: 90%;
 	text-align: center;
+	 margin: 0 auto;
 }
 
 #add_text_span {
 white-space:nowrap;
 padding-left:2px;
+}
+
+.directions-text {
+    color: #787878;
+    font-size: 14px;
+    text-align: center;
+    font-weight: bold;
 }
 
 .switch {
