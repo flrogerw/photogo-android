@@ -605,7 +605,7 @@ select option {
 	}
 
 .text_overlay{	
-    height: 6vh;
+    height: 6vh; 
     background-color: rgba(0,0,0,0.4);
     position: relative;
     z-index: 10000;

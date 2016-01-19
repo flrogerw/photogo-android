@@ -138,6 +138,7 @@ Fotobar.prototype.factory = function(imageArray) {
                                    fotobar.images[that.id].aspect_ratio = exif.aspect_ratio;
                                    
                                    fotobar.images[that.id].format = ( fotobar.images[that.id].is_landscape === true )? 3: 2;
+                                   fotobar.images[that.id].text_ribbon_height = Math.floor($(window).height() * .065);
                                    
                                    fotobarUI.initialize(that, true);
                                    fotobar.setImageParams(fotobar.images[that.id]);

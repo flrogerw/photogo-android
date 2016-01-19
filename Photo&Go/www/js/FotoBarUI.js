@@ -184,19 +184,28 @@ FotobarUI.prototype.addGestures = function(current_canvas) {
 	this.lastScale = 0;
 
 	var gestures = new Hammer.Manager(current_canvas);
-	// var pinch = new Hammer.Pinch();
+	var taps = new Hammer.Tap({
+		
+		taps: 2,
+		posThreshold: 100,
+		threshold: 10,
+		event: 'doubletaps',
+		interval: 400,
+		time: 500
+	});
 
 	var swipe = new Hammer.Swipe({
 		threshold : 3,
 		velocity : .3
 	});
 
-	gestures.add([ swipe ]);
+	gestures.add([ swipe, taps ]);
+	
+	gestures.on("doubletaps", fotobarUI.renderEditView);
 
 	gestures.on("swipeleft swiperight", function(ev) {
 
 		fotobarUI.showNextImage(ev.type);
-		// ev.gesture.stopDetect();
 	});
 };
 
@@ -356,6 +365,7 @@ FotobarUI.prototype.initialize = function(image, is_new_order) {
 	default:
 
 		$(input_text).css("width", fotobar.images[image.id].text_ribbon_width + 'px');
+		$(input_text).css("height", fotobar.images[image.id].text_ribbon_height + 'px');	
 		$(input_text).css("margin-left", "5%");
 		$(input_text).html(fotobar.images[image.id].text);
 		$(input_text).css("color", fotobar.images[image.id].text_font_color);
@@ -367,7 +377,7 @@ FotobarUI.prototype.initialize = function(image, is_new_order) {
 			'top': (( text_ribbon_top - fotobar.frame_margin.y) * -1) + 'px',
 			'left': text_ribbon_left + 'px',
 			'background-color': fotobar.images[image.id].text_ribbon_bg,
-			'height': '40px'
+			'height':  fotobar.images[image.id].text_ribbon_height
 		});
 		break;
 
@@ -398,7 +408,7 @@ FotobarUI.prototype.renderEditView = function() {
 	$('#edit_panel').css(
 			{
 				'padding' : fotobar.frame_margin.x + 'px',
-				'top' : (current_image.format == 3 )? '20vh': '17vh',
+				'top' : (current_image.format == 3 )? '17vh': '14vh',
 				'left' : (($(window).width() - $('#edit_panel').width()) / 2) - fotobar.frame_margin.x
 			});
 
@@ -426,7 +436,7 @@ FotobarUI.prototype.renderEditView = function() {
 	 });
 	 
 	 
-	 $( "#edit_panel_text" ).on("tap", function(){
+	 $( "#edit_panel_text" ).on("click", function(){
 		 
 		 $("#add_text_span").hide();
 		 $( "#edit_panel_text, #add_text_input" ).css({'left': '0px', 'width':'100%' });
@@ -467,9 +477,9 @@ FotobarUI.prototype.renderEditView = function() {
 				
 		if(current_image.text_ribbon_bg == "rgba(0,0,0,0.0)"){
 			
-			$('#text_float_instructions').show().addClass('oreintation-alert', 550, function(){
+			$('#text_float_instructions').show().addClass('oreintation-alert', 450, function(){
 				
-				$('#text_float_instructions').removeClass('oreintation-alert', 750);
+				$('#text_float_instructions').removeClass('oreintation-alert', 650);
 			});
 			current_image.text_ribbon_width = $('#add_text_span').width();
 			current_image.text_ribbon_x = (( current_image.guillotine_width - $('#add_text_span').width()) /2);
@@ -477,9 +487,9 @@ FotobarUI.prototype.renderEditView = function() {
 				
 		}else{
 			
-			$('#text_drag_instructions').show().addClass('oreintation-alert', 550, function(){
+			$('#text_drag_instructions').show().addClass('oreintation-alert', 450, function(){
 				
-				$('#text_drag_instructions').removeClass('oreintation-alert', 750);
+				$('#text_drag_instructions').removeClass('oreintation-alert', 650);
 			});
 			$(".text_overlay").css({"left":"0px"});
 			current_image.text_ribbon_x = 0;
@@ -543,9 +553,7 @@ FotobarUI.prototype.renderEditView = function() {
 		$("#add_text_span").html(current_text_string);
 	}
 	
-	
-	
-	
+		
 	$("#add_text_input").keyup(function( event ) {
 	
 		var clean_text = $(this).val().replace(/[^A-Za-z0-9.,:;<>%@#+=?$&\'"\_\/\*\- !{}()\[\]]/g, "");
@@ -629,7 +637,7 @@ FotobarUI.prototype.renderEditView = function() {
 	 $( "#edit_panel_text" ).css({
 		 'top': (text_ribbon_top * -1), 
 		 'left' : current_image.text_ribbon_x,
-		 'height': '40px'
+		 'height':  current_image.text_ribbon_height
 		 }); 
 	
 	if(current_image.text_ribbon_y == 0){
@@ -1102,7 +1110,7 @@ FotobarUI.prototype.renderImageView = function() {
 		height : (fotobar.canvasSetHeight + 10)
 	});
 
-	$('input.none').on('singletap', function() {
+	$('input.none').on('click', function() {
 		this.focus();
 	});
 
@@ -1199,7 +1207,7 @@ FotobarUI.prototype.renderHomeView = function() {
 		currentControl.removeClass('current');
 	});
 
-	$("#start_btn").on("tap", function() {
+	$("#start_btn").on("click", function() {
 		fotobarUI.renderImageSrcView();
 	});
 };
@@ -1886,5 +1894,6 @@ FotobarUI.prototype.setCurrentElements = function(current_id) {
 	$(this.current_canvas).off();
 	this.current_canvas = document.getElementById(current_id);
 	this.current_image = fotobar.images[current_id];
-	$(this.current_canvas).on('doubletap', fotobarUI.renderEditView);
+	//$(this.current_canvas).on('dblclick', fotobarUI.renderEditView);
+	
 };

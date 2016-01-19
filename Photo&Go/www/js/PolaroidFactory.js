@@ -35,6 +35,7 @@ var Polaroid = function(image) {
 	this.text_ribbon_y = 0;
 	this.text_ribbon_x = 0;
 	this.text_ribbon_width = -1;
+	this.text_ribbon_height;
 	this.text_rotation = 0;
 	this.text_font = 'marydale';
 	this.text_font_color = '#ffffff';
