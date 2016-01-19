@@ -769,3 +769,20 @@ padding-left:2px;
     color: #FFF;
 		text-shadow: 0 1px 1px rgba(0, 0, 0, 0.45);
 }
+
+.orientation-selected {
+	border: 2px #00B665 solid;
+	background-image: url(../img/green-check.png);
+	background-size: 20px;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center; 
+}
+.orientation-unselected {
+	
+	border: 1px black solid;
+}
+.oreintation-alert{
+	color: #00B665;
+	font-size: 18px;
+}

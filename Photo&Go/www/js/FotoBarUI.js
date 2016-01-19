@@ -267,8 +267,6 @@ FotobarUI.prototype.setPolaroidCords = function(canvas_image, imageId) {
 	
 	case (current_image.is_square):
 
-		current_image.ty = current_image.tx = 0;
-		current_image.plot_y = current_image.plot_x = 0;
 		current_image.image_scale = (current_image.image_width / fotobar.fullFrameWidth);
 		canvas_image.width = canvas_image.height = fotobar.fullFrameHeight;
 		break;
@@ -278,9 +276,6 @@ FotobarUI.prototype.setPolaroidCords = function(canvas_image, imageId) {
 		canvas_image.height = fotobar.fullFrameWidth;
 		canvas_image.width = fotobar.fullFrameWidth * current_image.aspect_ratio;
 		current_image.image_scale = (current_image.image_height / fotobar.fullFrameWidth);
-		current_image.ty = current_image.plot_y = 0;
-		current_image.tx = (Math.floor((canvas_image.height - fotobar.fullFrameHeight) / 2) * -1);; 
-		current_image.plot_x = Math.floor((current_image.tx * current_image.image_scale));
 		break;
 
 	default: // portrait
@@ -288,11 +283,11 @@ FotobarUI.prototype.setPolaroidCords = function(canvas_image, imageId) {
 		canvas_image.width = fotobar.fullFrameWidth;
 		canvas_image.height = fotobar.fullFrameWidth * current_image.aspect_ratio;
 		current_image.image_scale = (current_image.image_width / fotobar.fullFrameWidth);
-		current_image.ty = (Math.floor((canvas_image.height - fotobar.fullFrameHeight) / 2) * -1);
-		current_image.tx = current_image.plot_tx = 0;
-		current_image.plot_y = Math.floor(current_image.ty * current_image.image_scale);
 		break;
 	}
+	
+	current_image.ty = current_image.plot_y = 0;
+	current_image.tx = current_image.plot_tx = 0;		
 };
 
 FotobarUI.prototype.initialize = function(image, is_new_order) {
@@ -392,7 +387,14 @@ FotobarUI.prototype.renderEditView = function() {
 	$('#edit_panel').width(current_image.guillotine_width);
 	$('#edit_panel').height(current_image.guillotine_height);
 	$('#edit_image').addClass(current_image.image.effect);
-
+	$('div.fx').css({
+		'background': 'url('+$(canvas_image).attr('src')+')',
+		'background-size' : '100%',
+		 'background-repeat': 'no-repeat',
+    	'background-attachment': 'fixed',
+    	'background-position': 'center' 
+	});
+	
 	$('#edit_panel').css(
 			{
 				'padding' : fotobar.frame_margin.x + 'px',
@@ -433,12 +435,12 @@ FotobarUI.prototype.renderEditView = function() {
 		// $("#add_text_input").focus(); 
 	 });
 	 	
-	 $(".image_orientation[format='"+current_image.format+"']").css('border', '2px green solid');
+	 $(".image_orientation[format='"+current_image.format+"']").removeClass('orientation-unselected').addClass('orientation-selected');
 
 	 $(".image_orientation").on("click", function(){
 		 
-		$('.image_orientation').css('border', '1px black solid');
-		$(this).css('border', '2px green solid');
+		$('.image_orientation').removeClass('orientation-selected').addClass('orientation-unselected');
+		$(this).css('border', '2px #00B665 solid');
 		current_image.text_ribbon_width = -1;
 		current_image.text_ribbon_x = current_image.text_ribbon_y = 0;
 		current_image.text_ribbon_bg = "rgba(0,0,0,0.4)";
@@ -455,25 +457,30 @@ FotobarUI.prototype.renderEditView = function() {
 	
 	$("input.switch-input[name='Band'][value='"+current_image.text_ribbon_bg+"']").prop('checked',true);
 	
+	(current_image.text_ribbon_bg == "rgba(0,0,0,0.0)")? $('#text_float_instructions').show(): $('#text_drag_instructions').show();
 	$("input.switch-input[name='Band']").change( function(){
 		
-		clearInterval(hideTimer);
-		$('.text_drag').hide();
-		hideTimer = setInterval(function(){ $('.text_drag').hide(); }, 3000);
+		$('.text_drag').stop(true, true).hide().removeClass('oreintation-alert');
 		
 		$(".text_overlay").css("background-color", $(this).val());
 		current_image.text_ribbon_bg = $(this).val();
 				
 		if(current_image.text_ribbon_bg == "rgba(0,0,0,0.0)"){
 			
-			$('#text_float_instructions').show();
+			$('#text_float_instructions').show().addClass('oreintation-alert', 550, function(){
+				
+				$('#text_float_instructions').removeClass('oreintation-alert', 750);
+			});
 			current_image.text_ribbon_width = $('#add_text_span').width();
 			current_image.text_ribbon_x = (( current_image.guillotine_width - $('#add_text_span').width()) /2);
 			$(".text_overlay").css("left", current_image.text_ribbon_x);
 				
 		}else{
 			
-			$('#text_drag_instructions').show();
+			$('#text_drag_instructions').show().addClass('oreintation-alert', 550, function(){
+				
+				$('#text_drag_instructions').removeClass('oreintation-alert', 750);
+			});
 			$(".text_overlay").css({"left":"0px"});
 			current_image.text_ribbon_x = 0;
 			current_image.text_ribbon_width = current_image.guillotine_width;
@@ -536,34 +543,40 @@ FotobarUI.prototype.renderEditView = function() {
 		$("#add_text_span").html(current_text_string);
 	}
 	
+	
+	
+	
+	$("#add_text_input").keyup(function( event ) {
+	
+		var clean_text = $(this).val().replace(/[^A-Za-z0-9.,:;<>%@#+=?$&\'"\_\/\*\- !{}()\[\]]/g, "");
+		current_image.text = clean_text;
+		
+		
+		if($("#add_text_span").width() > (current_image.guillotine_width * .8)){
+
+			var max_chars = current_image.text.length - 1;
+			$("#add_text_input").val(current_image.text.substring(0, max_chars));
+			$("#add_text_span").html(current_image.text.substring(0, max_chars));
+			current_image.text = current_image.text.substring(0, max_chars);
+			//$("#add_text_input").attr('maxlength', max_chars);
+		}else{
+			$("#add_text_span").html(current_image.text);
+			$("#add_text_input").val(current_image.text);
+		}
+		//$(this).emoji();		
+	});
+		
+	
 	$("#add_text_input").keydown(function( event ) {
 		
-		switch(true){
-		
-			case(event.which == 13):
+			if(event.which == 13){
 				
-				current_image.text = $(this).val().trim();;
+				current_image.text = $(this).val().trim();
 			  	$("#add_text_input").hide();
 			  	$("#add_text_span").html($(this).val());
 			  	current_image.text_ribbon_width = (current_image.text_ribbon_bg == "rgba(0,0,0,0.0)")? $('#add_text_span').width(): current_image.guillotine_width;
 			  //$("#add_text_span").emoji();
 			  	$("#add_text_span").show();
-				break;
-			
-			default:
-				
-				$(this).val($(this).val().replace(/[^A-Za-z0-9.,:;<>%@#+=?$&\'"\_\/\*\- !{}()\[\]]/g, ""));
-				current_image.text = $(this).val().trim();
-				$("#add_text_span").html($(this).val());
-				
-				if($("#add_text_span").width() > (current_image.guillotine_width * .8)){
-					
-					var max_length = $(this).val().length;
-					$("#add_text_span").html($(this).val());
-					$("#add_text_input").attr('maxlength', max_length);
-				}
-				//$(this).emoji();
-				break;
 			}
 	});
 	
