@@ -391,7 +391,7 @@ FotobarUI.prototype.renderEditView = function() {
 	$('body').html(fotobarUI.imageEditTpl());
 	var canvas_image = $(fotobarUI.current_canvas).children('img');
 	var current_image = fotobarUI.current_image;
-	var hideTimer;
+	var max_chars = 100;	
 		
 	$('#edit_image').attr('src', $(canvas_image).attr('src'));	
 	$('#edit_panel').width(current_image.guillotine_width);
@@ -427,7 +427,6 @@ FotobarUI.prototype.renderEditView = function() {
 	
 	
 	var panel_text = document.getElementById('edit_panel_text');
-	
 	Hammer(panel_text).on('tap', function(){
 		
 		 $("#add_text_span").hide();
@@ -560,15 +559,14 @@ FotobarUI.prototype.renderEditView = function() {
 	
 		var clean_text = $(this).val().replace(/[^A-Za-z0-9.,:;<>%@#+=?$&\'"\_\/\*\- !{}()\[\]]/g, "");
 		current_image.text = clean_text;
-		
-		
+			
 		if($("#add_text_span").width() > (current_image.guillotine_width * .8)){
 
-			var max_chars = current_image.text.length - 1;
+			var max_chars = current_image.text.length -1;
 			$("#add_text_input").val(current_image.text.substring(0, max_chars));
 			$("#add_text_span").html(current_image.text.substring(0, max_chars));
 			current_image.text = current_image.text.substring(0, max_chars);
-			//$("#add_text_input").attr('maxlength', max_chars);
+			$("#add_text_input").attr('maxlength', max_chars);
 		}else{
 			$("#add_text_span").html(current_image.text);
 			$("#add_text_input").val(current_image.text);
@@ -592,16 +590,16 @@ FotobarUI.prototype.renderEditView = function() {
 	
 	$('#menu-fx div.fx').on('click',function() {
 
-						$('#edit_image').removeClass(fotobarUI.current_image.effect);
-						fotobarUI.current_image.image.effect = '';
-						$('#edit_image').removeClass();
+		$('#edit_image').removeClass(fotobarUI.current_image.effect);
+		fotobarUI.current_image.image.effect = '';
+		$('#edit_image').removeClass();
 
-						if ($(this).attr('filter') != 'none') {
+		if ($(this).attr('filter') != 'none') {
 
-							fotobarUI.current_image.effect = fotobarUI.current_image.image.effect = $(this).attr('filter');
-							$('#edit_image').addClass($(this).attr('filter'));
-						}
-					});
+			fotobarUI.current_image.effect = fotobarUI.current_image.image.effect = $(this).attr('filter');
+			$('#edit_image').addClass($(this).attr('filter'));
+		}
+	});
 
 	$("#delete").on("click", function() {
 		fotobarUI.deleteButtonClick();
