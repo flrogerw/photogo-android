@@ -4,7 +4,7 @@ var FotobarUI = function() {
 	this.current_image_id;
 	this.current_canvas;
 	this.current_social_media;
-	this.max_text_length = 19;
+	//this.max_text_length = 19;
 	this.maxImageCount = 50;
 	this.slider_index = 0;
 	this.photo_limit = 15;
@@ -358,7 +358,7 @@ FotobarUI.prototype.initialize = function(image, is_new_order) {
 
 	switch (true) {
 
-	case (fotobar.images[image.id].text.length == 0):
+	case (typeof fotobar.images[image.id].text == 'undefined' || fotobar.images[image.id].text.length == 0):
 		$(input_text).hide();
 		break;
 
@@ -424,7 +424,18 @@ FotobarUI.prototype.renderEditView = function() {
 			y : current_image.ty
 		}
 	});
+	
+	
+	var panel_text = document.getElementById('edit_panel_text');
+	
+	Hammer(panel_text).on('tap', function(){
 		
+		 $("#add_text_span").hide();
+		 $( "#edit_panel_text, #add_text_input" ).css({'left': '0px', 'width':'100%' });
+		 $("#add_text_input").show().focus();
+		
+	});
+	
 	 $( "#edit_panel_text" ).draggable({ 
 		 containment: "parent",
 		 stop: function( event, ui ) {
@@ -434,16 +445,7 @@ FotobarUI.prototype.renderEditView = function() {
 			 current_image.plot_ribbon_y =  Math.floor((current_image.text_ribbon_y * current_image.image_scale));
 		 }
 	 });
-	 
-	 
-	 $( "#edit_panel_text" ).on("click", function(){
-		 
-		 $("#add_text_span").hide();
-		 $( "#edit_panel_text, #add_text_input" ).css({'left': '0px', 'width':'100%' });
-		 $("#add_text_input").show().focus();
-		// $("#add_text_input").show();
-		// $("#add_text_input").focus(); 
-	 });
+	
 	 	
 	 $(".image_orientation[format='"+current_image.format+"']").removeClass('orientation-unselected').addClass('orientation-selected');
 
@@ -536,10 +538,10 @@ FotobarUI.prototype.renderEditView = function() {
 		
 		if($("#add_text_span").width() <= (current_image.guillotine_width * .9)){
 			
-			var max_length = 40;
+			//var max_length = 40;
 			current_image.text = current_text_string;
 			$("#add_text_span").html(current_text_string);
-			$("#add_text_input").attr('maxlength', max_length);
+			//$("#add_text_input").attr('maxlength', max_length);
 			$("#add_text_input").val(current_text_string);
 			if(was_truncated){
 				
@@ -1721,7 +1723,7 @@ FotobarUI.prototype.getIgImages = function() {
 FotobarUI.prototype.keyboardDisplay = function(event) {
 
 	if (event.type == 'native.keyboardhide') {
-		$('input').blur();
+		$('input.none').blur();
 		$("#controls-container, #image_legend_wrapper").show();
 	} else {
 
