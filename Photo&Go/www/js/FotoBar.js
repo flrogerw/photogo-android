@@ -99,67 +99,67 @@ Fotobar.prototype.factory = function(imageArray) {
 	
     return $.Deferred(function() {
                       
-                      var self = this;
-                      var imageArrayLength = imageArray.length;
-                      
-                      for (var i = 0; i < imageArrayLength; i++) {
-                      
-                      if( typeof( imageArray[i] ) == 'string' ){
-                      
-                      imageArray[i] = [ imageArray[i], imageArray[i] ];
-                      }
-                      
-                      var org_uri = imageArray[i][0];
-                      var newImage = new Image();
-                      newImage.onload = function() {
-                      
-                      var that = this;
-                
-                      var getExif = fotobar.getExif( that );
-                      
-                      getExif.done(function(exif){
-                                   
-                                   that.tmpImage = {};
-                                   that.id = that.tmpImage.id = fotobar.getRandom();
-                                   that.tmpImage.src = that.src;
-                                   
-                                   that.tmpImage.width = exif.width;
-                                   that.tmpImage.height = exif.height;
-                                   that.tmpImage.orientation = exif.orientation;
-                                   
-                                   that.tmpImage.name = that.src.split('/').pop().split(/[?#]/)[0].replace(/[^a-z0-9]/gi, "_");
-                                   that.tmpImage.name = that.tmpImage.id + '_'
-                                   + that.tmpImage.name + '.' + that.tmpImage.name.substr(that.tmpImage.name.lastIndexOf('_') + 1);
-                                   
-                                   fotobar.images[that.id] = new Polaroid(that.tmpImage);
-                                   
-                                   fotobar.images[that.id].is_landscape = exif.is_landscape;
-                                   fotobar.images[that.id].is_square = exif.is_square;
-                                   fotobar.images[that.id].aspect_ratio = exif.aspect_ratio;
-                                   
-                                   fotobar.images[that.id].format = ( fotobar.images[that.id].is_landscape === true )? 3: 2;
-                                   fotobar.images[that.id].text_ribbon_height = Math.floor($(window).height() * .065);
-                                   
-                                   fotobarUI.initialize(that, true);
-                                   fotobar.setImageParams(fotobar.images[that.id]);
-                                   
-                                   var imageURIs = imageArray.shift();
-                                   fotobar.images[that.id].image.org_uri = that.src;
-                                   
-                                   fotobarCart.updateQuantity(fotobarUI.defaultSku, 1, that.id);
-                                   
-                                   if (imageArray.length == 0) {
-                                   
-                                   newImage = null;
-                                   self.resolve();
-                                   }
-                                   
-                                   });
+                  var self = this;
+                  var imageArrayLength = imageArray.length;
+                  
+                  for (var i = 0; i < imageArrayLength; i++) {
+                  
+                  if( typeof( imageArray[i] ) == 'string' ){
+                  
+                  imageArray[i] = [ imageArray[i], imageArray[i] ];
+                  }
+                  
+                  var org_uri = imageArray[i][0];
+                  var newImage = new Image();
+                  newImage.onload = function() {
+                  
+                  var that = this;
             
-                      }
-                      newImage.src = imageArray[i][1];
-                      }
-                      });
+                  var getExif = fotobar.getExif( that );
+                  
+                  getExif.done(function(exif){
+                               
+                       that.tmpImage = {};
+                       that.id = that.tmpImage.id = fotobar.getRandom();
+                       that.tmpImage.src = that.src;
+                       
+                       that.tmpImage.width = exif.width;
+                       that.tmpImage.height = exif.height;
+                       that.tmpImage.orientation = exif.orientation;
+                       
+                       that.tmpImage.name = that.src.split('/').pop().split(/[?#]/)[0].replace(/[^a-z0-9]/gi, "_");
+                       that.tmpImage.name = that.tmpImage.id + '_'
+                       + that.tmpImage.name + '.' + that.tmpImage.name.substr(that.tmpImage.name.lastIndexOf('_') + 1);
+                       
+                       fotobar.images[that.id] = new Polaroid(that.tmpImage);
+                       
+                       fotobar.images[that.id].is_landscape = exif.is_landscape;
+                       fotobar.images[that.id].is_square = exif.is_square;
+                       fotobar.images[that.id].aspect_ratio = exif.aspect_ratio;
+                       
+                       fotobar.images[that.id].format = ( fotobar.images[that.id].is_landscape === true )? 3: 2;
+                       fotobar.images[that.id].text_ribbon_height = Math.floor($(window).height() * .065);
+                       
+                       fotobarUI.initialize(that, true);
+                       fotobar.setImageParams(fotobar.images[that.id]);
+                       
+                       var imageURIs = imageArray.shift();
+                       fotobar.images[that.id].image.org_uri = that.src;
+                       
+                       fotobarCart.updateQuantity(fotobarUI.defaultSku, 1, that.id);
+                       
+                       if (imageArray.length == 0) {
+                       
+                       newImage = null;
+                       self.resolve();
+                       }
+                       
+                       });
+
+                  }
+                  newImage.src = imageArray[i][1];
+                  }
+                  });
 };
 
 Fotobar.prototype.getExif = function( image ){
@@ -183,25 +183,30 @@ Fotobar.prototype.getExif = function( image ){
                  exif.width = ( fotobar.contains( [6], exif.orientation) )? tmpHeight: tmpWidth;
                  
                  
-                 exif.aspect_ratio = exif.height / exif.width;
+                
                  
                  switch (true) {
                  
-                 case (exif.height < exif.width ):
+                 case (exif.height >= exif.width * 1.2027 ): // Portrait
+                	 
+                	 exif.aspect_ratio = exif.height / exif.width; 
+                	 break;
+                 
+                 
+                 case (exif.width >= exif.height * 1.2027 ): // Landscape
                  
                  exif.is_landscape = true;
                  exif.aspect_ratio = exif.width / exif.height;
                  
                  break;
                  
-                 case (exif.height == exif.width):
-                 
+                 default:
+                
                  exif.is_square = true;
-                 exif.aspect_ratio = 1;
+                 exif.aspect_ratio = Math.max(exif.height, exif.height) / Math.min(exif.height, exif.height);
                  break;
                  }
 
-                 
                  self.resolve( exif );
         });
     });
@@ -337,6 +342,7 @@ Fotobar.prototype.contains = function(haystack, needle) {
 	return false;
 };
 
+/*
 Fotobar.prototype.setCanvasRotation = function(current_image) {
 
 	fotobar.images[current_image.id].aspect_ratio = current_image.height
@@ -346,7 +352,7 @@ Fotobar.prototype.setCanvasRotation = function(current_image) {
 
 	case (current_image.height < current_image.width):
 
-		fotobar.images[current_image.id].is_landscape = true;
+		//fotobar.images[current_image.id].is_landscape = true;
 		fotobar.images[current_image.id].aspect_ratio = current_image.width / current_image.height;
 	
 		break;
@@ -358,4 +364,9 @@ Fotobar.prototype.setCanvasRotation = function(current_image) {
 		break;
 	}
 	
+	fotobar.images[current_image.id].is_square = true;
+	fotobar.images[current_image.id].aspect_ratio = 1;
+	fotobar.images[current_image.id].format = 2;
+	
 };
+*/

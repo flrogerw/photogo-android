@@ -211,9 +211,10 @@ FotobarUI.prototype.addGestures = function(current_canvas) {
 
 FotobarUI.prototype.renderImages = function(imageArray) {
 
-	fotobarUI.renderImageView();
+	//fotobarUI.renderImageView();
 	$.when(fotobar.factory(imageArray)).done(function() {
-
+		
+		fotobarUI.renderImageView();
 		fotobarUI.redrawCurrent();
 		$(".preview_overlay").css('opacity', 0);
 		fotobarUI.showNextImage(null);
@@ -230,10 +231,10 @@ FotobarUI.prototype.getImages = function() {
 		$.when(fotoselect.getImages(fotoselect, max_selections)).done(
 				function() {
 					
-					fotobarUI.renderImageView();
+					//fotobarUI.renderImageView();
 					$.when(fotobar.factory(fotoselect.images)).done(function() {
 						
-						//fotobarUI.renderImageView();
+						fotobarUI.renderImageView();
 						fotobarUI.redrawCurrent();
 						$(".preview_overlay").css('opacity', 0);
 						fotobarUI.current_image = null
