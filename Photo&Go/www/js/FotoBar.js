@@ -182,31 +182,22 @@ Fotobar.prototype.getExif = function( image ){
                  exif.height = ( fotobar.contains( [6], exif.orientation) )? tmpWidth: tmpHeight;
                  exif.width = ( fotobar.contains( [6], exif.orientation) )? tmpHeight: tmpWidth;
                  
-                 
-                
-                 
+                        
                  switch (true) {
+                                
+                 case (exif.width > exif.height ): // Landscape
                  
-                 case (exif.height >= exif.width * 1.2027 ): // Portrait
-                	 
-                	 exif.aspect_ratio = exif.height / exif.width; 
-                	 break;
-                 
-                 
-                 case (exif.width >= exif.height * 1.2027 ): // Landscape
-                 
-                 exif.is_landscape = true;
-                 exif.aspect_ratio = exif.width / exif.height;
-                 
+	                 exif.is_landscape = true;
                  break;
                  
-                 default:
-                
-                 exif.is_square = true;
-                 exif.aspect_ratio = Math.max(exif.height, exif.height) / Math.min(exif.height, exif.height);
-                 break;
+	             case (exif.height == exif.width ): // square 
+	                
+	                 exif.is_square = true;
+	              break;
+	              
+	              
                  }
-
+                 exif.aspect_ratio = Math.max(exif.height, exif.width) / Math.min(exif.height, exif.width);
                  self.resolve( exif );
         });
     });
@@ -228,6 +219,8 @@ Fotobar.prototype.setImageParams = function(current_image) {
 			+ current_image.id);
 	var current_canvas = document.getElementById(current_image.id);
 	
+	console.log(current_image.format);
+	
 	switch (current_image.format) {
 
 	case (2):
@@ -242,27 +235,30 @@ Fotobar.prototype.setImageParams = function(current_image) {
 			});
 				
 		switch(true){
-		
-			case(current_image.is_square):
-				
-				current_image.height = current_image.width = this.fullFrameHeight;
-				current_image.canvas_width = current_image.canvas_height = current_image.width;
-				break;
 			
-			case(current_image.is_landscape):
-				
+			case(current_image.is_landscape && !current_image.is_square):
+
 				current_image.height = this.fullFrameWidth;
 				current_image.width = this.fullFrameHeight;
-				current_image.canvas_width = current_image.width * current_image.aspect_ratio;;
+				current_image.canvas_width = current_image.width * current_image.aspect_ratio;
 				current_image.canvas_height =  current_image.width;
 				break;
 				
 			default:
-						
+							
 				current_image.height = this.fullFrameHeight;
 				current_image.width = this.fullFrameWidth;
-				current_image.canvas_width = current_image.width;
+				current_image.canvas_width = current_image.width ;
 				current_image.canvas_height = current_image.width * current_image.aspect_ratio;
+			
+				if(current_image.canvas_height < this.fullFrameHeight){
+					
+					current_image.height = this.fullFrameWidth * current_image.aspect_ratio;
+					current_image.width += ((this.fullFrameHeight - current_image.height) * current_image.aspect_ratio);
+					current_image.height += (this.fullFrameHeight - current_image.height);
+					current_image.canvas_width = current_image.width;
+					current_image.canvas_height = current_image.height;	
+				}
 				break;
 		}
 		
@@ -284,18 +280,13 @@ Fotobar.prototype.setImageParams = function(current_image) {
 		
 		switch(true){
 		
-		case(current_image.is_square):
 			
-			current_image.width = current_image.height = this.fullFrameHeight;
-			current_image.canvas_width = current_image.canvas_height = current_image.width;
-			break;
-			
-		case(!current_image.is_landscape):
+		case(!current_image.is_landscape && !current_image.is_square):
 			
 			current_image.width = this.fullFrameHeight;
 			current_image.height = this.fullFrameWidth;
 			current_image.canvas_height = current_image.width * current_image.aspect_ratio;
-			current_image.canvas_width = current_image.width;	
+			current_image.canvas_width = current_image.width;
 			break;
 		
 		default:
@@ -303,7 +294,17 @@ Fotobar.prototype.setImageParams = function(current_image) {
 			current_image.width = this.fullFrameWidth;
 			current_image.height = this.fullFrameHeight;
 			current_image.canvas_width = current_image.width * current_image.aspect_ratio;
-			current_image.canvas_height = current_image.width;	
+			current_image.canvas_height = current_image.width;
+			
+			if(current_image.canvas_width < this.fullFrameHeight){
+
+				current_image.height = this.fullFrameWidth;
+				current_image.width = this.fullFrameWidth * current_image.aspect_ratio;
+				current_image.height += ((this.fullFrameHeight - current_image.width) / current_image.aspect_ratio);
+				current_image.width += (this.fullFrameHeight - current_image.width);
+				current_image.canvas_width = current_image.width;
+				current_image.canvas_height = current_image.height;
+			}	
 		break;
 		
 		}

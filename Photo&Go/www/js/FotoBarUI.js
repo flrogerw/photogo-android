@@ -1056,6 +1056,16 @@ FotobarUI.prototype.renderImageSrcView = function() {
 	$("#cam_src_btn").on("click", fotobarUI.getImages);
 	$("#fb_src_btn").on("click", fotobarUI.getFbAlbums);
 	$("#gram_src_btn").on("click", fotobarUI.getIgImages);
+	
+	if(fotobarConfig.configure.promos.length > 0){
+		console.log(JSON.stringify(fotobarConfig.configure.promos));
+		
+		for( i in fotobarConfig.configure.promos){
+			
+			$('#promo_div').append('<div><img  alt="'+fotobarConfig.configure.promos[i].text+'"  src="'+fotobarConfig.configure.promos[i].image_url+'" /></div>');
+		}		
+		$("#promo_div").show();
+	}
 
 	if (fotobarUI.FbLoginStatus == 'connected') {
 		$("#fb_logout").show();

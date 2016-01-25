@@ -786,3 +786,9 @@ padding-left:2px;
 	color: #00B665;
 	font-size: 18px;
 }
+#promo_div{
+position: relative;
+top: 20vh;
+margin: 0 auto;
+text-align: center;
+}
