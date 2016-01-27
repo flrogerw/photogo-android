@@ -72,10 +72,12 @@ FotobarCart.prototype.getTaxTotal = function() {
 	return (tax_amount);
 };
 
-FotobarCart.prototype.getShippingTotal = function() {
 
-	var shipping_total = (fotobarCart.is_shipped !== true) ? 0
-			: fotobarCart.shipping_cost;
+FotobarCart.prototype.getShippingTotal = function() {
+	
+	var shipping_total = (fotobarCart.is_shipped !== true) ? 0: fotobarCart.shipping_cost;
+	var shipping_promo = fotobarPromos.processPromos( 'shipping' );
+	shipping_total = (shipping_promo === false)? shipping_total: shipping_promo;
 	return (shipping_total);
 };
 

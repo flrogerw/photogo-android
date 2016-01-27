@@ -1057,13 +1057,9 @@ FotobarUI.prototype.renderImageSrcView = function() {
 	$("#fb_src_btn").on("click", fotobarUI.getFbAlbums);
 	$("#gram_src_btn").on("click", fotobarUI.getIgImages);
 	
-	if(fotobarConfig.configure.promos.length > 0){
-		console.log(JSON.stringify(fotobarConfig.configure.promos));
-		
-		for( i in fotobarConfig.configure.promos){
+	if(fotobarPromos.hasPromos()){
 			
-			$('#promo_div').append('<div><img  alt="'+fotobarConfig.configure.promos[i].text+'"  src="'+fotobarConfig.configure.promos[i].image_url+'" /></div>');
-		}		
+		$('#promo_div').append( fotobarPromos.getPromoDisplay() );		
 		$("#promo_div").show();
 	}
 
@@ -1761,22 +1757,20 @@ FotobarUI.prototype.getSelectCount = function(selected_images) {
 FotobarUI.prototype.repopForm = function(form) {
 
 	for (i in form) {
-
-		switch ($("input[name='" + i + "'],select[name='" + i + "']").attr(
-				'type')) {
+		
+		switch ($("input[name='" + i + "'],select[name='" + i + "']").attr('type')) {
 
 		case ('tel'):
 		case ('email'):
 		case ('select'):
-			$("select option[value='" + form[i] + "']").attr('selected',
-					'selected')
+			$("option[value='" + form[i] + "']", this).prop('selected', true);
 		case ('text'):
 
 			$("input[name='" + i + "'], select[name='" + i + "']").val(form[i])
 			break;
 
 		case ('radio'):
-
+		
 			$("input[value='" + form[i] + "']").prop('checked', true);
 
 			switch (form[i]) {

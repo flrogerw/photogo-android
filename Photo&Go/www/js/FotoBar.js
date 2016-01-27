@@ -219,8 +219,6 @@ Fotobar.prototype.setImageParams = function(current_image) {
 			+ current_image.id);
 	var current_canvas = document.getElementById(current_image.id);
 	
-	console.log(current_image.format);
-	
 	switch (current_image.format) {
 
 	case (2):

@@ -339,15 +339,9 @@ FotobarConfig.prototype.getProducts = function() {
 		var productsCall = fotobarConfig.configAPI.getCall('getProducts');
 		productsCall.done(function(data) {
 
-			fotobarConfig.configure.promos = data.promos;
+			fotobarPromos = new FotobarPromos( data.promos);
 			fotobarConfig.configure.products = data.products;
 			fotobarConfig.products = (!data.error) ? true : false;
-			for( i in data.promos ){
-				
-				var img = new Image();
-		        img.onload = function() {}
-		        img.src = data.promos[i].image_url;	
-			}
 		});
 
 		productsCall.fail(function(e) {

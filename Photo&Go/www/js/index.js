@@ -46,6 +46,7 @@
 
 var fotobar;
 var fotobarCart;
+var fotobarPromos;
 var fotobarConfig;
 var fotobarUI;
 
